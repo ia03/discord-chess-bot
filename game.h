@@ -135,7 +135,7 @@ private:
     // The recursive function that returns the best evaluation found for a
     // ply. It utilizes minimax with alpha-beta pruning. This will not be
     // used for the root ply.
-    int minimax();
+    int minimax(int depth, int alpha, int beta, bool is_maximizing);
 public:
     Game();
 

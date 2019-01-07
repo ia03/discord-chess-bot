@@ -1,9 +1,10 @@
 /*
  * Ibrahim Ahmed
- * January 6, 2018
+ * January 7, 2018
  * String-to-move conversion and vice versa
 */
 
+#include "game.h"
 
 // String coordinates to/from square indices
 
