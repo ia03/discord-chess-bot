@@ -15,6 +15,7 @@
 class Game
 {
 private:
+    // Used to undo moves and check for threefold repetition
     std::vector<Ply_data> history;
 
     // Zobrist hash for the piece positions only
@@ -54,7 +55,7 @@ private:
 
     // Number of plies that have elapsed since a pawn was moved or a piece was
     // captured. Used for the 50-move rule.
-    uint8_t rule50;
+    int rule50 = 0;
 
     // Only the least significant 4 bits are used.
     // Bit 0: white kingside castle
@@ -74,6 +75,9 @@ private:
     // Initializes the Zobrist hash for the piece positions.
     void init_hash();
 
+    // Ends the current turn.
+    void end_turn();
+
     // Generates the Zobrist key for the current position.
     Bitstring hash();
 
@@ -91,14 +95,6 @@ private:
 
     // Gets the color of a piece on a certain square.
     Color color_of(Square square);
-
-    // Ends the current turn.
-    void end_turn();
-
-    // Makes a move and saves the ply data required to undo that move if it is
-    // legal. If the move is illegal, it undoes the move after making it and
-    // returns false. The move is assumed to be pseudo-legal.
-    bool make_move(Move move);
 
     // Undoes the last move.
     void undo();
@@ -125,6 +121,31 @@ private:
     // Generates all pseudo-legal king moves for the current player.
     std::vector<Move> pseudo_legal_king_moves();
 
+    // The recursive function that returns the best evaluation found for a
+    // ply. It utilizes minimax with alpha-beta pruning. This will not be
+    // used for the root ply.
+    int minimax(int depth, int alpha, int beta, bool is_maximizing);
+
+    // Uses piece-square tables to evaluate a square.
+    int eval_piece(Square square);
+
+    // Uses piece-square tables to evaluate the board in its current state.
+    int evaluate();
+
+    // Checks if there are not enough pieces on the board for a checkmate
+    // to be possible.
+    bool insufficient_material();
+
+    // Checks if the specified player's king is in check.
+    bool king_in_check(Color color);
+public:
+    Game();
+
+    // Makes a move and saves the ply data required to undo that move if it is
+    // legal. If the move is illegal, it undoes the move after making it and
+    // returns false. The move is assumed to be pseudo-legal.
+    bool make_move(Move move);
+
     // Checks if a move is pseudo-legal.
     bool is_pseudo_legal(Move move);
 
@@ -132,21 +153,20 @@ private:
     // pruning to return the best legal move for the current position.
     Move best_move();
 
-    // The recursive function that returns the best evaluation found for a
-    // ply. It utilizes minimax with alpha-beta pruning. This will not be
-    // used for the root ply.
-    int minimax(int depth, int alpha, int beta, bool is_maximizing);
-public:
-    Game();
+    // Generates and returns a move using a string. The first two characters
+    // indicate the starting position, the two characters after that indicate
+    // the ending position. The fifth optional character indicates the
+    // promotion piece. Examples: "b5f8" or "f7F8q"
+    Move string_to_move(std::string string);
 
-    void make_move(Move move);
+    // Converts a move to its string representation.
+    std::string move_to_string(Move move);
+
+    // Returns the FEN representation of the board.
+    std::string fen();
+
+    // Checks if the game has ended, and if so, why.
+    Game_state game_state();
 };
-
-
-extern unordered_map<std::string, Square> coord_to_index;
-extern std::string index_to_coord [64];
-
-extern unordered_map<std::string, Move> promo_str_to_bin;
-extern unordered_map<Move, std::string> promo_bin_to_str;
 
 #endif //DISCORD_CHESS_BOT_GAME_H

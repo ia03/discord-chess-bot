@@ -4,6 +4,7 @@
  * String-to-move conversion and vice versa
 */
 
+#include <string>
 #include "game.h"
 
 // String coordinates to/from square indices
@@ -51,3 +52,12 @@ unordered_map<Move, std::string> promo_bin_to_str =
 };
 
 
+Move Game::string_to_move(std::string string)
+{
+
+}
+
+std::string Game::move_to_string(Move move)
+{
+
+}
