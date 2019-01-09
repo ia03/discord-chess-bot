@@ -35,7 +35,7 @@ unordered_map<Square, std::string> index_to_coord =
 
 // Promotion placeholders to/from binary flags
 
-unordered_map<std::string, Move> promo_str_to_bin =
+unordered_map<std::string, int> promo_str_to_bin =
 {
     {"q", 0b00},
     {"r", 0b01},
@@ -43,7 +43,7 @@ unordered_map<std::string, Move> promo_str_to_bin =
     {"n", 0b11},
 };
 
-unordered_map<Move, std::string> promo_bin_to_str =
+unordered_map<int, std::string> promo_bin_to_str =
 {
     {0b00, "q"},
     {0b01, "r"},
@@ -52,12 +52,66 @@ unordered_map<Move, std::string> promo_bin_to_str =
 };
 
 
-Move Game::string_to_move(std::string string)
+Move Game::string_to_move(std::string move_str)
 {
+	int str_len = move_str.length();
+	int special_move_flag = 0;
+	
+	// The input string has an invalid length.
+	if (!(str_len == 4 or str_len == 5))
+		return 0;
 
+	// First two characters are the "from" square.
+	std::string from_str = move_str.substr(0, 2);
+
+	// Invalid "from" square.
+	if (coord_to_index.find(from_str) == coord_to_index.end())
+		return 0;
+
+	Square from_sqr = coord_to_index[from_str];
+
+	// Third and fourth characters are the "to" square.
+	std::string to_str = move_str.substr(2, 2);
+
+	// Invalid "to" square.
+	if (coord_to_index.find(to_str) == coord_to_index.end())
+		return 0;
+
+	Square to_sqr = coord_to_index[to_str];
+	int promo_flag = -1;
+
+	if (str_len == 5)
+	{
+		// Fifth character is the promotion type (optional).
+		std::string promo_str = move_str.substr(4, 1);
+
+		// Invalid promotion type.
+		if(promo_str_to_bin.find(promo_str) == promo_str_to_bin.end())
+			return 0;
+		
+		promo_flag = promo_str_to_bin[promo_str];
+	}
+
+	Piece piece_moved = piece_on(from_sqr));
+	if (piece_moved == w_king || piece_moved == b_king)
+	{
+		// Check if this is a castling move.
+		// White kingside castle
+		if (from_sqr == Square::E1 && to_sqr == Square::G1)
+			special_move_flag = 0b01;
+		// White queenside castle
+		else if (from_sqr == Square::E1 && to_sqr == Square::C1)
+			special_move_flag = 0b01;
+		// Black kingside castle
+		else if (from_sqr == Square::E8 && to_sqr == Square::G8)
+			special_move_flag = 0b01;
+		// Black queenside castle
+		else if (from_sqr == Square::E8 && to_sqr == Square::C8)
+			special_move_flag = 0b01;
+	}
 }
 
 std::string Game::move_to_string(Move move)
 {
-
+	
 }
