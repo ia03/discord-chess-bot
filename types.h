@@ -71,10 +71,10 @@ enum class Piece
 
 enum class Promotion_piece
 {
-    knight,
-    bishop,
+    queen,
     rook,
-    queen
+    bishop,
+    knight
 };
 
 enum class Move_type
