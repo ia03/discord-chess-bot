@@ -69,15 +69,19 @@ enum class Piece
     b_king
 };
 
-enum class Promotion_piece
+enum class Promotion_piece : int
 {
     queen,
     rook,
     bishop,
-    knight
+    knight,
+    
+    // This value is never saved to a move but used as a placeholder if it
+    // is unset when creating a move.
+    none = -1
 };
 
-enum class Move_type
+enum class Move_type : int
 {
     normal,
     castling,
@@ -85,7 +89,7 @@ enum class Move_type
     en_passant
 };
 
-enum class Castle
+enum class Castle : int
 {
     w_kingside,
     w_queenside,
