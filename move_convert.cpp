@@ -4,7 +4,10 @@
  * String-to-move conversion and vice versa
 */
 
+#include <map>
 #include <string>
+#include "types.h"
+#include "utils.h"
 #include "game.h"
 
 // String coordinates to/from square indices
@@ -35,27 +38,27 @@ unordered_map<Square, std::string> index_to_coord =
 
 // Promotion placeholders to/from binary flags
 
-unordered_map<std::string, int> promo_str_to_bin =
+unordered_map<std::string, Promotion_piece> promo_str_to_bin =
 {
-    {"q", 0b00},
-    {"r", 0b01},
-    {"b", 0b10},
-    {"n", 0b11},
+    {"q", Promotion_piece::queen},
+    {"r", Promotion_piece::rook},
+    {"b", Promotion_piece::bishop},
+    {"n", Promotion_piece::knight},
 };
 
-unordered_map<int, std::string> promo_bin_to_str =
+unordered_map<Promotion_piece, std::string> promo_bin_to_str =
 {
-    {0b00, "q"},
-    {0b01, "r"},
-    {0b10, "b"},
-    {0b11, "n"}
+    {Promotion_piece::queen, "q"},
+    {Promotion_piece::rook, "r"},
+    {Promotion_piece::bishop, "b"},
+    {Promotion_piece::knight, "n"}
 };
 
 
 Move Game::string_to_move(std::string move_str)
 {
 	int str_len = move_str.length();
-	int special_move_flag = 0;
+	Move_type move_type = Move_type::normal;
 	
 	// The input string has an invalid length.
 	if (!(str_len == 4 or str_len == 5))
@@ -78,7 +81,7 @@ Move Game::string_to_move(std::string move_str)
 		return 0;
 
 	Square to_sqr = coord_to_index[to_str];
-	int promo_flag = -1;
+	Promotion_piece promo_piece = Promotion_piece::none;
 
 	if (str_len == 5)
 	{
@@ -93,22 +96,36 @@ Move Game::string_to_move(std::string move_str)
 	}
 
 	Piece piece_moved = piece_on(from_sqr));
-	if (piece_moved == w_king || piece_moved == b_king)
+
+	// Check if this is a castling move.
+	if (piece_moved == Piece::w_king || piece_moved == Piece::b_king)
 	{
-		// Check if this is a castling move.
 		// White kingside castle
 		if (from_sqr == Square::E1 && to_sqr == Square::G1)
-			special_move_flag = 0b01;
+			move_type = Move_type::castling;
 		// White queenside castle
 		else if (from_sqr == Square::E1 && to_sqr == Square::C1)
-			special_move_flag = 0b01;
+			move_type = Move_type::castling;
 		// Black kingside castle
 		else if (from_sqr == Square::E8 && to_sqr == Square::G8)
-			special_move_flag = 0b01;
+			move_type = Move_type::castling;
 		// Black queenside castle
 		else if (from_sqr == Square::E8 && to_sqr == Square::C8)
-			special_move_flag = 0b01;
+			move_type = Move_type::castling;
 	}
+	// Check for en passant and promotion.
+	else if (piece_moved == Piece::w_pawn || piece_moved == Piece::b_pawn)
+	{
+		if (to_sqr == en_passant_square)
+			move_type = Move_type::en_passant;
+		else if (to_sqr >= 56 || to_sqr <= 7)
+			move_type = Move_type::promotion;
+	}
+	// Not a promotion move but a promotion placeholder was included.
+	if (move_type != Move_type::promotion && promo_flag != -1)
+		return 0;
+
+	return create_move(from_sqr, to_sqr, promo_piece, move_type);
 }
 
 std::string Game::move_to_string(Move move)
