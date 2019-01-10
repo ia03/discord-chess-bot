@@ -46,7 +46,13 @@ enum class Square : int
 // 01 for castling
 // 10 for promotion
 // 11 for en passant
-typedef int Move;
+//
+// none is a special case becase the origin square is always different from
+// the destination square, so it is guaranteed to never be a possible move.
+enum class Move : int
+{
+	none
+}
 
 // Used for Zobrist hashing. Hash collisions should occur rarely when using
 // numbers that are 64 bits long.
