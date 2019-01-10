@@ -10,7 +10,7 @@
 #include <vector>
 #include "types.h"
 
-Move move(
+Move create_move(
         Square from,
         Square to,
         Promotion_piece promo_piece,
