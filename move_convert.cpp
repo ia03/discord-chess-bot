@@ -118,6 +118,7 @@ Move Game::string_to_move(std::string move_str)
 	{
 		if (to_sqr == en_passant_square)
 			move_type = Move_type::en_passant;
+		// To 8th or 1st row
 		else if (to_sqr >= 56 || to_sqr <= 7)
 			move_type = Move_type::promotion;
 	}
