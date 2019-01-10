@@ -62,14 +62,14 @@ Move Game::string_to_move(std::string move_str)
 	
 	// The input string has an invalid length.
 	if (!(str_len == 4 or str_len == 5))
-		return 0;
+		return Move::none;
 
 	// First two characters are the "from" square.
 	std::string from_str = move_str.substr(0, 2);
 
 	// Invalid "from" square.
 	if (coord_to_index.find(from_str) == coord_to_index.end())
-		return 0;
+		return Move::none;
 
 	Square from_sqr = coord_to_index[from_str];
 
@@ -78,7 +78,7 @@ Move Game::string_to_move(std::string move_str)
 
 	// Invalid "to" square.
 	if (coord_to_index.find(to_str) == coord_to_index.end())
-		return 0;
+		return Move::none;
 
 	Square to_sqr = coord_to_index[to_str];
 	Promotion_piece promo_piece = Promotion_piece::none;
@@ -90,7 +90,7 @@ Move Game::string_to_move(std::string move_str)
 
 		// Invalid promotion type.
 		if(promo_str_to_bin.find(promo_str) == promo_str_to_bin.end())
-			return 0;
+			return Move::none;
 		
 		promo_flag = promo_str_to_bin[promo_str];
 	}
@@ -123,8 +123,9 @@ Move Game::string_to_move(std::string move_str)
 			move_type = Move_type::promotion;
 	}
 	// Not a promotion move but a promotion placeholder was included.
-	if (move_type != Move_type::promotion && promo_flag != -1)
-		return 0;
+	if (move_type != Move_type::promotion &&
+		promo_flag != Promotion_piece::none)
+		return Move::none;
 
 	return create_move(from_sqr, to_sqr, promo_piece, move_type);
 }
