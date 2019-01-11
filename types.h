@@ -53,7 +53,7 @@ enum class Square : int
 // the destination square, so it is guaranteed to never be a possible move.
 enum class Move : int
 {
-	none
+    none
 }
 
 // Used for Zobrist hashing. Hash collisions should occur rarely when using
