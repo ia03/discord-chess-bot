@@ -64,7 +64,7 @@ Bitstring rand_hash()
     return generator();
 }
 
-std::vector<Move> gen_moves_from_bitboard(Bitboard bitboard)
+std::vector<Move> gen_moves_from_bitboard(Square origin_sq, Bitboard bitboard)
 {
 
 }
