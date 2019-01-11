@@ -34,7 +34,7 @@ Move_type move_type(Move move);
 Bitstring rand_hash();
 
 // Generate a vector of moves using an attack bitboard.
-std::vector<Move> gen_moves_from_bitboard(Bitboard bitboard);
+std::vector<Move> gen_moves_from_bitboard(Square origin_sq, Bitboard bitboard);
 
 
 #endif //DISCORD_CHESS_BOT_UTILS_H
