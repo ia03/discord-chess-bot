@@ -10,6 +10,7 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <cstdint>
 
 
 // 64-bit bitboards will be used to represent the 64 squares of a chessboard
