@@ -1,6 +1,6 @@
 /*
  * Ibrahim Ahmed
- * January 6, 2018
+ * January 6, 2019
  * Type definitions
 */
 
@@ -10,6 +10,7 @@
 #include <map>
 #include <vector>
 #include <string>
+
 
 // 64-bit bitboards will be used to represent the 64 squares of a chessboard
 // as per little-endian rank-file mapping.
@@ -31,7 +32,7 @@ enum class Square : int
 
 // A move needs exactly 2 bytes (16 bits).
 // Bits 0-5: position of the origin square
-// Bits 6-11: position of the target square
+// Bits 6-11: position of the destination square
 // Bits 12-13 promotion piece flag
 // Bits 14-15 special move flag
 //

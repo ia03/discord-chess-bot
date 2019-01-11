@@ -1,6 +1,6 @@
 /*
  * Ibrahim Ahmed
- * January 7, 2018
+ * January 7, 2019
  * String-to-move conversion and vice versa
 */
 
@@ -9,6 +9,7 @@
 #include "types.h"
 #include "utils.h"
 #include "game.h"
+
 
 // String coordinates to/from square indices
 
