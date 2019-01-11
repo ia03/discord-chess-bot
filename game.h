@@ -127,7 +127,7 @@ private:
     int minimax(int depth, int alpha, int beta, bool is_maximizing);
 
     // Uses piece-square tables to evaluate a square.
-    int eval_piece(Square square);
+    int eval_square(Square square);
 
     // Uses piece-square tables to evaluate the board in its current state.
     int evaluate();

@@ -4,12 +4,13 @@
  * Evaluation functions
 */
 
+#include "types.h"
 #include "game.h"
 
 
 // Piece-square tables - from http://www.chessbin.com/post/Piece-Square-Table.aspx
 
-int pawn_pst [64] =
+const int pawn_pst [64] =
 {
     100, 100, 100, 100, 100, 100, 100, 100,
     150, 150, 150, 150, 150, 150, 150, 150,
@@ -21,7 +22,7 @@ int pawn_pst [64] =
     100, 100, 100, 100, 100, 100, 100, 100
 };
 
-int knight_pst [64] =
+const int knight_pst [64] =
 {
     250, 260, 270, 270, 270, 270, 260, 250,
     260, 280, 300, 300, 300, 300, 280, 260,
@@ -33,7 +34,7 @@ int knight_pst [64] =
     250, 260, 280, 270, 270, 280, 260, 250
 };
 
-int bishop_pst [64] =
+const int bishop_pst [64] =
 {
     305, 315, 315, 315, 315, 315, 315, 305,
     315, 325, 325, 325, 325, 325, 325, 315,
@@ -45,7 +46,7 @@ int bishop_pst [64] =
     305, 315, 285, 315, 315, 285, 315, 305
 };
 
-int rook_pst [64] =
+const int rook_pst [64] =
 {
     500, 500, 500, 500, 500, 500, 500, 500,
     500, 500, 500, 500, 500, 500, 500, 500,
@@ -57,7 +58,7 @@ int rook_pst [64] =
     500, 500, 500, 500, 500, 500, 500, 500
 };
 
-int queen_pst [64] =
+const int queen_pst [64] =
 {
     900, 900, 900, 900, 900, 900, 900, 900,
     900, 900, 900, 900, 900, 900, 900, 900,
@@ -69,7 +70,7 @@ int queen_pst [64] =
     900, 900, 900, 900, 900, 900, 900, 900
 };
 
-int king_pst [64] =
+const int king_pst [64] =
 {
     -30, -40, -40, -50, -50, -40, -40, -30,
     -30, -40, -40, -50, -50, -40, -40, -30,
@@ -80,3 +81,21 @@ int king_pst [64] =
      20,   20,   0,   0,   0,   0,  20,  20,
      20,   30,  10,   0,   0,  10,  30,  20
 };
+
+int Game::evaluate()
+{
+	int evaluation = 0;
+	
+	for (Square square = 0; square < 64; square++)
+	{
+		evaluation += eval_square(square);
+	}
+	
+	return evaluation;
+}
+
+int Game::eval_square(Square square)
+{
+	
+}
+
