@@ -10,6 +10,18 @@
 #include <vector>
 #include "types.h"
 
+// Set the origin square.
+Move set_origin_sq(Move move, Square origin_sq);
+
+// Set the destination square.
+Move set_dest_sq(Move move, Square dest_sq);
+
+// Set the promotion piece type.
+Move set_promo_piece(Move move, Promotion_piece promo_piece);
+
+// Set the move type.
+Move set_move_type(Move move, Move_type move_type);
+
 // Create a move.
 Move create_move(
         Square origin_sq,
@@ -28,7 +40,7 @@ Square extract_dest_sq(Move move);
 Promotion_piece extract_promo_piece(Move move);
 
 // Extract the move type.
-Move_type move_type(Move move);
+Move_type extract_move_type(Move move);
 
 // Generate a random bitstring.
 Bitstring rand_hash();
