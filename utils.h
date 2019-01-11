@@ -17,16 +17,22 @@ Move create_move(
         Move_type move_type
 );
 
-Square from_sq(Move move);
+// Extract the destination square.
+Square extract_dest_sq(Move move);
 
-Square to_sq(Move move);
+// Extract the origin square.
+Square extract_origin_sq(Move move);
 
-Promotion_piece promo_piece(Move move);
+// Extract the promotion piece type.
+Promotion_piece extract_promo_piece(Move move);
 
+// Extract the move type.
 Move_type move_type(Move move);
 
+// Generate a random bitstring.
 Bitstring rand_hash();
 
+// Generate a vector of moves using an attack bitboard.
 std::vector<Move> gen_moves_from_bitboard(Bitboard bitboard);
 
 

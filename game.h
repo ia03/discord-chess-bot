@@ -156,7 +156,8 @@ public:
     // Generates and returns a move using a string. The first two characters
     // indicate the starting position, the two characters after that indicate
     // the ending position. The fifth optional character indicates the
-    // promotion piece. Examples: "b5f8" or "f7F8q"
+    // promotion piece. Returns Move::none if the string is invalid.
+    // Examples: "b5f8" or "f7F8q"
     Move string_to_move(std::string string);
 
     // Converts a move to its string representation.
