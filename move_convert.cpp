@@ -13,7 +13,7 @@
 
 // String coordinates to/from square indices
 
-unordered_map<std::string, Square> coord_to_index =
+const unordered_map<std::string, Square> coord_to_index =
         {
                 {"a8", 56}, {"b8", 57}, {"c8", 58}, {"d8", 59}, {"e8", 60}, {"f8", 61}, {"g8", 62}, {"h8", 63},
                 {"a7", 48}, {"b7", 49}, {"c7", 50}, {"d7", 51}, {"e7", 52}, {"f7", 53}, {"g7", 54}, {"h7", 55},
@@ -25,7 +25,7 @@ unordered_map<std::string, Square> coord_to_index =
                 {"a1",  0}, {"b1",  1}, {"c1",  2}, {"d1",  3}, {"e1",  4}, {"f1",  5}, {"g1",  6}, {"h1",  7}
         };
 
-unordered_map<Square, std::string> index_to_coord =
+const unordered_map<Square, std::string> index_to_coord =
         {
                 {56, "a8"}, {57, "b8"}, {58, "c8"}, {59, "d8"}, {60, "e8"}, {61, "f8"}, {62, "g8"}, {63, "h8"},
                 {48, "a7"}, {49, "b7"}, {50, "c7"}, {51, "d7"}, {52, "e7"}, {53, "f7"}, {54, "g7"}, {55, "h7"},
@@ -39,7 +39,7 @@ unordered_map<Square, std::string> index_to_coord =
 
 // Promotion placeholders to/from binary flags
 
-unordered_map<std::string, Promotion_piece> promo_str_to_bin =
+const unordered_map<std::string, Promotion_piece> promo_str_to_bin =
         {
                 {"q", Promotion_piece::queen},
                 {"r", Promotion_piece::rook},
@@ -47,7 +47,7 @@ unordered_map<std::string, Promotion_piece> promo_str_to_bin =
                 {"n", Promotion_piece::knight},
         };
 
-unordered_map<Promotion_piece, std::string> promo_bin_to_str =
+const unordered_map<Promotion_piece, std::string> promo_bin_to_str =
         {
                 {Promotion_piece::queen, "q"},
                 {Promotion_piece::rook, "r"},
