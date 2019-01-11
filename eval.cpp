@@ -4,6 +4,7 @@
  * Evaluation functions
 */
 
+#include "types.h"
 #include "game.h"
 
 
@@ -80,3 +81,21 @@ const int king_pst [64] =
      20,   20,   0,   0,   0,   0,  20,  20,
      20,   30,  10,   0,   0,  10,  30,  20
 };
+
+int Game::evaluate()
+{
+	int evaluation = 0;
+	
+	for (Square square = 0; square < 64; square++)
+	{
+		evaluation += eval_square(square);
+	}
+	
+	return evaluation;
+}
+
+int Game::eval_square(Square square)
+{
+	
+}
+
