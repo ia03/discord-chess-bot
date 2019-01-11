@@ -95,7 +95,7 @@ std::vector<Move> gen_moves_from_bitboard(Square origin_sq, Bitboard bitboard)
     {
         if (bitboard % 2 == 1)
         {
-            moves.push_back(set_dest_sq(position));
+            moves.push_back(set_dest_sq(template_move, position));
         }
         bitboard >>= 1;
     }
