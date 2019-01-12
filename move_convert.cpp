@@ -1,9 +1,3 @@
-/*
- * Ibrahim Ahmed
- * January 7, 2019
- * String-to-move conversion and vice versa
-*/
-
 #include <map>
 #include <string>
 #include "types.h"

@@ -1,9 +1,3 @@
-/*
- * Ibrahim Ahmed
- * January 10, 2019
- * Utility functions' definitions
-*/
-
 #include <vector>
 #include <random>
 #include "types.h"

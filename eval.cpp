@@ -1,9 +1,3 @@
-/*
- * Ibrahim Ahmed
- * January 7, 2019
- * Evaluation functions
-*/
-
 #include "types.h"
 #include "game.h"
 
@@ -135,7 +129,5 @@ int Game::eval_square(Square square)
     	return piece_square_table[square];
     else
     	return -piece_square_table[square];
-
-
 }
 

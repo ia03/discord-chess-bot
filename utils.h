@@ -1,9 +1,3 @@
-/*
- * Ibrahim Ahmed
- * January 6, 2019
- * Utility functions' declarations
-*/
-
 #ifndef DISCORD_CHESS_BOT_UTILS_H
 #define DISCORD_CHESS_BOT_UTILS_H
 

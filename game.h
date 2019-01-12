@@ -1,9 +1,3 @@
-/*
- * Ibrahim Ahmed
- * January 7, 2019
- * Game class definition
-*/
-
 #ifndef DISCORD_CHESS_BOT_GAME_H
 #define DISCORD_CHESS_BOT_GAME_H
 #include <vector>
@@ -20,6 +14,8 @@ private:
 
     // Zobrist hash for the piece positions only
     Bitstring position_hash;
+
+
 
     // Bitboards - White
     Bitboard w_pawn_bitboard;
