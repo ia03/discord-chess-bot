@@ -14,7 +14,7 @@
 
 // 64-bit bitboards will be used to represent the 64 squares of a chessboard
 // as per little-endian rank-file mapping.
-typedef unsigned long long int Bitboard;
+typedef unsigned long long Bitboard;
 
 // A position on a bitboard can be represented using only 6 bits, storing
 // numbers from 0 to 63.
@@ -57,7 +57,7 @@ enum class Move : int
 
 // Used for Zobrist hashing. Hash collisions should occur rarely when using
 // numbers that are 64 bits long.
-typedef unsigned long long int Bitstring;
+typedef unsigned long long Bitstring;
 
 enum class Piece
 {

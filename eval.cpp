@@ -85,7 +85,8 @@ const int king_pst [64] =
 int Game::evaluate()
 {
 	int evaluation = 0;
-	
+
+	// Add up the evaluation of all the pieces.
 	for (Square square = 0; square < 64; square++)
 	{
 		evaluation += eval_square(square);
@@ -96,6 +97,45 @@ int Game::evaluate()
 
 int Game::eval_square(Square square)
 {
-	
+	Piece piece = piece_on(square);
+	Color color = color_of(square);
+
+	switch(piece)
+    {
+    	case Piece::none:
+    		return 0;
+    	case Piece::w_pawn:
+    	case Piece::b_pawn:
+    		int (&piece_square_table)[64] = pawn_pst;
+    		break;
+    	case Piece::w_knight:
+    	case Piece::b_knight:
+			int (&piece_square_table)[64] = knight_pst;
+			break;
+    	case Piece::w_bishop:
+    	case Piece::b_knight:
+			int (&piece_square_table)[64] = bishop_pst;
+			break;
+    	case Piece::w_rook:
+    	case Piece::b_rook:
+			int (&piece_square_table)[64] = rook_pst;
+			break;
+    	case Piece::w_queen:
+    	case Piece::b_queen:
+			int (&piece_square_table)[64] = queen_pst;
+			break;
+    	case Piece::w_king:
+    	case Piece::b_king:
+			int (&piece_square_table)[64] = king_pst;
+			break;
+    }
+
+    // Black pieces have a negative evaluation.
+    if (color == Color::white)
+    	return piece_square_table[square];
+    else
+    	return -piece_square_table[square];
+
+
 }
 
