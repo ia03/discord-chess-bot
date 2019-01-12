@@ -21,14 +21,14 @@ private:
     Bitstring w_bishop_bitstrings [64];
     Bitstring w_rook_bitstrings [64];
     Bitstring w_queen_bitstrings [64];
-    Bistring w_king_bitstrings [64];
+    Bitstring w_king_bitstrings [64];
 
     Bitstring b_pawn_bitstrings [64];
     Bitstring b_knight_bitstrings [64];
-    Bitstring w_bishop_bitstrings [64];
+    Bitstring b_bishop_bitstrings [64];
     Bitstring b_rook_bitstrings [64];
     Bitstring b_queen_bitstrings [64];
-    Bistring b_king_bitstrings [64];
+    Bitstring b_king_bitstrings [64];
 
     // Bitstrings for the side to move
     Bitstring white_bitstring;
