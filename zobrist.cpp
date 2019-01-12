@@ -5,9 +5,11 @@
 
 void Game::init_zobrist()
 {
+    // Initialize player to move bitstrings
     white_bitstring = rand_hash();
     black_bitstring = rand_hash();
 
+    // Initialize bitstrings for each square
     for (Square i = 0; i < 64; i++)
     {
         w_pawn_bitstrings[i] = rand_hash();
@@ -20,6 +22,7 @@ void Game::init_zobrist()
         en_passant_bitstrings[i] = rand_hash();
     }
 
+    // Initialize castling rights bitstrings
     for (int i = 0; i < 16; i++)
         castling_bitstrings[i] = rand_hash();
 }

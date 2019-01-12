@@ -1,10 +1,6 @@
 #ifndef DISCORD_CHESS_BOT_TYPES_H
 #define DISCORD_CHESS_BOT_TYPES_H
 
-#include <map>
-#include <vector>
-#include <string>
-
 
 // 64-bit bitboards will be used to represent the 64 squares of a chessboard
 // as per little-endian rank-file mapping.
