@@ -15,7 +15,31 @@ private:
     // Zobrist hash for the piece positions only
     Bitstring position_hash;
 
+    // Bitstrings for each square/piece combination
+    Bitstring w_pawn_bitstrings [64];
+    Bitstring w_knight_bitstrings [64];
+    Bitstring w_bishop_bitstrings [64];
+    Bitstring w_rook_bitstrings [64];
+    Bitstring w_queen_bitstrings [64];
+    Bistring w_king_bitstrings [64];
 
+    Bitstring b_pawn_bitstrings [64];
+    Bitstring b_knight_bitstrings [64];
+    Bitstring w_bishop_bitstrings [64];
+    Bitstring b_rook_bitstrings [64];
+    Bitstring b_queen_bitstrings [64];
+    Bistring b_king_bitstrings [64];
+
+    // Bitstrings for the side to move
+    Bitstring white_bitstring;
+    Bitstring black_bitstring;
+
+    // Bitstrings for each possible combination of castling rights.
+    // 2 possible values ^ 4 castling rights = 16 combinations
+    Bitstring castling_bitstrings [16];
+
+    // Bitstrings for the en passant squares.
+    Bitstring en_passant_bitstrings [64];
 
     // Bitboards - White
     Bitboard w_pawn_bitboard;
@@ -61,7 +85,7 @@ private:
     // Bits that are turned on represent castles that have not yet been
     // permanently invalidated. This is initially set to 15 such that all 4
     // bits are on.
-    uint8_t castling_rights;
+    int castling_rights;
 
     Color turn;
 
@@ -70,6 +94,9 @@ private:
 
     // Initializes the Zobrist hash for the piece positions.
     void init_hash();
+
+    // Returns the bitstring for a square.
+    Bitstring hash_square(Square square);
 
     // Ends the current turn.
     void end_turn();

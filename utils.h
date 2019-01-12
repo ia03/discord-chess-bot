@@ -4,6 +4,7 @@
 #include <vector>
 #include "types.h"
 
+
 // Set the origin square.
 Move set_origin_sq(Move move, Square origin_sq);
 

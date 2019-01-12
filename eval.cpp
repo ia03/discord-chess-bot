@@ -76,6 +76,19 @@ const int king_pst [64] =
      20,   30,  10,   0,   0,  10,  30,  20
 };
 
+// Used to flip the board for black pieces.
+const int flip[64] =
+{
+	56,  57,  58,  59,  60,  61,  62,  63,
+	48,  49,  50,  51,  52,  53,  54,  55,
+	40,  41,  42,  43,  44,  45,  46,  47,
+	32,  33,  34,  35,  36,  37,  38,  39,
+	24,  25,  26,  27,  28,  29,  30,  31,
+	16,  17,  18,  19,  20,  21,  22,  23,
+	8,   9,  10,  11,  12,  13,  14,  15,
+	0,   1,   2,   3,   4,   5,   6,   7
+};
+
 int Game::evaluate()
 {
 	int evaluation = 0;
@@ -94,7 +107,7 @@ int Game::eval_square(Square square)
 	Piece piece = piece_on(square);
 	Color color = color_of(square);
 
-	switch(piece)
+	switch (piece)
     {
     	case Piece::none:
     		return 0;
@@ -124,10 +137,11 @@ int Game::eval_square(Square square)
 			break;
     }
 
-    // Black pieces have a negative evaluation.
+    // Black pieces have a negated evaluation, and the board should be
+    // flipped when evaluating them.
     if (color == Color::white)
     	return piece_square_table[square];
     else
-    	return -piece_square_table[square];
+    	return -piece_square_table[flip[square]];
 }
 
