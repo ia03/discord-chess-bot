@@ -1,0 +1,4 @@
+#!/bin/bash
+
+swig -Wall -python -c++ chessbot.i
+g++ -std=c++11 -fPIC -Wall -Wextra -shared chessbot_wrap.cxx -o _chessbot.so -L. -I/usr/include/python3.5/
