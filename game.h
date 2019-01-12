@@ -85,7 +85,7 @@ private:
     // Bits that are turned on represent castles that have not yet been
     // permanently invalidated. This is initially set to 15 such that all 4
     // bits are on.
-    int castling_rights;
+    Castling_right castling_rights;
 
     Color turn;
 
@@ -103,9 +103,6 @@ private:
 
     // Generates the Zobrist key for the current position.
     Bitstring hash();
-
-    // Invalidates a castling right.
-    void invalidate_castle(Castle castle);
 
     // Adds a piece to the board.
     void add_piece(Piece piece, Square square);
@@ -158,6 +155,9 @@ private:
     // Checks if there are not enough pieces on the board for a checkmate
     // to be possible.
     bool insufficient_material();
+
+    // Checks if the specified square is under attack by a specified player.
+    bool square_attacked(Square square, Color attacker);
 
     // Checks if the specified player's king is in check.
     bool king_in_check(Color color);

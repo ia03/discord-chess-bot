@@ -57,14 +57,18 @@ Move Game::string_to_move(std::string move_str)
 
     // The input string has an invalid length.
     if (!(str_len == 4 || str_len == 5))
+    {
         return Move::none;
+    }
 
     // First two characters are the origin square.
     std::string origin_str = move_str.substr(0, 2);
 
     // Invalid origin square.
     if (coord_to_index.find(origin_str) == coord_to_index.end())
+    {
         return Move::none;
+    }
 
     Square origin_sq = coord_to_index[origin_str];
 
@@ -73,7 +77,9 @@ Move Game::string_to_move(std::string move_str)
 
     // Invalid destination square.
     if (coord_to_index.find(destination_str) == coord_to_index.end())
+    {
         return Move::none;
+    }
 
     Square dest_sq = coord_to_index[destination_str];
 
@@ -86,7 +92,9 @@ Move Game::string_to_move(std::string move_str)
 
         // Invalid promotion type.
         if(promo_str_to_bin.find(promo_str) == promo_str_to_bin.end())
+        {
             return Move::none;
+        }
 
         promo_piece = promo_str_to_bin[promo_str];
     }
@@ -98,16 +106,24 @@ Move Game::string_to_move(std::string move_str)
     {
         // White kingside castle
         if (origin_sq == Square::E1 && dest_sq == Square::G1)
+        {
             move_type = Move_type::castling;
+        }
         // White queenside castle
         else if (origin_sq == Square::E1 && dest_sq == Square::C1)
+        {
             move_type = Move_type::castling;
+        }
         // Black kingside castle
         else if (origin_sq == Square::E8 && dest_sq == Square::G8)
+        {
             move_type = Move_type::castling;
+        }
         // Black queenside castle
         else if (origin_sq == Square::E8 && dest_sq == Square::C8)
+        {
             move_type = Move_type::castling;
+        }
     }
 
     // Check for en passant and promotion.
@@ -115,16 +131,29 @@ Move Game::string_to_move(std::string move_str)
     {
         // To en passant square - en passant.
         if (dest_sq == en_passant_square)
+        {
             move_type = Move_type::en_passant;
+        }
         // To 8th or 1st row - promotion.
         else if (dest_sq >= 56 || dest_sq <= 7)
+        {
             move_type = Move_type::promotion;
+        }
     }
 
     // Not a promotion move but a promotion placeholder was included.
     if (move_type != Move_type::promotion &&
-        promo_piece != Promotion_piece::none)
+        str_len == 5)
+    {
         return Move::none;
+    }
+
+    // Is a promotion move but a promotion placeholder was not included.
+    if (move_type == Move_type::promotion &&
+        str_len == 4)
+    {
+        return Move::none;
+    }
 
     return create_move(origin_sq, dest_sq, promo_piece, move_type);
 }

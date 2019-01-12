@@ -24,7 +24,9 @@ void Game::init_zobrist()
 
     // Initialize castling rights bitstrings
     for (int i = 0; i < 16; i++)
+    {
         castling_bitstrings[i] = rand_hash();
+    }
 }
 
 void Game::init_hash()
@@ -39,51 +41,78 @@ void Game::init_hash()
 
 Bitstring Game::hash_square(Square square)
 {
+    Bitstring* board_bitstrings = nullptr;
+
     switch (piece_on(square))
     {
         case Piece::none:
             return 0;
 
         case Piece::w_pawn:
-            return w_pawn_bitstrings[square];
+            board_bitstrings = w_pawn_bitstrings;
+            break;
         case Piece::w_knight:
-            return w_knight_bitstrings[square];
+            board_bitstrings = w_knight_bitstrings;
+            break;
         case Piece::w_bishop:
-            return w_bishop_bitstrings[square];
+            board_bitstrings = w_bishop_bitstrings;
+            break;
         case Piece::w_rook:
-            return w_rook_bitstrings[square];
+            board_bitstrings = w_rook_bitstrings;
+            break;
         case Piece::w_queen:
-            return w_queen_bitstrings[square];
+            board_bitstrings = w_queen_bitstrings;
+            break;
         case Piece::w_king:
-            return w_king_bitstrings[square];
+            board_bitstrings = w_king_bitstrings;
+            break;
 
         case Piece::b_pawn:
-            return b_pawn_bitstrings[square];
+            board_bitstrings = b_pawn_bitstrings;
+            break;
         case Piece::b_knight:
-            return b_knight_bitstrings[square];
+            board_bitstrings = b_knight_bitstrings;
+            break;
         case Piece::b_bishop:
-            return b_bishop_bitstrings[square];
+            board_bitstrings = b_bishop_bitstrings;
+            break;
         case Piece::b_rook:
-            return b_rook_bitstrings[square];
+            board_bitstrings = b_rook_bitstrings;
+            break;
         case Piece::b_queen:
-            return b_queen_bitstrings[square];
+            board_bitstrings = b_queen_bitstrings;
+            break;
         case Piece::b_king:
-            return b_king_bitstrings[square];
+            board_bitstrings = b_king_bitstrings;
+            break;
     }
+
+    return board_bitstrings[square];
 }
 
 Bitstring Game::hash()
 {
-    Bitstring hash_result;
+    // The position hash is already calculated.
+    // XOR it with the turn, castling rights, and en passant square bitstrings
+    // to get the final hash.
+    Bitstring hash_result = position_hash;
+
     if (turn == Color::white)
-        hash_result = white_bitstring;
+    {
+        hash_result ^= white_bitstring;
+    }
     else
-        hash_result = black_bitstring;
+    {
+        hash_result ^= black_bitstring;
+    }
 
     hash_result ^= castling_bitstrings[castling_rights];
 
-    if (en_passant_square != -1)
+
+    if (en_passant_square != Square::none)
+    {
         hash_result ^= en_passant_bitstrings[en_passant_square];
+    }
 
     return hash_result;
 }

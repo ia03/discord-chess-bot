@@ -106,6 +106,7 @@ int Game::eval_square(Square square)
 {
 	Piece piece = piece_on(square);
 	Color color = color_of(square);
+	int* piece_square_table = nullptr;
 
 	switch (piece)
     {
@@ -113,35 +114,39 @@ int Game::eval_square(Square square)
     		return 0;
     	case Piece::w_pawn:
     	case Piece::b_pawn:
-    		int (&piece_square_table)[64] = pawn_pst;
+    		piece_square_table = pawn_pst;
     		break;
     	case Piece::w_knight:
     	case Piece::b_knight:
-			int (&piece_square_table)[64] = knight_pst;
+			piece_square_table = knight_pst;
 			break;
     	case Piece::w_bishop:
     	case Piece::b_knight:
-			int (&piece_square_table)[64] = bishop_pst;
+			piece_square_table = bishop_pst;
 			break;
     	case Piece::w_rook:
     	case Piece::b_rook:
-			int (&piece_square_table)[64] = rook_pst;
+			piece_square_table = rook_pst;
 			break;
     	case Piece::w_queen:
     	case Piece::b_queen:
-			int (&piece_square_table)[64] = queen_pst;
+			piece_square_table = queen_pst;
 			break;
     	case Piece::w_king:
     	case Piece::b_king:
-			int (&piece_square_table)[64] = king_pst;
+			piece_square_table = king_pst;
 			break;
     }
 
     // Black pieces have a negated evaluation, and the board should be
     // flipped when evaluating them.
     if (color == Color::white)
-    	return piece_square_table[square];
+	{
+		return piece_square_table[square];
+	}
     else
-    	return -piece_square_table[flip[square]];
+	{
+		return -piece_square_table[flip[square]];
+	}
 }
 

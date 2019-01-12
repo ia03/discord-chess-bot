@@ -17,10 +17,12 @@ enum class Square : int
     A5, B5, C5, D5, E5, F5, G5, H5,
     A6, B6, C6, D6, E6, F6, G6, H6,
     A7, B7, C7, D7, E7, F7, G7, H7,
-    A8, B8, C8, D8, E8, F8, G8, H8
+    A8, B8, C8, D8, E8, F8, G8, H8,
+
+    none = -1
 };
 
-// A move needs exactly 2 bytes (16 bits).
+// A move needs exactly 2 bytes (16 bits), the minimum size an int can be.
 // Bits 0-5: position of the origin square
 // Bits 6-11: position of the destination square
 // Bits 12-13 promotion piece flag
@@ -68,30 +70,28 @@ enum class Piece
 
 enum class Promotion_piece : int
 {
-    queen,
-    rook,
-    bishop,
-    knight,
-    
-    // This value is never saved to a move but used as a placeholder if it
-    // is unset when creating a move.
-    none = -1
+    none,  // Default is queen.
+    queen  = 0,
+    rook   = 1 << 12,
+    bishop = 2 << 12,
+    knight = 3 << 12
 };
 
 enum class Move_type : int
 {
     normal,
-    castling,
-    promotion,
-    en_passant
+    castling   = 1 << 14,
+    promotion  = 2 << 14,
+    en_passant = 3 << 14
 };
 
-enum class Castle : int
+enum class Castling_right : int
 {
+    no_castling,
     w_kingside,
-    w_queenside,
-    b_kingside,
-    b_queenside
+    w_queenside = w_kingside << 1,
+    b_kingside  = w_kingside << 2,
+    b_queenside = w_kingside << 3
 };
 
 enum class Color
@@ -122,11 +122,11 @@ struct Ply_data
 
     // Before the move occurred
     int castling_rights;
-    Square en_passant_sq;
+    Square en_passant_square;
     int rule50;
 
-    // Zobrist key - used to detect threefold repetition
-    Bitstring key;
+    // Zobrist hash - used to detect threefold repetition
+    Bitstring hash;
 };
 
 #endif //DISCORD_CHESS_BOT_TYPES_H

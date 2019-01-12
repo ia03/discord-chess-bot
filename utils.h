@@ -5,19 +5,23 @@
 #include "types.h"
 
 
-// Set the origin square.
+// Returns the opposite color. Returns none if the input is not white or
+// black.
+Color reverse_color(Color color);
+
+// Sets the origin square.
 Move set_origin_sq(Move move, Square origin_sq);
 
-// Set the destination square.
+// Sets the destination square.
 Move set_dest_sq(Move move, Square dest_sq);
 
-// Set the promotion piece type.
+// Sets the promotion piece type.
 Move set_promo_piece(Move move, Promotion_piece promo_piece);
 
-// Set the move type.
+// Sets the move type.
 Move set_move_type(Move move, Move_type move_type);
 
-// Create a move.
+// Creates a move.
 Move create_move(
         Square origin_sq,
         Square dest_sq,
@@ -25,23 +29,29 @@ Move create_move(
         Move_type move_type
 );
 
-// Extract the origin square.
+// Extracts the origin square.
 Square extract_origin_sq(Move move);
 
-// Extract the destination square.
+// Extracts the destination square.
 Square extract_dest_sq(Move move);
 
-// Extract the promotion piece type.
+// Extracts the promotion piece type.
 Promotion_piece extract_promo_piece(Move move);
 
-// Extract the move type.
+// Extracts the move type.
 Move_type extract_move_type(Move move);
 
-// Generate a random bitstring.
+// Converts a promotion piece to a piece.
+Piece promo_piece_to_piece(Promotion_piece promo_piece, Color color);
+
+// Generates a random bitstring.
 Bitstring rand_hash();
 
-// Generate a vector of moves using an attack bitboard.
-std::vector<Move> gen_moves_from_bitboard(Square origin_sq, Bitboard bitboard);
+// Generates a vector of moves using an attack bitboard.
+std::vector<Move> gen_moves_from_bitboard(
+        Square origin_sq,
+        Bitboard bitboard
+);
 
 
 #endif //DISCORD_CHESS_BOT_UTILS_H
