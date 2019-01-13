@@ -85,71 +85,71 @@ Move_type extract_move_type(Move move)
 }
 
 void find_enemy_pawn_ep(
-		Piece &enemy_pawn_type,
-		Square &enemy_pawn_square,
-		Square dest_sq,
-		Color turn
+        Piece &enemy_pawn_type,
+        Square &enemy_pawn_square,
+        Square dest_sq,
+        Color turn
 )
 {
-	// If this is White's move, the captured pawn will be 1 square
-	// south of the destination square. If this is Black's move, the
-	// captured pawn will be 1 square north of the destination square.
-	if (turn == Color::white)
-	{
-		enemy_pawn_type = Piece::b_pawn;
-		enemy_pawn_square = (Square)((int)dest_sq - 8);
-	}
-	else
-	{
-		enemy_pawn_type = Piece::w_pawn;
-		enemy_pawn_square = (Square)((int)dest_sq + 8);
-	}
+    // If this is White's move, the captured pawn will be 1 square
+    // south of the destination square. If this is Black's move, the
+    // captured pawn will be 1 square north of the destination square.
+    if (turn == Color::white)
+    {
+        enemy_pawn_type = Piece::b_pawn;
+        enemy_pawn_square = (Square)((int)dest_sq - 8);
+    }
+    else
+    {
+        enemy_pawn_type = Piece::w_pawn;
+        enemy_pawn_square = (Square)((int)dest_sq + 8);
+    }
 }
 
 void castle_rook_squares(
-		Piece &rook_type,
-		Square &rook_origin_sq,
-		Square &rook_dest_sq,
-		Square king_origin_sq,
-		Square king_dest_sq
+        Piece &rook_type,
+        Square &rook_origin_sq,
+        Square &rook_dest_sq,
+        Square king_origin_sq,
+        Square king_dest_sq
 )
 {
-	// White
-	if (king_origin_sq == Square::E1)
-	{
-		rook_type = Piece::w_rook;
-				
-		// Kingside
-		if (king_dest_sq == Square::G1)
-		{
-			rook_origin_sq = Square::H1;
-			rook_dest_sq = Square::F1;
-		}
-		// Queenside
-		else
-		{
-			rook_origin_sq = Square::A1;
-			rook_dest_sq = Square::D1;
-		}
-	}
-	// Black
-	else
-	{
-		rook_type = Piece::b_rook;
-		
-		// Kingside
-		if (king_dest_sq == Square::G8)
-		{
-			rook_origin_sq = Square::H8;
-			rook_dest_sq = Square::F8;
-		}
-		// Queenside
-		else
-		{
-			rook_origin_sq = Square::A8;
-			rook_dest_sq = Square::D8;
-		}
-	}
+    // White
+    if (king_origin_sq == Square::E1)
+    {
+        rook_type = Piece::w_rook;
+                
+        // Kingside
+        if (king_dest_sq == Square::G1)
+        {
+            rook_origin_sq = Square::H1;
+            rook_dest_sq = Square::F1;
+        }
+        // Queenside
+        else
+        {
+            rook_origin_sq = Square::A1;
+            rook_dest_sq = Square::D1;
+        }
+    }
+    // Black
+    else
+    {
+        rook_type = Piece::b_rook;
+        
+        // Kingside
+        if (king_dest_sq == Square::G8)
+        {
+            rook_origin_sq = Square::H8;
+            rook_dest_sq = Square::F8;
+        }
+        // Queenside
+        else
+        {
+            rook_origin_sq = Square::A8;
+            rook_dest_sq = Square::D8;
+        }
+    }
 }
 
 Piece promo_piece_to_piece(Promotion_piece promo_piece, Color color)
@@ -182,7 +182,7 @@ Piece promo_piece_to_piece(Promotion_piece promo_piece, Color color)
                 return Piece::b_knight;
         }
     }
-	return Piece::none;
+    return Piece::none;
 }
 
 Bitstring rand_hash()

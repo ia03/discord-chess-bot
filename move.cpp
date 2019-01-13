@@ -5,7 +5,7 @@
 
 void Game::end_turn()
 {
-	turn = reverse_color(turn);
+    turn = reverse_color(turn);
 }
 
 void Game::update_castling_rights(Square origin_sq, Square dest_sq)
@@ -47,38 +47,38 @@ void Game::update_castling_rights(Square origin_sq, Square dest_sq)
 
 void Game::invalidate_w_kingside_castling()
 {
-	castling_rights = (Castling_right)((int)castling_rights &
-								      ~(int)Castling_right::w_kingside);
+    castling_rights = (Castling_right)((int)castling_rights &
+                                      ~(int)Castling_right::w_kingside);
 }
 
 void Game::invalidate_w_queenside_castling()
 {
-	castling_rights = (Castling_right)((int)castling_rights &
-									  ~(int)Castling_right::w_queenside);
+    castling_rights = (Castling_right)((int)castling_rights &
+                                      ~(int)Castling_right::w_queenside);
 }
 
 void Game::invalidate_white_castling()
 {
-	castling_rights = (Castling_right)((int)castling_rights &
-									  ~(int)Castling_right::white);
+    castling_rights = (Castling_right)((int)castling_rights &
+                                      ~(int)Castling_right::white);
 }
 
 void Game::invalidate_b_kingside_castling()
 {
-	castling_rights = (Castling_right)((int)castling_rights &
-								      ~(int)Castling_right::b_kingside);
+    castling_rights = (Castling_right)((int)castling_rights &
+                                      ~(int)Castling_right::b_kingside);
 }
 
 void Game::invalidate_b_queenside_castling()
 {
-	castling_rights = (Castling_right)((int)castling_rights &
-									  ~(int)Castling_right::b_queenside);
+    castling_rights = (Castling_right)((int)castling_rights &
+                                      ~(int)Castling_right::b_queenside);
 }
 
 void Game::invalidate_black_castling()
 {
-	castling_rights = (Castling_right)((int)castling_rights &
-									  ~(int)Castling_right::black);
+    castling_rights = (Castling_right)((int)castling_rights &
+                                      ~(int)Castling_right::black);
 }
 
 bool Game::make_move(Move move)
@@ -142,9 +142,9 @@ bool Game::make_move(Move move)
 
             Piece rook_type;
 
-			// Set the rook piece type and origin and destination squares.
+            // Set the rook piece type and origin and destination squares.
             castle_rook_squares(rook_type, rook_origin_sq, rook_dest_sq,
-								origin_sq, dest_sq);
+                                origin_sq, dest_sq);
 
             remove_piece(moved_piece, origin_sq);
             add_piece(moved_piece, dest_sq);
@@ -175,12 +175,12 @@ bool Game::make_move(Move move)
             Piece enemy_pawn;
 
             find_enemy_pawn_ep(
-					enemy_pawn,
-					enemy_pawn_sq,
-					dest_sq,
-					turn
-			);
-			
+                    enemy_pawn,
+                    enemy_pawn_sq,
+                    dest_sq,
+                    turn
+            );
+            
             remove_piece(enemy_pawn, enemy_pawn_sq);
 
             rule50 = 0;
@@ -227,57 +227,57 @@ void Game::undo()
             add_piece(captured_piece, dest_sq);
             break;
         case Move_type::castling:
-			Piece rook_type;
-			Square rook_origin_sq;
-			Square rook_dest_sq;
-			
-			// Set the rook piece type and origin and destination squares.
+            Piece rook_type;
+            Square rook_origin_sq;
+            Square rook_dest_sq;
+            
+            // Set the rook piece type and origin and destination squares.
             castle_rook_squares(
-					rook_type,
-					rook_origin_sq,
-					rook_dest_sq,
-					origin_sq,
-					dest_sq
-			);
-			
-			remove_piece(moved_piece, dest_sq);
-			add_piece(moved_piece, origin_sq);
-			remove_piece(rook_type, rook_dest_sq);
-			add_piece(rook_type, rook_origin_sq);
-			
+                    rook_type,
+                    rook_origin_sq,
+                    rook_dest_sq,
+                    origin_sq,
+                    dest_sq
+            );
+            
+            remove_piece(moved_piece, dest_sq);
+            add_piece(moved_piece, origin_sq);
+            remove_piece(rook_type, rook_dest_sq);
+            add_piece(rook_type, rook_origin_sq);
+            
             break;
-		case Move_type::promotion:
-			remove_piece(moved_piece, dest_sq);
-			add_piece(captured_piece, dest_sq);
-			Piece pawn_type;
-			// White
-			if (turn == Color::white)
-			{
-				pawn_type = Piece::w_pawn;
-			}
-			// Black
-			else
-			{
-				pawn_type = Piece::b_pawn;
-			}
-			
-			add_piece(pawn_type, origin_sq);
-			break;
-		case Move_type::en_passant:
-			remove_piece(moved_piece, dest_sq);
-			add_piece(moved_piece, origin_sq);
-			
-			Piece enemy_pawn;
-			Square enemy_pawn_sq;
-			
-			find_enemy_pawn_ep(
-					enemy_pawn,
-					enemy_pawn_sq,
-					dest_sq,
-					turn
-			);
-			
-			add_piece(enemy_pawn, enemy_pawn_sq);
-			break;
+        case Move_type::promotion:
+            remove_piece(moved_piece, dest_sq);
+            add_piece(captured_piece, dest_sq);
+            Piece pawn_type;
+            // White
+            if (turn == Color::white)
+            {
+                pawn_type = Piece::w_pawn;
+            }
+            // Black
+            else
+            {
+                pawn_type = Piece::b_pawn;
+            }
+            
+            add_piece(pawn_type, origin_sq);
+            break;
+        case Move_type::en_passant:
+            remove_piece(moved_piece, dest_sq);
+            add_piece(moved_piece, origin_sq);
+            
+            Piece enemy_pawn;
+            Square enemy_pawn_sq;
+            
+            find_enemy_pawn_ep(
+                    enemy_pawn,
+                    enemy_pawn_sq,
+                    dest_sq,
+                    turn
+            );
+            
+            add_piece(enemy_pawn, enemy_pawn_sq);
+            break;
     }
 }

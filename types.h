@@ -90,11 +90,11 @@ enum class Castling_right : int
     no_castling,
     w_kingside,
     w_queenside  = w_kingside << 1,
-	white        = w_kingside | w_queenside,
+    white        = w_kingside | w_queenside,
     b_kingside   = w_kingside << 2,
     b_queenside  = w_kingside << 3,
-	black        = b_kingside | b_queenside,
-	all_castling = white | black
+    black        = b_kingside | b_queenside,
+    all_castling = white | black
 };
 
 enum class Color

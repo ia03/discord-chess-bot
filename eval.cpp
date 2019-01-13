@@ -79,74 +79,74 @@ const int king_pst [64] =
 // Used to flip the board for black pieces.
 const int flip[64] =
 {
-	56,  57,  58,  59,  60,  61,  62,  63,
-	48,  49,  50,  51,  52,  53,  54,  55,
-	40,  41,  42,  43,  44,  45,  46,  47,
-	32,  33,  34,  35,  36,  37,  38,  39,
-	24,  25,  26,  27,  28,  29,  30,  31,
-	16,  17,  18,  19,  20,  21,  22,  23,
-	8,   9,  10,  11,  12,  13,  14,  15,
-	0,   1,   2,   3,   4,   5,   6,   7
+    56,  57,  58,  59,  60,  61,  62,  63,
+    48,  49,  50,  51,  52,  53,  54,  55,
+    40,  41,  42,  43,  44,  45,  46,  47,
+    32,  33,  34,  35,  36,  37,  38,  39,
+    24,  25,  26,  27,  28,  29,  30,  31,
+    16,  17,  18,  19,  20,  21,  22,  23,
+    8,   9,  10,  11,  12,  13,  14,  15,
+    0,   1,   2,   3,   4,   5,   6,   7
 };
 
 int Game::evaluate()
 {
-	int evaluation = 0;
+    int evaluation = 0;
 
-	// Add up the evaluation of all the pieces.
-	for (int square = 0; square < 64; square++)
-	{
-		evaluation += eval_square((Square)square);
-	}
-	
-	return evaluation;
+    // Add up the evaluation of all the pieces.
+    for (int square = 0; square < 64; square++)
+    {
+        evaluation += eval_square((Square)square);
+    }
+    
+    return evaluation;
 }
 
 int Game::eval_square(Square square)
 {
-	Piece piece = piece_on(square);
-	Color color = color_of(square);
-	const int* piece_square_table = nullptr;
+    Piece piece = piece_on(square);
+    Color color = color_of(square);
+    const int* piece_square_table = nullptr;
 
-	switch (piece)
+    switch (piece)
     {
-    	case Piece::none:
-    		return 0;
-    	case Piece::w_pawn:
-    	case Piece::b_pawn:
-    		piece_square_table = pawn_pst;
-    		break;
-    	case Piece::w_knight:
-    	case Piece::b_knight:
-			piece_square_table = knight_pst;
-			break;
-    	case Piece::w_bishop:
-    	case Piece::b_bishop:
-			piece_square_table = bishop_pst;
-			break;
-    	case Piece::w_rook:
-    	case Piece::b_rook:
-			piece_square_table = rook_pst;
-			break;
-    	case Piece::w_queen:
-    	case Piece::b_queen:
-			piece_square_table = queen_pst;
-			break;
-    	case Piece::w_king:
-    	case Piece::b_king:
-			piece_square_table = king_pst;
-			break;
+        case Piece::none:
+            return 0;
+        case Piece::w_pawn:
+        case Piece::b_pawn:
+            piece_square_table = pawn_pst;
+            break;
+        case Piece::w_knight:
+        case Piece::b_knight:
+            piece_square_table = knight_pst;
+            break;
+        case Piece::w_bishop:
+        case Piece::b_bishop:
+            piece_square_table = bishop_pst;
+            break;
+        case Piece::w_rook:
+        case Piece::b_rook:
+            piece_square_table = rook_pst;
+            break;
+        case Piece::w_queen:
+        case Piece::b_queen:
+            piece_square_table = queen_pst;
+            break;
+        case Piece::w_king:
+        case Piece::b_king:
+            piece_square_table = king_pst;
+            break;
     }
 
     // Black pieces have a negated evaluation, and the board should be
     // flipped when evaluating them.
     if (color == Color::white)
-	{
-		return piece_square_table[(int)square];
-	}
+    {
+        return piece_square_table[(int)square];
+    }
     else
-	{
-		return -piece_square_table[flip[(int)square]];
-	}
+    {
+        return -piece_square_table[flip[(int)square]];
+    }
 }
 

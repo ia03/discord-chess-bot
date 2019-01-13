@@ -9,44 +9,44 @@
 
 std::map<std::string, Square> coord_to_index =
 {
-		{"a8", Square::A8}, {"b8", Square::B8}, {"c8", Square::C8}, {"d8", Square::D8}, {"e8", Square::E8}, {"f8", Square::F8}, {"g8", Square::G8}, {"h8", Square::H8},
-		{"a7", Square::A7}, {"b7", Square::B7}, {"c7", Square::C7}, {"d7", Square::D7}, {"e7", Square::E7}, {"f7", Square::F7}, {"g7", Square::G7}, {"h7", Square::H7},
-		{"a6", Square::A6}, {"b6", Square::B6}, {"c6", Square::C6}, {"d6", Square::D6}, {"e6", Square::E6}, {"f6", Square::F6}, {"g6", Square::G6}, {"h6", Square::H6},
-		{"a5", Square::A5}, {"b5", Square::B5}, {"c5", Square::C5}, {"d5", Square::D5}, {"e5", Square::E5}, {"f5", Square::F5}, {"g5", Square::G5}, {"h5", Square::H5},
-		{"a4", Square::A4}, {"b4", Square::B4}, {"c4", Square::C4}, {"d4", Square::D4}, {"e4", Square::E4}, {"f4", Square::F4}, {"g4", Square::G4}, {"h4", Square::H4},
-		{"a3", Square::A3}, {"b3", Square::B3}, {"c3", Square::C3}, {"d3", Square::D3}, {"e3", Square::E3}, {"f3", Square::F3}, {"g3", Square::G3}, {"h3", Square::H3},
-		{"a2", Square::A2}, {"b2", Square::B2}, {"c2", Square::C2}, {"d2", Square::D2}, {"e2", Square::E2}, {"f2", Square::F2}, {"g2", Square::G2}, {"h2", Square::H2},
-		{"a1", Square::A1}, {"b1", Square::B1}, {"c1", Square::C1}, {"d1", Square::D1}, {"e1", Square::E1}, {"f1", Square::F1}, {"g1", Square::G1}, {"h1", Square::H1}
+        {"a8", Square::A8}, {"b8", Square::B8}, {"c8", Square::C8}, {"d8", Square::D8}, {"e8", Square::E8}, {"f8", Square::F8}, {"g8", Square::G8}, {"h8", Square::H8},
+        {"a7", Square::A7}, {"b7", Square::B7}, {"c7", Square::C7}, {"d7", Square::D7}, {"e7", Square::E7}, {"f7", Square::F7}, {"g7", Square::G7}, {"h7", Square::H7},
+        {"a6", Square::A6}, {"b6", Square::B6}, {"c6", Square::C6}, {"d6", Square::D6}, {"e6", Square::E6}, {"f6", Square::F6}, {"g6", Square::G6}, {"h6", Square::H6},
+        {"a5", Square::A5}, {"b5", Square::B5}, {"c5", Square::C5}, {"d5", Square::D5}, {"e5", Square::E5}, {"f5", Square::F5}, {"g5", Square::G5}, {"h5", Square::H5},
+        {"a4", Square::A4}, {"b4", Square::B4}, {"c4", Square::C4}, {"d4", Square::D4}, {"e4", Square::E4}, {"f4", Square::F4}, {"g4", Square::G4}, {"h4", Square::H4},
+        {"a3", Square::A3}, {"b3", Square::B3}, {"c3", Square::C3}, {"d3", Square::D3}, {"e3", Square::E3}, {"f3", Square::F3}, {"g3", Square::G3}, {"h3", Square::H3},
+        {"a2", Square::A2}, {"b2", Square::B2}, {"c2", Square::C2}, {"d2", Square::D2}, {"e2", Square::E2}, {"f2", Square::F2}, {"g2", Square::G2}, {"h2", Square::H2},
+        {"a1", Square::A1}, {"b1", Square::B1}, {"c1", Square::C1}, {"d1", Square::D1}, {"e1", Square::E1}, {"f1", Square::F1}, {"g1", Square::G1}, {"h1", Square::H1}
 };
 
 std::map<Square, std::string> index_to_coord =
 {
-		{Square::A8, "a8"}, {Square::B8, "b8"}, {Square::C8, "c8"}, {Square::D8, "d8"}, {Square::E8, "e8"}, {Square::F8, "f8"}, {Square::G8, "g8"}, {Square::H8, "h8"},
-		{Square::A7, "a7"}, {Square::B7, "b7"}, {Square::C7, "c7"}, {Square::D7, "d7"}, {Square::E7, "e7"}, {Square::F7, "f7"}, {Square::G7, "g7"}, {Square::H7, "h7"},
-		{Square::A6, "a6"}, {Square::B6, "b6"}, {Square::C6, "c6"}, {Square::D6, "d6"}, {Square::E6, "e6"}, {Square::F6, "f6"}, {Square::G6, "g6"}, {Square::H6, "h6"},
-		{Square::A5, "a5"}, {Square::B5, "b5"}, {Square::C5, "c5"}, {Square::D5, "d5"}, {Square::E5, "e5"}, {Square::F5, "f5"}, {Square::G5, "g5"}, {Square::H5, "h5"},
-		{Square::A4, "a4"}, {Square::B4, "b4"}, {Square::C4, "c4"}, {Square::D4, "d4"}, {Square::E4, "e4"}, {Square::F4, "f4"}, {Square::G4, "g4"}, {Square::H4, "h4"},
-		{Square::A3, "a3"}, {Square::B3, "b3"}, {Square::C3, "c3"}, {Square::D3, "d3"}, {Square::E3, "e3"}, {Square::F3, "f3"}, {Square::G3, "g3"}, {Square::H3, "h3"},
-		{Square::A2, "a2"}, {Square::B2, "b2"}, {Square::C2, "c2"}, {Square::D2, "d2"}, {Square::E2, "e2"}, {Square::F2, "f2"}, {Square::G2, "g2"}, {Square::H2, "h2"},
-		{Square::A1, "a1"}, {Square::B1, "b1"}, {Square::C1, "c1"}, {Square::D1, "d1"}, {Square::E1, "e1"}, {Square::F1, "f1"}, {Square::G1, "g1"}, {Square::H1, "h1"}
+        {Square::A8, "a8"}, {Square::B8, "b8"}, {Square::C8, "c8"}, {Square::D8, "d8"}, {Square::E8, "e8"}, {Square::F8, "f8"}, {Square::G8, "g8"}, {Square::H8, "h8"},
+        {Square::A7, "a7"}, {Square::B7, "b7"}, {Square::C7, "c7"}, {Square::D7, "d7"}, {Square::E7, "e7"}, {Square::F7, "f7"}, {Square::G7, "g7"}, {Square::H7, "h7"},
+        {Square::A6, "a6"}, {Square::B6, "b6"}, {Square::C6, "c6"}, {Square::D6, "d6"}, {Square::E6, "e6"}, {Square::F6, "f6"}, {Square::G6, "g6"}, {Square::H6, "h6"},
+        {Square::A5, "a5"}, {Square::B5, "b5"}, {Square::C5, "c5"}, {Square::D5, "d5"}, {Square::E5, "e5"}, {Square::F5, "f5"}, {Square::G5, "g5"}, {Square::H5, "h5"},
+        {Square::A4, "a4"}, {Square::B4, "b4"}, {Square::C4, "c4"}, {Square::D4, "d4"}, {Square::E4, "e4"}, {Square::F4, "f4"}, {Square::G4, "g4"}, {Square::H4, "h4"},
+        {Square::A3, "a3"}, {Square::B3, "b3"}, {Square::C3, "c3"}, {Square::D3, "d3"}, {Square::E3, "e3"}, {Square::F3, "f3"}, {Square::G3, "g3"}, {Square::H3, "h3"},
+        {Square::A2, "a2"}, {Square::B2, "b2"}, {Square::C2, "c2"}, {Square::D2, "d2"}, {Square::E2, "e2"}, {Square::F2, "f2"}, {Square::G2, "g2"}, {Square::H2, "h2"},
+        {Square::A1, "a1"}, {Square::B1, "b1"}, {Square::C1, "c1"}, {Square::D1, "d1"}, {Square::E1, "e1"}, {Square::F1, "f1"}, {Square::G1, "g1"}, {Square::H1, "h1"}
 };
 
 // Promotion placeholders to/from binary flags
 
 std::map<std::string, Promotion_piece> promo_str_to_bin =
 {
-		{"q", Promotion_piece::queen},
-		{"r", Promotion_piece::rook},
-		{"b", Promotion_piece::bishop},
-		{"n", Promotion_piece::knight},
+        {"q", Promotion_piece::queen},
+        {"r", Promotion_piece::rook},
+        {"b", Promotion_piece::bishop},
+        {"n", Promotion_piece::knight},
 };
 
 std::map<Promotion_piece, std::string> promo_bin_to_str =
 {
-		{Promotion_piece::queen, "q"},
-		{Promotion_piece::rook, "r"},
-		{Promotion_piece::bishop, "b"},
-		{Promotion_piece::knight, "n"}
+        {Promotion_piece::queen, "q"},
+        {Promotion_piece::rook, "r"},
+        {Promotion_piece::bishop, "b"},
+        {Promotion_piece::knight, "n"}
 };
 
 

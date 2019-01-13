@@ -51,11 +51,11 @@ private:
 
     // White occupancy bitboard
     Bitboard white_bitboard    = w_pawn_bitboard |
-								 w_knight_bitboard |
-								 w_bishop_bitboard |
-								 w_rook_bitboard |
-								 w_queen_bitboard |
-								 w_king_bitboard;
+                                 w_knight_bitboard |
+                                 w_bishop_bitboard |
+                                 w_rook_bitboard |
+                                 w_queen_bitboard |
+                                 w_king_bitboard;
 
     // Bitboards - Black
     Bitboard b_pawn_bitboard;
@@ -108,29 +108,29 @@ private:
 
     // Generates the Zobrist key for the current position.
     Bitstring hash();
-	
-	// Checks the origin and destination squares of a move and updates
-	// the castling rights accordingly.
-	void update_castling_rights(Square origin_sq, Square dest_sq);
+    
+    // Checks the origin and destination squares of a move and updates
+    // the castling rights accordingly.
+    void update_castling_rights(Square origin_sq, Square dest_sq);
 
-	// Invalidates white kingside castling.
-	void invalidate_w_kingside_castling();
-	
-	// Invalidates white queenside castling.
-	void invalidate_w_queenside_castling();
-	
-	// Invalidates white castling.
-	void invalidate_white_castling();
-	
-	// Invalidates black kingside castling.
-	void invalidate_b_kingside_castling();
-	
-	// Invalidates black queenside castling.
-	void invalidate_b_queenside_castling();
-	
-	// Invalidates black castling.
-	void invalidate_black_castling();
-	
+    // Invalidates white kingside castling.
+    void invalidate_w_kingside_castling();
+    
+    // Invalidates white queenside castling.
+    void invalidate_w_queenside_castling();
+    
+    // Invalidates white castling.
+    void invalidate_white_castling();
+    
+    // Invalidates black kingside castling.
+    void invalidate_b_kingside_castling();
+    
+    // Invalidates black queenside castling.
+    void invalidate_b_queenside_castling();
+    
+    // Invalidates black castling.
+    void invalidate_black_castling();
+    
     // Adds a piece to the board.
     void add_piece(Piece piece, Square square);
 
