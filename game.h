@@ -70,8 +70,8 @@ private:
     Color colors_on_board [64];
 
     // The square a pawn would end up if it performed en passant.
-    // If the last move was not a 2-square pawn move, the value of this is -1.
-    Square en_passant_square;
+    // If the last move was not a 2-square pawn move, the value of this is none.
+    Square en_passant_square = Square::none;
 
     // Number of plies that have elapsed since a pawn was moved or a piece was
     // captured. Used for the 50-move rule.
@@ -87,7 +87,7 @@ private:
     // bits are on.
     Castling_right castling_rights;
 
-    Color turn;
+    Color turn = Color::white;
 
     // Initializes the random bitstrings require for Zobrist hashing.
     void init_zobrist();
@@ -103,7 +103,29 @@ private:
 
     // Generates the Zobrist key for the current position.
     Bitstring hash();
+	
+	// Checks the origin and destination squares of a move and updates
+	// the castling rights accordingly.
+	void update_castling_rights(Square origin_sq, Square dest_sq);
 
+	// Invalidates white kingside castling.
+	void invalidate_w_kingside_castling();
+	
+	// Invalidates white queenside castling.
+	void invalidate_w_queenside_castling();
+	
+	// Invalidates white castling.
+	void invalidate_white_castling();
+	
+	// Invalidates black kingside castling.
+	void invalidate_b_kingside_castling();
+	
+	// Invalidates black queenside castling.
+	void invalidate_b_queenside_castling();
+	
+	// Invalidates black castling.
+	void invalidate_black_castling();
+	
     // Adds a piece to the board.
     void add_piece(Piece piece, Square square);
 

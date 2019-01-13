@@ -41,6 +41,25 @@ Promotion_piece extract_promo_piece(Move move);
 // Extracts the move type.
 Move_type extract_move_type(Move move);
 
+// Gets the type and position of the enemy pawn captured in an en passant
+// move.
+void find_enemy_pawn_ep(
+		Piece &enemy_pawn_type,
+		Square &enemy_pawn_square,
+		Square dest_sq,
+		Color turn
+);
+
+// Sets the rook origin and destination squares based on the king origin and
+// destination squares.
+void castle_rook_squares(
+		Piece &rook_type,
+		Square &rook_origin_sq,
+		Square &rook_dest_sq,
+		Square king_origin_sq,
+		Square king_dest_sq
+);
+
 // Converts a promotion piece to a piece.
 Piece promo_piece_to_piece(Promotion_piece promo_piece, Color color);
 

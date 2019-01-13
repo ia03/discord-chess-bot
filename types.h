@@ -70,7 +70,7 @@ enum class Piece
 
 enum class Promotion_piece : int
 {
-    none,  // Default is queen.
+    none,  // None is the same as the value for queen.
     queen  = 0,
     rook   = 1 << 12,
     bishop = 2 << 12,
@@ -89,9 +89,12 @@ enum class Castling_right : int
 {
     no_castling,
     w_kingside,
-    w_queenside = w_kingside << 1,
-    b_kingside  = w_kingside << 2,
-    b_queenside = w_kingside << 3
+    w_queenside  = w_kingside << 1,
+	white        = w_kingside | w_queenside,
+    b_kingside   = w_kingside << 2,
+    b_queenside  = w_kingside << 3,
+	black        = b_kingside | b_queenside,
+	all_castling = white | black
 };
 
 enum class Color
