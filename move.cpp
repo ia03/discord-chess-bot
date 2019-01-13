@@ -202,3 +202,33 @@ bool Game::make_move(Move move)
 
     return true;
 }
+
+void Game::undo()
+{
+    end_turn();
+
+    Ply_data last_ply = history.back();
+    history.pop_back();
+
+    castling_rights = last_ply.castling_rights;
+    en_passant_square = last_ply.en_passant_square;
+    rule50 = last_ply.rule50;
+    Piece captured_piece = last_ply.captured_piece;
+
+    Move move = last_ply.last_move;
+    Square origin_sq = extract_origin_sq(move);
+    Square dest_sq = extract_dest_sq(move);
+    Move_type move_type = extract_move_type(move);
+    Piece moved_piece = piece_on(dest_sq);
+
+    switch (move_type)
+    {
+        case Move_type::normal:
+            remove_piece(moved_piece, dest_sq);
+            add_piece(moved_piece, origin_sq);
+            add_piece(captured_piece, dest_sq);
+            break;
+        case Move_type::castling:
+            break;
+    }
+}
