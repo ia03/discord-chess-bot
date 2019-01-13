@@ -41,6 +41,9 @@ Promotion_piece extract_promo_piece(Move move);
 // Extracts the move type.
 Move_type extract_move_type(Move move);
 
+// Gets the color of a piece type.
+Color piece_color(Piece piece);
+
 // Gets the type and position of the enemy pawn captured in an en passant
 // move.
 void find_enemy_pawn_ep(

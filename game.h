@@ -58,21 +58,36 @@ private:
                                  w_king_bitboard;
 
     // Bitboards - Black
-    Bitboard b_pawn_bitboard;
-    Bitboard b_knight_bitboard;
-    Bitboard b_bishop_bitboard;
-    Bitboard b_rook_bitboard;
-    Bitboard b_queen_bitboard;
-    Bitboard b_king_bitboard;
+    Bitboard b_pawn_bitboard   = 0x00FF000000000000;
+    Bitboard b_knight_bitboard = 0x4200000000000000;
+    Bitboard b_bishop_bitboard = 0x2400000000000000;
+    Bitboard b_rook_bitboard   = 0x8100000000000000;
+    Bitboard b_queen_bitboard  = 0x0800000000000000;
+    Bitboard b_king_bitboard   = 0x1000000000000000;
 
     // Black occupancy bitboard
-    Bitboard black_bitboard;
+    Bitboard black_bitboard    = b_pawn_bitboard |
+                                 b_knight_bitboard |
+                                 b_bishop_bitboard |
+                                 b_rook_bitboard |
+                                 b_queen_bitboard |
+                                 b_king_bitboard;
 
     // General occupancy bitboard
-    Bitboard all_bitboard;
+    Bitboard all_bitboard = white_bitboard | black_bitboard;
 
-    Piece pieces_on_board [64];
-    Color colors_on_board [64];
+    
+    Piece pieces_on_board [64] =
+    {
+        Piece::w_rook, Piece::w_knight, Piece::w_bishop, Piece::w_queen, Piece::w_king, Piece::w_bishop, Piece::w_knight, Piece::w_rook,
+        Piece::w_pawn,   Piece::w_pawn,   Piece::w_pawn,  Piece::w_pawn, Piece::w_pawn,   Piece::w_pawn,   Piece::w_pawn, Piece::w_pawn,
+          Piece::none,     Piece::none,     Piece::none,    Piece::none,   Piece::none,     Piece::none,     Piece::none,   Piece::none,
+          Piece::none,     Piece::none,     Piece::none,    Piece::none,   Piece::none,     Piece::none,     Piece::none,   Piece::none,
+          Piece::none,     Piece::none,     Piece::none,    Piece::none,   Piece::none,     Piece::none,     Piece::none,   Piece::none,
+          Piece::none,     Piece::none,     Piece::none,    Piece::none,   Piece::none,     Piece::none,     Piece::none,   Piece::none,
+        Piece::b_pawn,   Piece::b_pawn,   Piece::b_pawn,  Piece::b_pawn, Piece::b_pawn,   Piece::b_pawn,   Piece::b_pawn, Piece::b_pawn,
+        Piece::b_rook, Piece::b_knight, Piece::b_bishop, Piece::w_queen, Piece::b_king, Piece::b_bishop, Piece::b_knight, Piece::b_rook
+    };
 
     // The square a pawn would end up if it performed en passant.
     // If the last move was not a 2-square pawn move, the value of this is none.
@@ -90,7 +105,7 @@ private:
     // Bits that are turned on represent castles that have not yet been
     // permanently invalidated. This is initially set to 15 such that all 4
     // bits are on.
-    Castling_right castling_rights;
+    Castling_right castling_rights = Castling_right::all_castling;
 
     Color turn = Color::white;
 
@@ -131,6 +146,12 @@ private:
     // Invalidates black castling.
     void invalidate_black_castling();
     
+    // Returns a reference to the specified piece type's bitboard.
+    Bitboard &get_piece_bitboard(Piece piece);
+    
+    // Returns a reference to the specified color's bitboard.
+    Bitboard &get_color_bitboard(Color color);
+    
     // Adds a piece to the board.
     void add_piece(Piece piece, Square square);
 
@@ -139,9 +160,6 @@ private:
 
     // Gets the type of piece on a certain square.
     Piece piece_on(Square square);
-
-    // Gets the color of a piece on a certain square.
-    Color color_of(Square square);
 
     // Undoes the last move.
     void undo();
@@ -189,7 +207,10 @@ private:
     // Checks if the specified player's king is in check.
     bool king_in_check(Color color);
 public:
+    // Initializes Zobrist hashing.
     Game();
+    
+    const Color get_turn();
 
     // Makes a move and saves the ply data required to undo that move if it is
     // legal. If the move is illegal, it undoes the move after making it and

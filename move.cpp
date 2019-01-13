@@ -3,11 +3,6 @@
 #include "game.h"
 
 
-void Game::end_turn()
-{
-    turn = reverse_color(turn);
-}
-
 void Game::update_castling_rights(Square origin_sq, Square dest_sq)
 {
     // Invalidate a specific type of castling if a rook moves or is captured.

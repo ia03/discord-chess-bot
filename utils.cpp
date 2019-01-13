@@ -13,7 +13,8 @@ Color reverse_color(Color color)
     else if (color == Color::black)
     {
         return Color::white;
-    } else
+    }
+    else
     {
         return Color::none;
     }
@@ -82,6 +83,31 @@ Move_type extract_move_type(Move move)
 {
     // Special move flag is bits 14-15.
     return (Move_type)((int)move & 0b1100000000000000);
+}
+
+Color piece_color(Piece piece)
+{
+    switch (piece)
+    {
+        case Piece::w_pawn:
+        case Piece::w_knight:
+        case Piece::w_bishop:
+        case Piece::w_rook:
+        case Piece::w_queen:
+        case Piece::w_king:
+            return Color::white;
+
+        case Piece::b_pawn:
+        case Piece::b_knight:
+        case Piece::b_bishop:
+        case Piece::b_rook:
+        case Piece::b_queen:
+        case Piece::b_king:
+            return Color::black;
+
+        default:
+            return Color::none;
+    }
 }
 
 void find_enemy_pawn_ep(
