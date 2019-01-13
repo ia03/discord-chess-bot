@@ -42,15 +42,20 @@ private:
     Bitstring en_passant_bitstrings [64];
 
     // Bitboards - White
-    Bitboard w_pawn_bitboard;
-    Bitboard w_knight_bitboard;
-    Bitboard w_bishop_bitboard;
-    Bitboard w_rook_bitboard;
-    Bitboard w_queen_bitboard;
-    Bitboard w_king_bitboard;
+    Bitboard w_pawn_bitboard   = 0xFF00;
+    Bitboard w_knight_bitboard = 0x0042;
+    Bitboard w_bishop_bitboard = 0x0024;
+    Bitboard w_rook_bitboard   = 0x0081;
+    Bitboard w_queen_bitboard  = 0x0008;
+    Bitboard w_king_bitboard   = 0x0010;
 
     // White occupancy bitboard
-    Bitboard white_bitboard;
+    Bitboard white_bitboard    = w_pawn_bitboard |
+								 w_knight_bitboard |
+								 w_bishop_bitboard |
+								 w_rook_bitboard |
+								 w_queen_bitboard |
+								 w_king_bitboard;
 
     // Bitboards - Black
     Bitboard b_pawn_bitboard;
@@ -215,4 +220,4 @@ public:
     Game_state game_state();
 };
 
-#endif //DISCORD_CHESS_BOT_GAME_H
+#endif  //DISCORD_CHESS_BOT_GAME_H

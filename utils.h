@@ -50,8 +50,8 @@ void find_enemy_pawn_ep(
 		Color turn
 );
 
-// Sets the rook origin and destination squares based on the king origin and
-// destination squares.
+// Sets the rook type and origin and destination squares based on the king
+// origin and destination squares.
 void castle_rook_squares(
 		Piece &rook_type,
 		Square &rook_origin_sq,
@@ -73,4 +73,4 @@ std::vector<Move> gen_moves_from_bitboard(
 );
 
 
-#endif //DISCORD_CHESS_BOT_UTILS_H
+#endif  //DISCORD_CHESS_BOT_UTILS_H

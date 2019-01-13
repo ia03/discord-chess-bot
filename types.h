@@ -132,4 +132,4 @@ struct Ply_data
     Bitstring hash;
 };
 
-#endif //DISCORD_CHESS_BOT_TYPES_H
+#endif  //DISCORD_CHESS_BOT_TYPES_H
