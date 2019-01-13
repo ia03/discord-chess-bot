@@ -10,7 +10,7 @@ void Game::end_turn()
 
 void Game::update_castling_rights(Square origin_sq, Square dest_sq)
 {
-	// Invalidate a specific type of castling if a rook moves or is captured.
+    // Invalidate a specific type of castling if a rook moves or is captured.
     // White kingside castling
     if (origin_sq == Square::H1 || dest_sq == Square::H1)
     {
@@ -174,19 +174,13 @@ bool Game::make_move(Move move)
             Square enemy_pawn_sq;
             Piece enemy_pawn;
 
-            // If this is White's move, the captured pawn will be 1 square
-            // south of the destination square. If this is Black's move, the
-            // captured pawn will be 1 square north of the destination square.
-            if (turn == Color::white)
-            {
-                enemy_pawn = Piece::b_pawn;
-                enemy_pawn_sq = (Square)((int)dest_sq - 8);
-            }
-            else
-            {
-                enemy_pawn = Piece::w_pawn;
-                enemy_pawn_sq = (Square)((int)dest_sq + 8);
-            }
+            find_enemy_pawn_ep(
+					enemy_pawn,
+					enemy_pawn_sq,
+					dest_sq,
+					turn
+			);
+			
             remove_piece(enemy_pawn, enemy_pawn_sq);
 
             rule50 = 0;
