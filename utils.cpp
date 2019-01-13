@@ -1,6 +1,7 @@
 #include <vector>
 #include <random>
 #include "types.h"
+#include "utils.h"
 
 
 Color reverse_color(Color color)
@@ -18,12 +19,13 @@ Color reverse_color(Color color)
     }
 }
 
-constexpr Move create_move(
+Move create_move(
         Square origin_sq,
         Square dest_sq,
         Promotion_piece promo_piece,
         Move_type move_type
 )
+{
     Move move = Move::none;
 
     move = set_origin_sq(move, origin_sq);
@@ -34,53 +36,53 @@ constexpr Move create_move(
     return move;
 }
 
-constexpr Move set_origin_sq(Move move, Square origin_sq)
+Move set_origin_sq(Move move, Square origin_sq)
 {
     // Origin square is bits 0-5.
-    return move | origin_sq;
+    return (Move)((int)move | (int)origin_sq);
 }
 
-constexpr Move set_dest_sq(Move move, Square dest_sq)
+Move set_dest_sq(Move move, Square dest_sq)
 {
     // Destination square is bits 6-11.
-    return move | (dest_sq << 6);
+    return (Move)((int)move | ((int)dest_sq << 6));
 }
 
-constexpr Move set_promo_piece(Move move, Promotion_piece promo_piece)
+Move set_promo_piece(Move move, Promotion_piece promo_piece)
 {
     // Promotion piece flag is bits 12-13.
-    return move | promo_piece;
+    return (Move)((int)move | (int)promo_piece);
 }
 
-constexpr Move set_move_type(Move move, Move_type move_type)
+Move set_move_type(Move move, Move_type move_type)
 {
     // Special move flag is bits 14-15.
-    return move | move_type;
+    return (Move)((int)move | (int)move_type);
 }
 
 
-constexpr Square extract_origin_sq(Move move)
+Square extract_origin_sq(Move move)
 {
     // Origin square is bits 0-5.
-    return move & 0b0000000000111111;
+    return (Square)((int)move & 0b0000000000111111);
 }
 
-constexpr Square extract_dest_sq(Move move)
+Square extract_dest_sq(Move move)
 {
     // Destination square is bits 6-11.
-    return move & 0b0000111111000000;
+    return (Square)((int)move & 0b0000111111000000);
 }
 
-constexpr Promotion_piece extract_promo_piece(Move move)
+Promotion_piece extract_promo_piece(Move move)
 {
     // Promotion piece flag is bits 12-13.
-    return move & 0b0011000000000000;
+    return (Promotion_piece)((int)move & 0b0011000000000000);
 }
 
-constexpr Move_type extract_move_type(Move move)
+Move_type extract_move_type(Move move)
 {
     // Special move flag is bits 14-15.
-    return move & 0b1100000000000000;
+    return (Move_type)((int)move & 0b1100000000000000);
 }
 
 Piece promo_piece_to_piece(Promotion_piece promo_piece, Color color)
@@ -113,6 +115,7 @@ Piece promo_piece_to_piece(Promotion_piece promo_piece, Color color)
                 return Piece::b_knight;
         }
     }
+	return Piece::none;
 }
 
 Bitstring rand_hash()
@@ -134,11 +137,11 @@ std::vector<Move> gen_moves_from_bitboard(Square origin_sq, Bitboard bitboard)
 
     // Get the positions of the set bits in the bitboard and use them to
     // create moves.
-    for(Square position = 0; bitboard != 0; position++)
+    for(int position = 0; bitboard != 0; position++)
     {
-        if (bitboard & 2 == 1)
+        if ((bitboard & 2) == 1)
         {
-            moves.push_back(set_dest_sq(template_move, position));
+            moves.push_back(set_dest_sq(template_move, (Square)position));
         }
         bitboard >>= 1;
     }

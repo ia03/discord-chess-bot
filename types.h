@@ -121,7 +121,7 @@ struct Ply_data
     Piece captured_piece;
 
     // Before the move occurred
-    int castling_rights;
+    Castling_right castling_rights;
     Square en_passant_square;
     int rule50;
 

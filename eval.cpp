@@ -94,9 +94,9 @@ int Game::evaluate()
 	int evaluation = 0;
 
 	// Add up the evaluation of all the pieces.
-	for (Square square = 0; square < 64; square++)
+	for (int square = 0; square < 64; square++)
 	{
-		evaluation += eval_square(square);
+		evaluation += eval_square((Square)square);
 	}
 	
 	return evaluation;
@@ -106,7 +106,7 @@ int Game::eval_square(Square square)
 {
 	Piece piece = piece_on(square);
 	Color color = color_of(square);
-	int* piece_square_table = nullptr;
+	const int* piece_square_table = nullptr;
 
 	switch (piece)
     {
@@ -121,7 +121,7 @@ int Game::eval_square(Square square)
 			piece_square_table = knight_pst;
 			break;
     	case Piece::w_bishop:
-    	case Piece::b_knight:
+    	case Piece::b_bishop:
 			piece_square_table = bishop_pst;
 			break;
     	case Piece::w_rook:
@@ -142,11 +142,11 @@ int Game::eval_square(Square square)
     // flipped when evaluating them.
     if (color == Color::white)
 	{
-		return piece_square_table[square];
+		return piece_square_table[(int)square];
 	}
     else
 	{
-		return -piece_square_table[flip[square]];
+		return -piece_square_table[flip[(int)square]];
 	}
 }
 

@@ -19,50 +19,57 @@ bool Game::make_move(Move move)
     ply_data.last_move = move;
     ply_data.captured_piece = captured_piece;
     ply_data.castling_rights = castling_rights;
-    ply_data.en_passant_sq = en_passant_square;
+    ply_data.en_passant_square = en_passant_square;
     ply_data.rule50 = rule50;
     ply_data.hash = hash();
-
 
 
     // Invalidate a specific type of castling if a rook moves or is captured.
     // White kingside castling
     if (origin_sq == Square::H1 || dest_sq == Square::H1)
     {
-        castling_rights &= ~Castling_right::w_kingside;
+        castling_rights = (Castling_right)((int)castling_rights &
+										  ~(int)Castling_right::w_kingside);
     }
     // White queenside castling
     if (origin_sq == Square::A1 || dest_sq == Square::A1)
     {
-        castling_rights &= ~Castling_right::w_queenside;
+        castling_rights = (Castling_right)((int)castling_rights &
+										  ~(int)Castling_right::w_queenside);
     }
     // Black kingside castling
     if (origin_sq == Square::H8 || dest_sq == Square::H8)
     {
-        castling_rights &= ~Castling_right::b_kingside;
+        castling_rights = (Castling_right)((int)castling_rights &
+										  ~(int)Castling_right::b_kingside);
     }
     // Black queenside castling
     if (origin_sq == Square::A8 || dest_sq == Square::A8)
     {
-        castling_rights &= ~Castling_right::b_queenside;
+        castling_rights = (Castling_right)((int)castling_rights &
+										  ~(int)Castling_right::b_queenside);
     }
 
     // Invalidate castling for a player if their king moves.
     // White
     if (origin_sq == Square::E1)
     {
-        castling_rights &= ~Castling_right::w_kingside;
-        castling_rights &= ~Castling_right::w_queenside;
+        castling_rights = (Castling_right)((int)castling_rights &
+										  ~(int)Castling_right::w_kingside);
+        castling_rights = (Castling_right)((int)castling_rights &
+										  ~(int)Castling_right::w_queenside);
     }
     // Black
     else if (origin_sq == Square::E8)
     {
-        castling_rights &= ~Castling_right::b_kingside;
-        castling_rights &= ~Castling_right::b_queenside;
+        castling_rights = (Castling_right)((int)castling_rights &
+										  ~(int)Castling_right::b_kingside);
+        castling_rights = (Castling_right)((int)castling_rights &
+										  ~(int)Castling_right::b_queenside);
     }
 
     rule50++;
-    en_passant_sq = Square::none;
+    en_passant_square = Square::none;
 
     switch (move_type)
     {
@@ -74,14 +81,14 @@ bool Game::make_move(Move move)
             // If the move was a two-square pawn move, set the en passant
             // square.
             if ((moved_piece == Piece::w_pawn) &&
-                (dest_sq == origin_sq + 16))
+                (dest_sq == (Square)((int)origin_sq + 16)))
             {
-                en_passant_square = origin_sq + 8;
+                en_passant_square = (Square)((int)origin_sq + 8);
             }
             else if ((moved_piece == Piece::b_pawn) &&
-                     (dest_sq == origin_sq - 16))
+                     (dest_sq == (Square)((int)origin_sq - 16)))
             {
-                en_passant_square = origin_sq - 8;
+                en_passant_square = (Square)((int)origin_sq - 8);
             }
 
             // If a piece was captured or a pawn was moved, reset the 50-move
@@ -101,7 +108,7 @@ bool Game::make_move(Move move)
             Piece rook_type;
 
             // White
-            if (turn == Color::White)
+            if (turn == Color::white)
             {
                 rook_type = Piece::w_rook;
                 // Kingside
@@ -169,14 +176,14 @@ bool Game::make_move(Move move)
             if (turn == Color::white)
             {
                 enemy_pawn = Piece::b_pawn;
-                enemy_pawn_sq = dest_sq - 8;
+                enemy_pawn_sq = (Square)((int)dest_sq - 8);
             }
             else
             {
                 enemy_pawn = Piece::w_pawn;
-                enemy_pawn_sq = dest_sq + 8;
+                enemy_pawn_sq = (Square)((int)dest_sq + 8);
             }
-            remove_piece(enemy_pawn, enemy_pawn_sq)
+            remove_piece(enemy_pawn, enemy_pawn_sq);
 
             rule50 = 0;
             break;
@@ -189,7 +196,7 @@ bool Game::make_move(Move move)
     // move.
     if (king_in_check(reverse_color(turn)))
     {
-        undo()
+        undo();
         return false;
     }
 
