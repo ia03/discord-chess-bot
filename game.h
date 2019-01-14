@@ -210,7 +210,7 @@ public:
     // Initializes Zobrist hashing.
     Game();
     
-    const Color get_turn();
+    Color get_turn();
 
     // Makes a move and saves the ply data required to undo that move if it is
     // legal. If the move is illegal, it undoes the move after making it and

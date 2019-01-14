@@ -1,4 +1,5 @@
 #include "types.h"
+#include "utils.h"
 #include "game.h"
 
 
@@ -105,7 +106,7 @@ int Game::evaluate()
 int Game::eval_square(Square square)
 {
     Piece piece = piece_on(square);
-    Color color = color_of(square);
+    Color color = piece_color(piece);
     const int* piece_square_table = nullptr;
 
     switch (piece)
