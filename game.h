@@ -101,6 +101,9 @@ private:
     // Number of plies that have elapsed since a pawn was moved or a piece was
     // captured. Used for the 50-move rule.
     int rule50 = 0;
+    
+    // Is true when threefold repetition has been reached.
+    bool threefold_repetition = false;
 
     // Only the least significant 4 bits are used.
     // Bit 0: white kingside castle
