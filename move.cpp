@@ -93,6 +93,19 @@ bool Game::make_move(Move move)
     ply_data.castling_rights = castling_rights;
     ply_data.en_passant_square = en_passant_square;
     ply_data.rule50 = rule50;
+	
+	// Keep track of this hash's occurrence to be able to detect threefold
+	// repetition later on.
+	Bitstring current_game_hash = hash();
+
+	if (hash_count.find(current_game_hash) == hash_count.end())
+	{
+		hash_count[current_game_hash] = 1;
+	}
+	else
+	{
+		hash_count[current_game_hash]++;
+	}
 
     update_castling_rights(origin_sq, dest_sq);
 
