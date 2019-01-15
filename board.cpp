@@ -119,41 +119,42 @@ Piece Game::piece_on(Square square)
 
 bool Game::insufficient_material()
 {
-    // Use std::count()?
-    std::map<Piece, std::vector<Square>> squares_of_piece;
-
-    // Get a list of all the squares each piece type occupies.
-    for (int i = 0; i < 64; i++)
+    // If any pawns, rooks, or queens exist on the board, we know a
+    // checkmate is possible.
+    if (w_pawn_bitboard != 0 || b_pawn_bitboard != 0 ||
+        w_rook_bitboard != 0 || b_rook_bitboard != 0 ||
+        w_queen_bitboard != 0 || b_queen_bitboard != 0)
     {
-        Piece piece = piece_on((Square)i);
-
-        // If any pawns, rooks, or queens exist on the board, we know a
-        // checkmate is possible.
-        switch (piece)
-        {
-            case Piece::w_pawn:
-            case Piece::b_pawn:
-            case Piece::w_rook:
-            case Piece::b_rook:
-            case Piece::w_queen:
-            case Piece::b_queen:
-                return false;
-            default:
-                break;
-        }
-
-        squares_of_piece[piece].push_back((Square)i);
+        return false;
     }
     
-    
-    if  (squares_of_piece.find(Piece::w_bishop) != squares_of_piece.end())
+    // If a player has 2 bishops of different square colours, a checkmate is
+    // possible.
+    if (((w_bishop_bitboard & white_squares) != 0 &&
+         (w_bishop_bitboard & black_squares) != 0) ||
+        ((b_bishop_bitboard & white_squares) != 0 &&
+         (b_bishop_bitboard & black_squares) != 0))
     {
-        vector<Square> w_bishop_squares = squares_of_piece[Piece::w_bishop];
-        if (squares_of_piece[Piece::w_bishop].size() > 1)
-        {
-            
-        }
+        return false;
     }
+    
+    // If a player has 2 knights, a checkmate is possible.
+    if (count_bits_set(w_knight_bitboard) > 1 ||
+        count_bits_set(b_knight_bitboard) > 1)
+    {
+        return false;
+    }
+    
+    // If a player has a knight and a bishop, a checkmate is possible.
+    if ((w_knight_bitboard != 0 && w_bishop_bitboard != 0) ||
+        (b_knight_bitboard != 0 && b_bishop_bitboard != 0))
+    {
+        return false;
+    }
+    
+    // If none of the above conditions are met, we can assume that a checkmate
+    // would not be possible.
+    return true;
     
 }
 

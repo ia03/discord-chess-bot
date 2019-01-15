@@ -5,6 +5,9 @@
 #include "types.h"
 
 
+const Bitboard white_squares = 0x55AA55AA55AA55AA;
+const Bitboard black_squares = ~white_squares;
+
 // Returns the opposite color. Returns none if the input is not white or
 // black.
 Color reverse_color(Color color);
@@ -74,6 +77,9 @@ std::vector<Move> gen_moves_from_bitboard(
         Square origin_sq,
         Bitboard bitboard
 );
+
+// Counts the number of set bits in a bitboard.
+int count_bits_set(Bitboard bitboard);
 
 
 #endif  //DISCORD_CHESS_BOT_UTILS_H

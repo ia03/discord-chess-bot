@@ -4,8 +4,8 @@
 #include "game.h"
 
 
-const depth = 6;
-const infinity = 9999999;
+const int depth = 6;
+const int infinity = 9999999;
 
 Move Game::best_move()
 {
@@ -59,8 +59,8 @@ Move Game::best_move()
 			}
 		}
 		
-		return best_move;
 	}
+    return best_move;
 }
 
 int Game::minimax(int depth, int alpha, int beta, bool is_maximizing)
@@ -74,7 +74,7 @@ int Game::minimax(int depth, int alpha, int beta, bool is_maximizing)
 	// the player making the checkmate and the worst for their opponent.
 	// A tie should have an evaluation of 0, it should only be forced if the
 	// bot is at a disadvantage.
-	switch (game_state)
+	switch (state)
 	{
 		case Game_state::in_progress:
 			break;

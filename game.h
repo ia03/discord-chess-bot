@@ -239,6 +239,10 @@ public:
 
     // Checks if the game has ended, and if so, why.
     Game_state game_state();
+    
+    // Using a list of possible moves, checks if the game has ended, and if
+    // so, why.
+    Game_state game_state(std::vector<Move> possible_moves);
 };
 
 #endif  //DISCORD_CHESS_BOT_GAME_H

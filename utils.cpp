@@ -241,3 +241,16 @@ std::vector<Move> gen_moves_from_bitboard(Square origin_sq, Bitboard bitboard)
     
     return moves;
 }
+
+int count_bits_set(Bitboard bitboard)
+{
+    int i;
+    
+    // This uses Brian Kernighan's algorithm.
+    // Clears the least significant set bit until all bits have been cleared.
+    for (i = 0; bitboard != 0; i++)
+    {
+        bitboard &= bitboard - 1;  // Clear the least significant set bit.
+    }
+    return i;
+}
