@@ -9,7 +9,7 @@
 class Game
 {
 private:
-    // Used to undo moves and check for threefold repetition
+    // Used to undo moves
     std::vector<Ply_data> history;
 
     // Zobrist hash for the piece positions only
