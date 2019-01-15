@@ -155,7 +155,6 @@ bool Game::insufficient_material()
     // If none of the above conditions are met, we can assume that a checkmate
     // would not be possible.
     return true;
-    
 }
 
 std::string Game::fen()

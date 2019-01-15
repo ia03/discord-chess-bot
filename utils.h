@@ -8,6 +8,24 @@
 const Bitboard white_squares = 0x55AA55AA55AA55AA;
 const Bitboard black_squares = ~white_squares;
 
+const Bitboard row_8 = 0xFF00000000000000;
+const Bitboard row_7 = 0xFF000000000000;
+const Bitboard row_6 = 0xFF0000000000;
+const Bitboard row_5 = 0xFF00000000;
+const Bitboard row_4 = 0xFF000000;
+const Bitboard row_3 = 0xFF0000;
+const Bitboard row_2 = 0xFF00;
+const Bitboard row_1 = 0xFF;
+
+const Bitboard col_a = 0x101010101010101;
+const Bitboard col_b = 0x202020202020202;
+const Bitboard col_c = 0x404040404040404;
+const Bitboard col_d = 0x808080808080808;
+const Bitboard col_e = 0x1010101010101010;
+const Bitboard col_f = 0x2020202020202020;
+const Bitboard col_g = 0x4040404040404040;
+const Bitboard col_h = 0x8080808080808080;
+
 // Returns the opposite color. Returns none if the input is not white or
 // black.
 Color reverse_color(Color color);
