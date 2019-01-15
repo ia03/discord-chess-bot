@@ -115,7 +115,7 @@ enum class Game_state
     insufficient_material
 };
 
-// Stores information for a ply. Used to reverse moves and detect repetition.
+// Stores information for a ply. Used to reverse moves.
 struct Ply_data
 {
     // The move that ended this ply
