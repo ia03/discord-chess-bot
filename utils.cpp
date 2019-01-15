@@ -257,5 +257,5 @@ int count_bits_set(Bitboard bitboard)
 
 Bitboard square_to_bb(Square square)
 {
-    return 1 << int(Square);
+    return 1 << int(square);
 }
