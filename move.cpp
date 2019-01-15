@@ -86,8 +86,7 @@ bool Game::make_move(Move move)
     Piece moved_piece = piece_on(origin_sq);
     Piece captured_piece = piece_on(dest_sq);
 
-    // Data needs to be saved to undo moves and check for threefold repetition
-    // later.
+    // Data needs to be saved to undo moves later.
     Ply_data ply_data;
     ply_data.last_move = move;
     ply_data.captured_piece = captured_piece;
