@@ -93,7 +93,6 @@ bool Game::make_move(Move move)
     ply_data.castling_rights = castling_rights;
     ply_data.en_passant_square = en_passant_square;
     ply_data.rule50 = rule50;
-    ply_data.hash = hash();
 
     update_castling_rights(origin_sq, dest_sq);
 
