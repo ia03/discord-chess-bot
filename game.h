@@ -203,7 +203,7 @@ private:
 
     // Checks if the specified square is under attack by a specified player.
     bool square_attacked(Square square, Color attacker);
-
+    
     // Checks if the specified player's king is in check.
     bool king_in_check(Color color);
 public:

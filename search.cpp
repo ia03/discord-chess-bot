@@ -78,9 +78,9 @@ int Game::minimax(int depth, int alpha, int beta, bool is_maximizing)
 	{
 		case Game_state::in_progress:
 			break;
-		case Game_state::white_checkmate:
+		case Game_state::checkmate_by_white:
 			return infinity;
-		case Game_state::black_checkmate:
+		case Game_state::checkmate_by_black:
 			return -infinity;
 		case Game_state::stalemate:
 		case Game_state::threefold_repetition:

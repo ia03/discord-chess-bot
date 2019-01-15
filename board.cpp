@@ -117,6 +117,46 @@ Piece Game::piece_on(Square square)
     return pieces_on_board[(int)square];
 }
 
+Game_state Game::game_state(std::vector<Move> possible_moves)
+{
+    // No legal moves for the current player means the game has ended in
+    // either a checkmate or stalemate.
+    if (possible_moves.size() == 0)
+    {
+        // If the current player's king is also in check, it is a checkmate.
+        if (king_in_check(turn))
+        {
+            if (turn == Color::white)
+            {
+                return Game_state::checkmate_by_black;
+            }
+            else
+            {
+                return Game_state::checkmate_by_white;
+            }
+        }
+        // If the current player's king is not in check, it is a stalemate.
+        else
+        {
+            return Game_state::stalemate;
+        }
+    }
+    
+    
+    
+    // If 50 moves (100 plies) have been played with no pawn movements or
+    // piece captures, it is a draw.
+    if (rule50 >= 100)
+    {
+        return Game_state::fifty_move;
+    }
+}
+
+Game_state Game::game_state()
+{
+    return game_state(pseudo_legal_moves());
+}
+
 bool Game::insufficient_material()
 {
     // If any pawns, rooks, or queens exist on the board, we know a

@@ -107,8 +107,8 @@ enum class Color
 enum class Game_state
 {
     in_progress,
-    white_checkmate,
-    black_checkmate,
+    checkmate_by_white,
+    checkmate_by_black,
     stalemate,
     threefold_repetition,
     fifty_move,
