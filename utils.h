@@ -90,7 +90,7 @@ Piece promo_piece_to_piece(Promotion_piece promo_piece, Color color);
 // Generates a random bitstring.
 Bitstring rand_hash();
 
-// Generates a vector of moves using an attack bitboard.
+// Generates a vector of moves using a bitboard.
 std::vector<Move> gen_moves_from_bitboard(
         Square origin_sq,
         Bitboard bitboard
@@ -99,5 +99,7 @@ std::vector<Move> gen_moves_from_bitboard(
 // Counts the number of set bits in a bitboard.
 int count_bits_set(Bitboard bitboard);
 
+// Converts a square to a bitboard with a single bit turned on.
+Bitboard square_to_bb(Square square);
 
 #endif  //DISCORD_CHESS_BOT_UTILS_H

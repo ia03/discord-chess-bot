@@ -82,6 +82,8 @@ Move Game::string_to_move(std::string move_str)
     }
 
     Square dest_sq = coord_to_index[destination_str];
+    
+    Bitboard dest_bb = square_to_bb(dest_sq);
 
     Promotion_piece promo_piece = Promotion_piece::none;
 
@@ -135,7 +137,7 @@ Move Game::string_to_move(std::string move_str)
             move_type = Move_type::en_passant;
         }
         // To 8th or 1st row - promotion.
-        else if ((int)dest_sq >= 56 || (int)dest_sq <= 7)
+        else if ((dest_bb & row_8) != 0 || (dest_bb & row_1) != 0)
         {
             move_type = Move_type::promotion;
         }
@@ -162,6 +164,7 @@ std::string Game::move_to_string(Move move)
 {
     Square origin_sq = extract_origin_sq(move);
     Square dest_sq = extract_dest_sq(move);
+    Move_type move_type = extract_move_type(move);
 
     std::string origin_str = index_to_coord[origin_sq];
     std::string dest_str = index_to_coord[dest_sq];
@@ -170,9 +173,7 @@ std::string Game::move_to_string(Move move)
 
     Piece piece_moved = piece_on(origin_sq);
 
-    // To 8th or 1st row - promotion.
-    if ((piece_moved == Piece::w_pawn || piece_moved == Piece::b_pawn) &&
-        ((int)dest_sq >= 56 || (int)dest_sq <= 7))
+    if (move_type == Move_type::promotion)
     {
         Promotion_piece promo_piece = extract_promo_piece(move);
         std::string promo_str = promo_bin_to_str[promo_piece];
