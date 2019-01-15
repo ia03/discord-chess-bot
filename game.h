@@ -1,6 +1,7 @@
 #ifndef DISCORD_CHESS_BOT_GAME_H
 #define DISCORD_CHESS_BOT_GAME_H
 #include <vector>
+#include <unordered_map>
 #include <string>
 #include "types.h"
 
@@ -9,8 +10,12 @@
 class Game
 {
 private:
-    // Used to undo moves
+    // Store data of previous plies to undo moves
     std::vector<Ply_data> history;
+    
+    // Keep track of the occurrences of each hash to detect threefold
+    // repetition.
+    std::unordered_map<Bitstring, int> hash_count;
 
     // Zobrist hash for the piece positions only
     Bitstring position_hash;
