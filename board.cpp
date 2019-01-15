@@ -117,7 +117,7 @@ Piece Game::piece_on(Square square) const
     return pieces_on_board[(int)square];
 }
 
-Game_state Game::game_state(std::vector<Move> possible_moves) const
+Game_state Game::game_state(std::vector<Move> possible_moves)
 {
     bool legal_moves_exist = false;
     
@@ -180,7 +180,7 @@ Game_state Game::game_state(std::vector<Move> possible_moves) const
 	return Game_state::in_progress;
 }
 
-Game_state Game::game_state() const
+Game_state Game::game_state()
 {
     return game_state(pseudo_legal_moves());
 }
