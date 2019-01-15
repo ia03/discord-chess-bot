@@ -1,9 +1,9 @@
-#include "types.h"
-#include "utils.h"
-#include "game.h"
 #include <map>
 #include <string>
 #include <cctype>
+#include "types.h"
+#include "utils.h"
+#include "game.h"
 
 
 std::map<Piece, std::string> piece_fen =

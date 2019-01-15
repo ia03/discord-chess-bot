@@ -217,7 +217,8 @@ private:
 public:
     // Initializes Zobrist hashing.
     Game();
-    
+
+    // Gets the color of the player who is to play this turn.
     const Color get_turn() const;
 
     // Makes a move and saves the ply data required to undo that move if it is
