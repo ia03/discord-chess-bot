@@ -124,13 +124,13 @@ private:
     void init_hash();
 
     // Returns the bitstring for a square.
-    Bitstring hash_square(Square square);
+    Bitstring hash_square(Square square) const;
 
     // Ends the current turn.
     void end_turn();
 
     // Generates the Zobrist key for the current position.
-    Bitstring hash();
+    Bitstring hash() const;
     
     // Checks the origin and destination squares of a move and updates
     // the castling rights accordingly.
@@ -167,32 +167,32 @@ private:
     void remove_piece(Piece piece, Square square);
 
     // Gets the type of piece on a certain square.
-    Piece piece_on(Square square);
+    Piece piece_on(Square square) const;
 
     // Undoes the last move.
     void undo();
 
     // Generates all pseudo-legal moves for the current player.
-    std::vector<Move> pseudo_legal_moves();
+    std::vector<Move> pseudo_legal_moves() const;
 
     // Generates all pseudo-legal pawn moves for the current player.
-    std::vector<Move> pseudo_legal_pawn_moves();
+    std::vector<Move> pseudo_legal_pawn_moves() const;
 
     // Generates all pseudo-legal knight moves for the current player.
-    std::vector<Move> pseudo_legal_knight_moves();
+    std::vector<Move> pseudo_legal_knight_moves() const;
 
     // Generates all pseudo-legal bishop moves for the current player.
-    std::vector<Move> pseudo_legal_bishop_moves();
+    std::vector<Move> pseudo_legal_bishop_moves() const;
 
     // Generates all pseudo-legal rook moves for the current player. Castling
     // does not count as a rook move.
-    std::vector<Move> pseudo_legal_rook_moves();
+    std::vector<Move> pseudo_legal_rook_moves() const;
 
     // Generates all pseudo-legal queen moves for the current player.
-    std::vector<Move> pseudo_legal_queen_moves();
+    std::vector<Move> pseudo_legal_queen_moves() const;
 
     // Generates all pseudo-legal king moves for the current player.
-    std::vector<Move> pseudo_legal_king_moves();
+    std::vector<Move> pseudo_legal_king_moves() const;
 
     // The recursive function that returns the best evaluation found for a
     // ply. It utilizes minimax with alpha-beta pruning. This will not be
@@ -200,25 +200,25 @@ private:
     int minimax(int depth, int alpha, int beta, bool is_maximizing);
 
     // Uses piece-square tables to evaluate a square.
-    int eval_square(Square square);
+    int eval_square(Square square) const;
 
     // Uses piece-square tables to evaluate the board in its current state.
-    int evaluate();
+    int evaluate() const;
 
     // Checks if there are not enough pieces on the board for a checkmate
     // to be possible.
-    bool insufficient_material();
+    bool insufficient_material() const;
 
     // Checks if the specified square is under attack by a specified player.
-    bool square_attacked(Square square, Color attacker);
+    bool square_attacked(Square square, Color attacker) const;
     
     // Checks if the specified player's king is in check.
-    bool king_in_check(Color color);
+    bool king_in_check(Color color) const;
 public:
     // Initializes Zobrist hashing.
     Game();
     
-    Color get_turn();
+    const Color get_turn() const;
 
     // Makes a move and saves the ply data required to undo that move if it is
     // legal. If the move is illegal, it undoes the move after making it and
@@ -237,20 +237,20 @@ public:
     // the ending position. The fifth optional character indicates the
     // promotion piece. Returns Move::none if the string is invalid.
     // Examples: "b5f8" or "f7F8q"
-    Move string_to_move(std::string string);
+    Move string_to_move(std::string string) const;
 
     // Converts a move to its string representation.
-    std::string move_to_string(Move move);
+    std::string move_to_string(Move move) const;
 
     // Returns the FEN representation of the board.
-    std::string fen();
+    std::string fen() const;
 
     // Checks if the game has ended, and if so, why.
-    Game_state game_state();
+    Game_state game_state() const;
     
     // Using a list of possible moves, checks if the game has ended, and if
     // so, why.
-    Game_state game_state(std::vector<Move> possible_moves);
+    Game_state game_state(std::vector<Move> possible_moves) const;
 };
 
 #endif  //DISCORD_CHESS_BOT_GAME_H

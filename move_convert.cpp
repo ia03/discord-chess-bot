@@ -50,7 +50,7 @@ std::map<Promotion_piece, std::string> promo_bin_to_str =
 };
 
 
-Move Game::string_to_move(std::string move_str)
+Move Game::string_to_move(std::string move_str) const
 {
     int str_len = move_str.length();
     Move_type move_type = Move_type::normal;
@@ -160,7 +160,7 @@ Move Game::string_to_move(std::string move_str)
     return create_move(origin_sq, dest_sq, promo_piece, move_type);
 }
 
-std::string Game::move_to_string(Move move)
+std::string Game::move_to_string(Move move) const
 {
     Square origin_sq = extract_origin_sq(move);
     Square dest_sq = extract_dest_sq(move);

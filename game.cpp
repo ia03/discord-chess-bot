@@ -9,7 +9,7 @@ Game::Game()
     init_hash();
 }
 
-Color Game::get_turn()
+const Color Game::get_turn() const
 {
     return turn;
 }

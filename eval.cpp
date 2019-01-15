@@ -90,7 +90,7 @@ const int flip[64] =
     0,   1,   2,   3,   4,   5,   6,   7
 };
 
-int Game::evaluate()
+int Game::evaluate() const
 {
     int evaluation = 0;
 
@@ -103,7 +103,7 @@ int Game::evaluate()
     return evaluation;
 }
 
-int Game::eval_square(Square square)
+int Game::eval_square(Square square) const
 {
     Piece piece = piece_on(square);
     Color color = piece_color(piece);

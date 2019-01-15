@@ -112,12 +112,12 @@ void Game::remove_piece(Piece piece, Square square)
     pieces_on_board[(int)square] = Piece::none;
 }
 
-Piece Game::piece_on(Square square)
+Piece Game::piece_on(Square square) const
 {
     return pieces_on_board[(int)square];
 }
 
-Game_state Game::game_state(std::vector<Move> possible_moves)
+Game_state Game::game_state(std::vector<Move> possible_moves) const
 {
     // No legal moves for the current player means the game has ended in
     // either a checkmate or stalemate.
@@ -167,12 +167,12 @@ Game_state Game::game_state(std::vector<Move> possible_moves)
 	return Game_state::in_progress;
 }
 
-Game_state Game::game_state()
+Game_state Game::game_state() const
 {
     return game_state(pseudo_legal_moves());
 }
 
-bool Game::insufficient_material()
+bool Game::insufficient_material() const
 {
     // If any pawns, rooks, or queens exist on the board, we know a
     // checkmate is possible.
@@ -212,7 +212,7 @@ bool Game::insufficient_material()
     return true;
 }
 
-std::string Game::fen()
+std::string Game::fen() const
 {
     std::string fen_str;
     
