@@ -127,9 +127,6 @@ struct Ply_data
     Castling_right castling_rights;
     Square en_passant_square;
     int rule50;
-
-    // Zobrist hash - used to detect threefold repetition
-    Bitstring hash;
 };
 
 #endif  //DISCORD_CHESS_BOT_TYPES_H
