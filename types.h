@@ -115,7 +115,7 @@ enum class Game_state
     insufficient_material
 };
 
-// Stores information for a ply. Used to reverse moves and detect repetition.
+// Stores information for a ply. Used to reverse moves.
 struct Ply_data
 {
     // The move that ended this ply
@@ -127,9 +127,6 @@ struct Ply_data
     Castling_right castling_rights;
     Square en_passant_square;
     int rule50;
-
-    // Zobrist hash - used to detect threefold repetition
-    Bitstring hash;
 };
 
 #endif  //DISCORD_CHESS_BOT_TYPES_H

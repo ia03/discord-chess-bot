@@ -86,15 +86,30 @@ bool Game::make_move(Move move)
     Piece moved_piece = piece_on(origin_sq);
     Piece captured_piece = piece_on(dest_sq);
 
-    // Data needs to be saved to undo moves and check for threefold repetition
-    // later.
+    // Data needs to be saved to undo moves later.
     Ply_data ply_data;
     ply_data.last_move = move;
     ply_data.captured_piece = captured_piece;
     ply_data.castling_rights = castling_rights;
     ply_data.en_passant_square = en_passant_square;
     ply_data.rule50 = rule50;
-    ply_data.hash = hash();
+	
+	// Keep track of this hash's occurrence to be able to detect threefold
+	// repetition.
+	Bitstring current_game_hash = hash();
+
+	if (hash_count.find(current_game_hash) == hash_count.end())
+	{
+		hash_count[current_game_hash] = 1;
+	}
+	else
+	{
+		hash_count[current_game_hash]++;
+		if (hash_count[current_game_hash] >= 3)
+		{
+			threefold_repetition = true;
+		}
+	}
 
     update_castling_rights(origin_sq, dest_sq);
 
@@ -275,4 +290,9 @@ void Game::undo()
             add_piece(enemy_pawn, enemy_pawn_sq);
             break;
     }
+
+	// Treat this position as if it never happened for the purposes of
+	// threefold repetition.
+	hash_count[hash()]--;
+	threefold_repetition = false;
 }
