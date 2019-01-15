@@ -95,7 +95,7 @@ bool Game::make_move(Move move)
     ply_data.rule50 = rule50;
 	
 	// Keep track of this hash's occurrence to be able to detect threefold
-	// repetition later on.
+	// repetition.
 	Bitstring current_game_hash = hash();
 
 	if (hash_count.find(current_game_hash) == hash_count.end())
@@ -105,6 +105,10 @@ bool Game::make_move(Move move)
 	else
 	{
 		hash_count[current_game_hash]++;
+		if (hash_count[current_game_hash] >= 3)
+		{
+			threefold_repetition = true;
+		}
 	}
 
     update_castling_rights(origin_sq, dest_sq);
@@ -286,4 +290,9 @@ void Game::undo()
             add_piece(enemy_pawn, enemy_pawn_sq);
             break;
     }
+
+	// Treat this position as if it never happened for the purposes of
+	// threefold repetition.
+	hash_count[hash()]--;
+	threefold_repetition = false;
 }
