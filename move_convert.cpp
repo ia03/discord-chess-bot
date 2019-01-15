@@ -162,17 +162,22 @@ Move Game::string_to_move(std::string move_str) const
 
 std::string Game::move_to_string(Move move) const
 {
+    // Extract the origin and destination squares.
     Square origin_sq = extract_origin_sq(move);
     Square dest_sq = extract_dest_sq(move);
     Move_type move_type = extract_move_type(move);
 
+
     std::string origin_str = index_to_coord[origin_sq];
     std::string dest_str = index_to_coord[dest_sq];
 
+    // Combine the string representations of the origin and destination
+    // squares.
     std::string move_str = origin_str + dest_str;
 
     Piece piece_moved = piece_on(origin_sq);
 
+    // If this is a promotion move, add the promotion piece string too.
     if (move_type == Move_type::promotion)
     {
         Promotion_piece promo_piece = extract_promo_piece(move);

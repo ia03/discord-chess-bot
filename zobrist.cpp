@@ -33,6 +33,7 @@ void Game::init_hash()
 {
     position_hash = 0;
 
+    // XOR the hash of each square.
     for (int i = 0; i < 64; i++)
     {
         position_hash ^= hash_square((Square)i);

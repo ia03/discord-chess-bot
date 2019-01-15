@@ -109,6 +109,7 @@ int Game::eval_square(Square square) const
     Color color = piece_color(piece);
     const int* piece_square_table = nullptr;
 
+    // Obtain the appropriate piece-square table.
     switch (piece)
     {
         case Piece::none:
@@ -139,12 +140,14 @@ int Game::eval_square(Square square) const
             break;
     }
 
-    // Black pieces have a negated evaluation, and the board should be
-    // flipped when evaluating them.
+    // Use the value of the square in the piece-square table as the
+    // evaluation.
     if (color == Color::white)
     {
         return piece_square_table[(int)square];
     }
+    // Black pieces have a negated evaluation, and the board should be
+    // flipped when evaluating them.
     else
     {
         return -piece_square_table[flip[(int)square]];

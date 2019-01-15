@@ -29,6 +29,7 @@ Move create_move(
 {
     Move move = Move::none;
 
+    // Set the values of the move.
     move = set_origin_sq(move, origin_sq);
     move = set_dest_sq(move, dest_sq);
     move = set_promo_piece(move, promo_piece);

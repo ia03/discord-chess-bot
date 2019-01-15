@@ -78,6 +78,7 @@ void Game::invalidate_black_castling()
 
 bool Game::make_move(Move move)
 {
+    // Extract data from the move.
     Square origin_sq = extract_origin_sq(move);
     Square dest_sq = extract_dest_sq(move);
     Promotion_piece promo_piece = extract_promo_piece(move);
@@ -105,19 +106,23 @@ bool Game::make_move(Move move)
 	else
 	{
 		hash_count[current_game_hash]++;
+        // Check if threefold repetition has occurred.
 		if (hash_count[current_game_hash] >= 3)
 		{
 			threefold_repetition = true;
 		}
 	}
 
+    // Update the castling rights.
     update_castling_rights(origin_sq, dest_sq);
-
+    
     rule50++;
     en_passant_square = Square::none;
 
     switch (move_type)
     {
+        // Make a normal move (no capturing, castling, promotion, or en
+        // passant).
         case Move_type::normal:
             remove_piece(moved_piece, origin_sq);
             remove_piece(moved_piece, dest_sq);
@@ -144,6 +149,7 @@ bool Game::make_move(Move move)
                 rule50 = 0;
             }
             break;
+        // Make a castling move.
         case Move_type::castling:
             Square rook_origin_sq;
 
@@ -172,15 +178,20 @@ bool Game::make_move(Move move)
                 return false;
             }
             break;
+        // Make a promotion move.
         case Move_type::promotion:
             remove_piece(moved_piece, origin_sq);
             remove_piece(captured_piece, origin_sq);
             add_piece(promo_piece_to_piece(promo_piece, turn), dest_sq);
 
+            
             rule50 = 0;
             break;
+        // Make an en passant move.
         case Move_type::en_passant:
+            // Move the friendly pawn and remove the enemy pawn.
             remove_piece(moved_piece, origin_sq);
+            add_piece(moved_piece, dest_sq);
             Square enemy_pawn_sq;
             Piece enemy_pawn;
 
@@ -231,11 +242,13 @@ void Game::undo()
 
     switch (move_type)
     {
+        // Undo a normal move.
         case Move_type::normal:
             remove_piece(moved_piece, dest_sq);
             add_piece(moved_piece, origin_sq);
             add_piece(captured_piece, dest_sq);
             break;
+        // Undo a castling move.
         case Move_type::castling:
             Piece rook_type;
             Square rook_origin_sq;
@@ -256,6 +269,7 @@ void Game::undo()
             add_piece(rook_type, rook_origin_sq);
             
             break;
+        // Undo a promotion move.
         case Move_type::promotion:
             remove_piece(moved_piece, dest_sq);
             add_piece(captured_piece, dest_sq);
@@ -273,6 +287,7 @@ void Game::undo()
             
             add_piece(pawn_type, origin_sq);
             break;
+        // Undo an en passant move.
         case Move_type::en_passant:
             remove_piece(moved_piece, dest_sq);
             add_piece(moved_piece, origin_sq);
