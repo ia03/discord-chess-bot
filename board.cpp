@@ -119,9 +119,22 @@ Piece Game::piece_on(Square square) const
 
 Game_state Game::game_state(std::vector<Move> possible_moves) const
 {
+    bool legal_moves_exist = false;
+    
+    // Check if any legal moves exist.
+    for (auto move : possible_moves)
+    {
+        if(make_move(move))
+        {
+            undo();
+            legal_moves_exist = true;
+            break;
+        }
+    }
+    
     // No legal moves for the current player means the game has ended in
     // either a checkmate or stalemate.
-    if (possible_moves.size() == 0)
+    if (!legal_moves_exist)
     {
         // If the current player's king is also in check, it is a checkmate.
         if (king_in_check(turn))
