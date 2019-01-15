@@ -23,9 +23,9 @@ void Game::init_zobrist()
     }
 
     // Initialize castling rights bitstrings
-    for (int i = 0; i < 16; i++)
+    for (int& castling_bitstring : castling_bitstrings)
     {
-        castling_bitstrings[i] = rand_hash();
+        castling_bitstring = rand_hash();
     }
 }
 
