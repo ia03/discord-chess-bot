@@ -41,49 +41,57 @@ Move create_move(
 Move set_origin_sq(Move move, Square origin_sq)
 {
     // Origin square is bits 0-5.
-    return (Move)((int)move | (int)origin_sq);
+    return static_cast<Move>(
+			static_cast<int>move | static_cast<int>origin_sq);
 }
 
 Move set_dest_sq(Move move, Square dest_sq)
 {
     // Destination square is bits 6-11.
-    return (Move)((int)move | ((int)dest_sq << 6));
+    return static_cast<Move>(
+			static_cast<int>move | (static_cast<int>dest_sq << 6));
 }
 
 Move set_promo_piece(Move move, Promotion_piece promo_piece)
 {
     // Promotion piece flag is bits 12-13.
-    return (Move)((int)move | (int)promo_piece);
+    return static_cast<Move>(
+			static_cast<int>move | static_cast<int>promo_piece);
 }
 
 Move set_move_type(Move move, Move_type move_type)
 {
     // Special move flag is bits 14-15.
-    return (Move)((int)move | (int)move_type);
+    return static_cast<Move>(
+			static_cast<int>move | static_cast<int>move_type);
 }
 
 Square extract_origin_sq(Move move)
 {
     // Origin square is bits 0-5.
-    return (Square)((int)move & 0b0000000000111111);
+    return static_cast<Square>(
+			static_cast<int>move & 0b0000000000111111);
 }
 
 Square extract_dest_sq(Move move)
 {
     // Destination square is bits 6-11.
-    return (Square)((int)move & 0b0000111111000000);
+    return static_cast<Square>(
+			static_cast<int>move & 0b0000111111000000);
 }
 
 Promotion_piece extract_promo_piece(Move move)
 {
     // Promotion piece flag is bits 12-13.
-    return (Promotion_piece)((int)move & 0b0011000000000000);
+    return static_cast<Promotion_piece>(
+			static_cast<int>move & 0b0011000000000000);
 }
 
 Move_type extract_move_type(Move move)
 {
     // Special move flag is bits 14-15.
-    return (Move_type)((int)move & 0b1100000000000000);
+    return (Move_type)(
+			static_cast<int>move & 0b1100000000000000);
 }
 
 Color piece_color(Piece piece)
@@ -124,12 +132,12 @@ void find_enemy_pawn_ep(
     if (turn == Color::white)
     {
         enemy_pawn_type = Piece::b_pawn;
-        enemy_pawn_square = (Square)((int)dest_sq - 8);
+        enemy_pawn_square = static_cast<Square>(static_cast<int>dest_sq - 8);
     }
     else
     {
         enemy_pawn_type = Piece::w_pawn;
-        enemy_pawn_square = (Square)((int)dest_sq + 8);
+        enemy_pawn_square = static_cast<Square>(static_cast<int>dest_sq + 8);
     }
 }
 
@@ -235,7 +243,7 @@ std::vector<Move> gen_moves_from_bitboard(Square origin_sq, Bitboard bitboard)
     {
         if ((bitboard & 2) == 1)
         {
-            moves.push_back(set_dest_sq(template_move, (Square)position));
+            moves.push_back(set_dest_sq(template_move, static_cast<Square>position));
         }
         bitboard >>= 1;
     }
@@ -258,5 +266,5 @@ int count_bits_set(Bitboard bitboard)
 
 Bitboard square_to_bb(Square square)
 {
-    return 1 << int(square);
+    return 1 << static_cast<int>(square);
 }
