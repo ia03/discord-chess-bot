@@ -170,8 +170,12 @@ bool Game::make_move(Move move)
             Piece rook_type;
 
             // Set the rook piece type and origin and destination squares.
-            castle_rook_squares(rook_type, rook_origin_sq, rook_dest_sq,
-                                origin_sq, dest_sq);
+            castle_rook_squares(
+                    rook_type,
+                    rook_origin_sq,
+                    rook_dest_sq,
+                    origin_sq,
+                    dest_sq);
 
             remove_piece(moved_piece, origin_sq);
             add_piece(moved_piece, dest_sq);

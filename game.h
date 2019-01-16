@@ -175,23 +175,32 @@ private:
     // Generates all pseudo-legal moves for the current player.
     std::vector<Move> pseudo_legal_moves() const;
 
-    // Generates all pseudo-legal pawn moves for the current player.
-    std::vector<Move> pseudo_legal_pawn_moves() const;
+    // Generates all pseudo-legal moves for a white pawn that belongs to the
+    // player to move this turn.
+    std::vector<Move> pseudo_legal_w_pawn_moves(Square square) const;
+    
+    // Generates all pseudo-legal moves for a black pawn that belongs to the
+    // player to move this turn.
+    std::vector<Move> pseudo_legal_b_pawn_moves(Square square) const;
 
-    // Generates all pseudo-legal knight moves for the current player.
-    std::vector<Move> pseudo_legal_knight_moves() const;
+    // Generates all pseudo-legal knight moves for a knight that belongs to the
+    // player to move this turn.
+    std::vector<Move> pseudo_legal_knight_moves(Square square) const;
 
-    // Generates all pseudo-legal bishop moves for the current player.
-    std::vector<Move> pseudo_legal_bishop_moves() const;
+    // Generates all pseudo-legal bishop moves for a bishop that belongs to the
+    // player to move this turn.
+    std::vector<Move> pseudo_legal_bishop_moves(Square square) const;
 
-    // Generates all pseudo-legal rook moves for the current player. Castling
-    // does not count as a rook move.
-    std::vector<Move> pseudo_legal_rook_moves() const;
+    // Generates all pseudo-legal rook moves for a rook that belongs to the
+    // player to move this turn. Castling does not count as a rook move.
+    std::vector<Move> pseudo_legal_rook_moves(Square square) const;
 
-    // Generates all pseudo-legal queen moves for the current player.
-    std::vector<Move> pseudo_legal_queen_moves() const;
+    // Generates all pseudo-legal queen moves for a queen that belongs to the
+    // player to move this turn.
+    std::vector<Move> pseudo_legal_queen_moves(Square square) const;
 
-    // Generates all pseudo-legal king moves for the current player.
+    // Generates all pseudo-legal king moves for the king that belongs to the
+    // player to move this turn.
     std::vector<Move> pseudo_legal_king_moves() const;
 
     // The recursive function that returns the best evaluation found for a

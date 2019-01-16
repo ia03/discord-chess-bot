@@ -132,12 +132,14 @@ void find_enemy_pawn_ep(
     if (turn == Color::white)
     {
         enemy_pawn_type = Piece::b_pawn;
-        enemy_pawn_square = static_cast<Square>(static_cast<int>(dest_sq) - 8);
+        enemy_pawn_square = static_cast<Square>(
+                static_cast<int>(dest_sq) - 8);
     }
     else
     {
         enemy_pawn_type = Piece::w_pawn;
-        enemy_pawn_square = static_cast<Square>(static_cast<int>(dest_sq) + 8);
+        enemy_pawn_square = static_cast<Square>(
+                static_cast<int>(dest_sq) + 8);
     }
 }
 
@@ -243,7 +245,9 @@ std::vector<Move> gen_moves_from_bitboard(Square origin_sq, Bitboard bitboard)
     {
         if ((bitboard & 2) == 1)
         {
-            moves.push_back(set_dest_sq(template_move, static_cast<Square>(position)));
+            moves.push_back(set_dest_sq(
+                    template_move,
+                    static_cast<Square>(position)));
         }
         bitboard >>= 1;
     }
