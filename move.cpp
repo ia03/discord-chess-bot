@@ -43,22 +43,22 @@ void Game::update_castling_rights(Square origin_sq, Square dest_sq)
 void Game::invalidate_w_kingside_castling()
 {
     castling_rights = static_cast<Castling_right>(
-			 static_cast<int>castling_rights &
-			~static_cast<int>Castling_right::w_kingside);
+			 static_cast<int>(castling_rights) &
+			~static_cast<int>(Castling_right::w_kingside));
 }
 
 void Game::invalidate_w_queenside_castling()
 {
     castling_rights = static_cast<Castling_right>(
-			 static_cast<int>castling_rights &
-			~static_cast<int>Castling_right::w_queenside);
+			 static_cast<int>(castling_rights) &
+			~static_cast<int>(Castling_right::w_queenside));
 }
 
 void Game::invalidate_white_castling()
 {
     castling_rights = static_cast<Castling_right>(
-			 static_cast<int>castling_rights &
-			~static_cast<int>Castling_right::white);
+			 static_cast<int>(castling_rights) &
+			~static_cast<int>(Castling_right::white));
 }
 
 void Game::invalidate_b_kingside_castling()
@@ -71,15 +71,15 @@ void Game::invalidate_b_kingside_castling()
 void Game::invalidate_b_queenside_castling()
 {
     castling_rights = static_cast<Castling_right>(
-			static_cast<int>castling_rights &
-			~static_cast<int>Castling_right::b_queenside);
+			static_cast<int>(castling_rights) &
+			~static_cast<int>(Castling_right::b_queenside));
 }
 
 void Game::invalidate_black_castling()
 {
     castling_rights = static_cast<Castling_right>(
-		 static_cast<int>castling_rights &
-        ~static_cast<int>Castling_right::black);
+		 static_cast<int>(castling_rights) &
+        ~static_cast<int>(Castling_right::black));
 }
 
 bool Game::make_move(Move move)
@@ -138,18 +138,18 @@ bool Game::make_move(Move move)
             // square.
             if ((moved_piece == Piece::w_pawn) &&
 						(dest_sq == static_cast<Square>(
-								(static_cast<int>origin_sq + 16)))
+								(static_cast<int>(origin_sq) + 16)))
             {
                 en_passant_square = static_cast<Square>(
-						static_cast<int>origin_sq + 8);
+						static_cast<int>(origin_sq) + 8);
             }
 			// Two-square black pawn move.
             else if ((moved_piece == Piece::b_pawn) &&
 							(dest_sq == static_cast<Square>(
-									static_cast<int>origin_sq - 16)))
+									static_cast<int>(origin_sq) - 16)))
             {
                 en_passant_square = static_cast<Square>(
-						static_cast<int>origin_sq - 8);
+						static_cast<int>(origin_sq) - 8);
             }
 
             // If a piece was captured or a pawn was moved, reset the 50-move
