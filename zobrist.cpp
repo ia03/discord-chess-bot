@@ -10,16 +10,16 @@ void Game::init_zobrist()
     black_bitstring = rand_hash();
 
     // Initialize bitstrings for each square
-    for (int i = 0; i < 64; i++)
+    for (auto square = 0; square < 64; square++)
     {
-        w_pawn_bitstrings[i] = rand_hash();
-        w_knight_bitstrings[i] = rand_hash();
-        w_bishop_bitstrings[i] = rand_hash();
-        w_rook_bitstrings[i] = rand_hash();
-        w_queen_bitstrings[i] = rand_hash();
-        w_king_bitstrings[i] = rand_hash();
+        w_pawn_bitstrings[square] = rand_hash();
+        w_knight_bitstrings[square] = rand_hash();
+        w_bishop_bitstrings[square] = rand_hash();
+        w_rook_bitstrings[square] = rand_hash();
+        w_queen_bitstrings[square] = rand_hash();
+        w_king_bitstrings[square] = rand_hash();
 
-        en_passant_bitstrings[i] = rand_hash();
+        en_passant_bitstrings[square] = rand_hash();
     }
 
     // Initialize castling rights bitstrings
@@ -34,7 +34,7 @@ void Game::init_hash()
     position_hash = 0;
 
     // XOR the hash of each square.
-    for (int i = 0; i < 64; i++)
+    for (auto square = 0; square < 64; square++)
     {
         position_hash ^= hash_square((Square)i);
     }
