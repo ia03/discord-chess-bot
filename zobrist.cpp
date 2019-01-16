@@ -36,7 +36,7 @@ void Game::init_hash()
     // XOR the hash of each square.
     for (auto square = 0; square < 64; square++)
     {
-        position_hash ^= hash_square(static_cast<Square>(i));
+        position_hash ^= hash_square(static_cast<Square>(square));
     }
 }
 
