@@ -96,10 +96,10 @@ int Game::minimax(int depth, int alpha, int beta, bool is_maximizing)
 	if (is_maximizing)
 	{
 		int best_eval = -infinity;
-		for (int i = 0; i < possible_moves.size(); i++)
+		for (auto move : possible_moves)
 		{
 			// If the move is illegal, skip it.
-			if (!make_move(possible_moves[i]))
+			if (!make_move(move))
 			{
 				continue;
 			}
@@ -122,9 +122,9 @@ int Game::minimax(int depth, int alpha, int beta, bool is_maximizing)
 	else
 	{
 		int best_eval = infinity;
-		for (int i = 0; i < possible_moves.size(); i++)
+		for (auto move : possible_moves)
 		{
-			if (!make_move(possible_moves[i]))
+			if (!make_move(move))
 			{
 				continue;
 			}
