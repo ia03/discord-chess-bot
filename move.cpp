@@ -64,8 +64,8 @@ void Game::invalidate_white_castling()
 void Game::invalidate_b_kingside_castling()
 {
     castling_rights = static_cast<Castling_right>(
-			 static_cast<int>castling_rights &
-			~static_cast<int>Castling_right::b_kingside);
+			 static_cast<int>(castling_rights) &
+			~static_cast<int>(Castling_right::b_kingside));
 }
 
 void Game::invalidate_b_queenside_castling()
@@ -138,7 +138,7 @@ bool Game::make_move(Move move)
             // square.
             if ((moved_piece == Piece::w_pawn) &&
 						(dest_sq == static_cast<Square>(
-								(static_cast<int>(origin_sq) + 16)))
+								static_cast<int>(origin_sq) + 16)))
             {
                 en_passant_square = static_cast<Square>(
 						static_cast<int>(origin_sq) + 8);
