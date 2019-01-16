@@ -73,7 +73,7 @@ void Game::add_piece(Piece piece, Square square)
         return;
     }
     
-    Bitboard piece_position = 1 << static_cast<int>square;
+    Bitboard piece_position = 1 << static_cast<int>(square);
     Bitboard &piece_bitboard = get_piece_bitboard(piece);
     Bitboard &color_bitboard = get_color_bitboard(piece_color(piece));
 
@@ -83,7 +83,7 @@ void Game::add_piece(Piece piece, Square square)
     all_bitboard |= piece_position;
     
     // Update the piece array.
-    pieces_on_board[static_cast<int>square] = piece;
+    pieces_on_board[static_cast<int>(square)] = piece;
     
     // Update the position hash.
     position_hash ^= hash_square(square);
@@ -99,7 +99,7 @@ void Game::remove_piece(Piece piece, Square square)
     // Update the position hash.
     position_hash ^= hash_square(square);
     
-    Bitboard piece_position = 1 << static_cast<int>square;
+    Bitboard piece_position = 1 << static_cast<int>(square);
     Bitboard &piece_bitboard = get_piece_bitboard(piece);
     Bitboard &color_bitboard = get_color_bitboard(piece_color(piece));
     
@@ -109,12 +109,12 @@ void Game::remove_piece(Piece piece, Square square)
     all_bitboard &= ~piece_position;
     
     // Update the piece array.
-    pieces_on_board[static_cast<int>square] = Piece::none;
+    pieces_on_board[static_cast<int>(square)] = Piece::none;
 }
 
 Piece Game::piece_on(Square square) const
 {
-    return pieces_on_board[static_cast<int>square];
+    return pieces_on_board[static_cast<int>(square)];
 }
 
 Game_state Game::game_state(std::vector<Move> possible_moves)
@@ -235,7 +235,7 @@ std::string Game::fen() const
         // Go through each square in this row.
         for (auto position = row * 8; position < 8; position++)
         {
-            Piece piece = piece_on(static_cast<Square>position);
+            Piece piece = piece_on(static_cast<Square>(position));
             if (piece != Piece::none)
             {
                 fen_str += piece_fen[piece];
