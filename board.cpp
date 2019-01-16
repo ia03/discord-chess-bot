@@ -230,10 +230,10 @@ std::string Game::fen() const
     std::string fen_str;
     
     // Generate an FEN string for each row.
-    for (int i = 0; i < 8; i++)
+    for (int row = 0; row < 8; row++)
     {
         // Go through each square in this row.
-        for (int position = i * 8; position < 8; position++)
+        for (int position = row * 8; position < 8; position++)
         {
             Piece piece = piece_on((Square)position);
             if (piece != Piece::none)
