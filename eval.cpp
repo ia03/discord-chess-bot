@@ -97,7 +97,7 @@ int Game::evaluate() const
     // Add up the evaluation of all the pieces.
     for (auto square = 0; square < 64; square++)
     {
-        evaluation += eval_square(static_cast<Square>square);
+        evaluation += eval_square(static_cast<Square>(square));
     }
     
     return evaluation;
@@ -144,13 +144,13 @@ int Game::eval_square(Square square) const
     // evaluation.
     if (color == Color::white)
     {
-        return piece_square_table[static_cast<int>square];
+        return piece_square_table[static_cast<int>(square)];
     }
     // Black pieces have a negated evaluation, and the board should be
     // flipped when evaluating them.
     else
     {
-        return -piece_square_table[flip[static_cast<int>square]];
+        return -piece_square_table[flip[static_cast<int>(square)]];
     }
 }
 
