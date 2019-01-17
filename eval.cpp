@@ -95,9 +95,9 @@ int Game::evaluate() const
     int evaluation = 0;
 
     // Add up the evaluation of all the pieces.
-    for (auto square = 0; square < 64; square++)
+    for (auto square_index = 0; square_index < 64; square_index++)
     {
-        evaluation += eval_square(static_cast<Square>(square));
+        evaluation += eval_square(static_cast<Square>(square_index));
     }
     
     return evaluation;
