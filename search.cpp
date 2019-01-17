@@ -30,7 +30,7 @@ Move Game::best_move()
 	}
 
 	// Go through all the moves and pick the one with the best evaluation.
-	for (auto& move : possible_moves)
+	for (aut const &move : possible_moves)
 	{
 		// If the move is illegal, skip it.
 		if (!make_move(move))
@@ -96,7 +96,7 @@ int Game::minimax(int depth, int alpha, int beta, bool is_maximizing)
 	if (is_maximizing)
 	{
 		int best_eval = -infinity;
-		for (auto move : possible_moves)
+		for (auto const &move : possible_moves)
 		{
 			// If the move is illegal, skip it.
 			if (!make_move(move))
@@ -122,7 +122,7 @@ int Game::minimax(int depth, int alpha, int beta, bool is_maximizing)
 	else
 	{
 		int best_eval = infinity;
-		for (auto move : possible_moves)
+		for (auto const &move : possible_moves)
 		{
 			if (!make_move(move))
 			{
