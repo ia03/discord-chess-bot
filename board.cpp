@@ -122,7 +122,7 @@ Game_state Game::game_state(std::vector<Move> possible_moves)
     bool legal_moves_exist = false;
     
     // Check if any legal moves exist.
-    for (auto move : possible_moves)
+    for (auto const &move : possible_moves)
     {
         if(make_move(move))
         {
