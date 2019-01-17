@@ -43,42 +43,42 @@ void Game::update_castling_rights(Square origin_sq, Square dest_sq)
 void Game::invalidate_w_kingside_castling()
 {
     castling_rights = static_cast<Castling_right>(
-			 static_cast<int>(castling_rights) &
-			~static_cast<int>(Castling_right::w_kingside));
+             static_cast<int>(castling_rights) &
+            ~static_cast<int>(Castling_right::w_kingside));
 }
 
 void Game::invalidate_w_queenside_castling()
 {
     castling_rights = static_cast<Castling_right>(
-			 static_cast<int>(castling_rights) &
-			~static_cast<int>(Castling_right::w_queenside));
+             static_cast<int>(castling_rights) &
+            ~static_cast<int>(Castling_right::w_queenside));
 }
 
 void Game::invalidate_white_castling()
 {
     castling_rights = static_cast<Castling_right>(
-			 static_cast<int>(castling_rights) &
-			~static_cast<int>(Castling_right::white));
+             static_cast<int>(castling_rights) &
+            ~static_cast<int>(Castling_right::white));
 }
 
 void Game::invalidate_b_kingside_castling()
 {
     castling_rights = static_cast<Castling_right>(
-			 static_cast<int>(castling_rights) &
-			~static_cast<int>(Castling_right::b_kingside));
+             static_cast<int>(castling_rights) &
+            ~static_cast<int>(Castling_right::b_kingside));
 }
 
 void Game::invalidate_b_queenside_castling()
 {
     castling_rights = static_cast<Castling_right>(
-			static_cast<int>(castling_rights) &
-			~static_cast<int>(Castling_right::b_queenside));
+            static_cast<int>(castling_rights) &
+            ~static_cast<int>(Castling_right::b_queenside));
 }
 
 void Game::invalidate_black_castling()
 {
     castling_rights = static_cast<Castling_right>(
-		 static_cast<int>(castling_rights) &
+         static_cast<int>(castling_rights) &
         ~static_cast<int>(Castling_right::black));
 }
 
@@ -100,24 +100,24 @@ bool Game::make_move(Move move)
     ply_data.castling_rights = castling_rights;
     ply_data.en_passant_square = en_passant_square;
     ply_data.rule50 = rule50;
-	
-	// Keep track of this hash's occurrence to be able to detect threefold
-	// repetition.
-	Bitstring current_game_hash = hash();
+    
+    // Keep track of this hash's occurrence to be able to detect threefold
+    // repetition.
+    Bitstring current_game_hash = hash();
 
-	if (hash_count.find(current_game_hash) == hash_count.end())
-	{
-		hash_count[current_game_hash] = 1;
-	}
-	else
-	{
-		hash_count[current_game_hash]++;
+    if (hash_count.find(current_game_hash) == hash_count.end())
+    {
+        hash_count[current_game_hash] = 1;
+    }
+    else
+    {
+        hash_count[current_game_hash]++;
         // Check if threefold repetition has occurred.
-		if (hash_count[current_game_hash] >= 3)
-		{
-			threefold_repetition = true;
-		}
-	}
+        if (hash_count[current_game_hash] >= 3)
+        {
+            threefold_repetition = true;
+        }
+    }
 
     // Update the castling rights.
     update_castling_rights(origin_sq, dest_sq);
@@ -137,19 +137,19 @@ bool Game::make_move(Move move)
             // If the move was a two-square pawn move, set the en passant
             // square.
             if ((moved_piece == Piece::w_pawn) &&
-						(dest_sq == static_cast<Square>(
-								static_cast<int>(origin_sq) + 16)))
+                (dest_sq == static_cast<Square>(
+						static_cast<int>(origin_sq) + 16)))
             {
                 en_passant_square = static_cast<Square>(
-						static_cast<int>(origin_sq) + 8);
+                        static_cast<int>(origin_sq) + 8);
             }
-			// Two-square black pawn move.
+            // Two-square black pawn move.
             else if ((moved_piece == Piece::b_pawn) &&
-							(dest_sq == static_cast<Square>(
-									static_cast<int>(origin_sq) - 16)))
+                     (dest_sq == static_cast<Square>(
+							static_cast<int>(origin_sq) - 16)))
             {
                 en_passant_square = static_cast<Square>(
-						static_cast<int>(origin_sq) - 8);
+                        static_cast<int>(origin_sq) - 8);
             }
 
             // If a piece was captured or a pawn was moved, reset the 50-move
@@ -321,8 +321,8 @@ void Game::undo()
             break;
     }
 
-	// Treat this position as if it never happened for the purposes of
-	// threefold repetition.
-	hash_count[hash()]--;
-	threefold_repetition = false;
+    // Treat this position as if it never happened for the purposes of
+    // threefold repetition.
+    hash_count[hash()]--;
+    threefold_repetition = false;
 }
