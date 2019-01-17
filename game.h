@@ -174,6 +174,12 @@ private:
 
     // Generates all pseudo-legal moves for the current player.
     std::vector<Move> pseudo_legal_moves() const;
+    
+    // Generates all pseudo-legal moves for White.
+    std::vector<Move> pseudo_legal_w_moves() const;
+    
+    // Generates all pseudo-legal moves for Black.
+    std::vector<Move> pseudo_legal_b_moves() const;
 
     // Generates all pseudo-legal moves for a white pawn that belongs to the
     // player to move this turn.
