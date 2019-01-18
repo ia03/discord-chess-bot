@@ -38,6 +38,75 @@ Move create_move(
     return move;
 }
 
+Move create_normal_move(Square origin_sq, Square dest_sq)
+{
+    return create_move(
+            origin_sq,
+            dest_sq,
+            Promotion_piece::none,
+            Move_type::normal
+    );
+}
+
+std::array<Move, 4> create_promo_moves(Square origin_sq, Square dest_sq)
+{
+    std::array<Move, 4> moves;
+    
+    // Create the queen move.
+    moves[0] = create_move(
+            origin_sq,
+            dest_sq,
+            Promotion_piece::queen,
+            Move_type::normal
+    );
+    
+    // Create the rook move.
+    moves[1] = create_move(
+            origin_sq,
+            dest_sq,
+            Promotion_piece::rook,
+            Move_type::normal
+    );
+    
+    // Create the bishop move.
+    moves[2] = create_move(
+            origin_sq,
+            dest_sq,
+            Promotion_piece::bishop,
+            Move_type::normal
+    );
+    
+    // Create the knight move.
+    moves[3] = create_move(
+            origin_sq,
+            dest_sq,
+            Promotion_piece::knight,
+            Move_type::normal
+    );
+    
+    return moves;
+}
+
+Move create_en_passant_move(Square origin_sq, Square dest_sq)
+{
+    return create_move(
+            origin_sq,
+            dest_sq,
+            Promotion_piece::none,
+            Move_type::en_passant
+    );
+}
+
+Move create_castling_move(Square origin_sq, Square dest_sq)
+{
+    return create_move(
+            origin_sq,
+            dest_sq,
+            Promotion_piece::none,
+            Move_type::castling
+    );
+}
+
 Move set_origin_sq(Move move, Square origin_sq)
 {
     // Origin square is bits 0-5.

@@ -23,7 +23,7 @@ void Game::init_zobrist()
     }
 
     // Initialize castling rights bitstrings
-    for (auto const &castling_bitstring : castling_bitstrings)
+    for (auto &castling_bitstring : castling_bitstrings)
     {
         castling_bitstring = rand_hash();
     }
@@ -81,7 +81,7 @@ Bitstring Game::hash() const
     // The position hash is already calculated.
     // XOR it with the turn, castling rights, and en passant square bitstrings
     // to get the final hash.
-    Bitstring hash_result = position_hash;
+    auto hash_result = position_hash;
 
     if (turn == Color::white)
     {

@@ -1,5 +1,6 @@
 #ifndef DISCORD_CHESS_BOT_GAME_H
 #define DISCORD_CHESS_BOT_GAME_H
+#include <array>
 #include <vector>
 #include <unordered_map>
 #include <string>
@@ -21,19 +22,19 @@ private:
     Bitstring position_hash;
 
     // Bitstrings for each square/piece combination
-    Bitstring w_pawn_bitstrings [64];
-    Bitstring w_knight_bitstrings [64];
-    Bitstring w_bishop_bitstrings [64];
-    Bitstring w_rook_bitstrings [64];
-    Bitstring w_queen_bitstrings [64];
-    Bitstring w_king_bitstrings [64];
+    std::array<Bitstring, 64> w_pawn_bitstrings;
+    std::array<Bitstring, 64> w_knight_bitstrings;
+    std::array<Bitstring, 64> w_bishop_bitstrings;
+    std::array<Bitstring, 64> w_rook_bitstrings;
+    std::array<Bitstring, 64> w_queen_bitstrings;
+    std::array<Bitstring, 64> w_king_bitstrings;
 
-    Bitstring b_pawn_bitstrings [64];
-    Bitstring b_knight_bitstrings [64];
-    Bitstring b_bishop_bitstrings [64];
-    Bitstring b_rook_bitstrings [64];
-    Bitstring b_queen_bitstrings [64];
-    Bitstring b_king_bitstrings [64];
+    std::array<Bitstring, 64> b_pawn_bitstrings;
+    std::array<Bitstring, 64> b_knight_bitstrings;
+    std::array<Bitstring, 64> b_bishop_bitstrings;
+    std::array<Bitstring, 64> b_rook_bitstrings;
+    std::array<Bitstring, 64> b_queen_bitstrings;
+    std::array<Bitstring, 64> b_king_bitstrings;
 
     // Bitstrings for the side to move
     Bitstring white_bitstring;
@@ -41,10 +42,10 @@ private:
 
     // Bitstrings for each possible combination of castling rights.
     // 2 possible values ^ 4 castling rights = 16 combinations
-    Bitstring castling_bitstrings [16];
+    std::array<Bitstring, 16> castling_bitstrings;
 
     // Bitstrings for the en passant squares.
-    Bitstring en_passant_bitstrings [64];
+    std::array<Bitstring, 64> en_passant_bitstrings;
 
     // Bitboards - White
     Bitboard w_pawn_bitboard   = 0xFF00;
@@ -82,7 +83,7 @@ private:
     Bitboard all_bitboard = white_bitboard | black_bitboard;
 
     
-    Piece pieces_on_board [64] =
+    std::array<Piece, 64> pieces_on_board =
     {
         Piece::w_rook, Piece::w_knight, Piece::w_bishop, Piece::w_queen, Piece::w_king, Piece::w_bishop, Piece::w_knight, Piece::w_rook,
         Piece::w_pawn,   Piece::w_pawn,   Piece::w_pawn,  Piece::w_pawn, Piece::w_pawn,   Piece::w_pawn,   Piece::w_pawn, Piece::w_pawn,

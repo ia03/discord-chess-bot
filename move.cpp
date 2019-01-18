@@ -78,20 +78,20 @@ void Game::invalidate_b_queenside_castling()
 void Game::invalidate_black_castling()
 {
     castling_rights = static_cast<Castling_right>(
-         static_cast<int>(castling_rights) &
-        ~static_cast<int>(Castling_right::black));
+            static_cast<int>(castling_rights) &
+            ~static_cast<int>(Castling_right::black));
 }
 
 bool Game::make_move(Move move)
 {
     // Extract data from the move.
-    Square origin_sq = extract_origin_sq(move);
-    Square dest_sq = extract_dest_sq(move);
-    Promotion_piece promo_piece = extract_promo_piece(move);
-    Move_type move_type = extract_move_type(move);
+    auto origin_sq = extract_origin_sq(move);
+    auto dest_sq = extract_dest_sq(move);
+    auto promo_piece = extract_promo_piece(move);
+    auto move_type = extract_move_type(move);
 
-    Piece moved_piece = piece_on(origin_sq);
-    Piece captured_piece = piece_on(dest_sq);
+    auto moved_piece = piece_on(origin_sq);
+    auto captured_piece = piece_on(dest_sq);
 
     // Data needs to be saved to undo moves later.
     Ply_data ply_data;
@@ -103,7 +103,7 @@ bool Game::make_move(Move move)
     
     // Keep track of this hash's occurrence to be able to detect threefold
     // repetition.
-    Bitstring current_game_hash = hash();
+    auto current_game_hash = hash();
 
     if (hash_count.find(current_game_hash) == hash_count.end())
     {
@@ -127,8 +127,7 @@ bool Game::make_move(Move move)
 
     switch (move_type)
     {
-        // Make a normal move (no capturing, castling, promotion, or en
-        // passant).
+        // Make a normal move (no castling, promotion, or en passant).
         case Move_type::normal:
             remove_piece(moved_piece, origin_sq);
             remove_piece(moved_piece, dest_sq);

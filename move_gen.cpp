@@ -104,7 +104,7 @@ std::vector<Move> Game::pseudo_legal_moves() const
 std::vector<Move> Game::pseudo_legal_w_pawn_moves(Square square) const
 {
 	std::vector<Move> possible_moves;
-	pawn_bitboard = square_to_bb(square);
+	auto pawn_bitboard = square_to_bb(square);
 	
 	bool pawn_on_2nd_row = (pawn_bitboard & row_2) != 0;
 	bool pawn_on_7th_row = (pawn_bitboard & row_7) != 0;
@@ -116,11 +116,9 @@ std::vector<Move> Game::pseudo_legal_w_pawn_moves(Square square) const
     // the pawn is not on the 7th row and that square is not occupied.
     if (!pawn_on_7th_row && ((pawn_bitboard << 8) & all_bitboard == 0))
 	{
-		possible_moves.append(create_move(
+		possible_moves.push_back(create_normal_move(
 				square,
 				static_cast<Square>(static_cast<int>(square) + 8),
-				Promotion_piece::none,
-				Move_type::normal
 		));
 	}
 	
@@ -128,34 +126,16 @@ std::vector<Move> Game::pseudo_legal_w_pawn_moves(Square square) const
 	// occupied, generate all non-capture promotion moves.
 	else if (pawn_on_7th_row && ((pawn_bitboard << 8) & all_bitboard == 0))
 	{
-		// Queen
-		possible_moves.append(create_move(
-				square,
-				static_cast<Square>(static_cast<int>(square) + 8),
-				Promotion_piece::queen,
-				Move_type::promotion
-		));
-		// Rook
-		possible_moves.append(create_move(
-				square,
-				static_cast<Square>(static_cast<int>(square) + 8),
-				Promotion_piece::rook,
-				Move_type::promotion
-		));
-		// Bishop
-		possible_moves.append(create_move(
-				square,
-				static_cast<Square>(static_cast<int>(square) + 8),
-				Promotion_piece::bishop,
-				Move_type::promotion
-		));
-		// Knight
-		possible_moves.append(create_move(
-				square,
-				static_cast<Square>(static_cast<int>(square) + 8),
-				Promotion_piece::knight,
-				Move_type::promotion
-		));
+        auto promo_moves = create_promo_moves(
+                square,
+                static_cast<Square>(static_cast<int>(square) + 8)
+        );
+        
+        possible_moves.insert(
+                possible_moves.end(),
+                promo_moves.begin(),
+                promo_moves.end()
+        );
 	}
 	
     // If the pawn is not on the 7th row and is not on the H column
@@ -164,11 +144,9 @@ std::vector<Move> Game::pseudo_legal_w_pawn_moves(Square square) const
 	if (!pawn_on_7th_row && !pawn_on_h_col &&
 		((pawn_bitboard << 9) & black_bitboard != 0))
 	{
-		possible_moves.append(create_move(
+		possible_moves.push_back(create_normal_move(
 				square,
 				static_cast<Square>(static_cast<int>(square) + 9),
-				Promotion_piece::none,
-				Move_type::normal
 		));
 	}
     // If the pawn is not on the 7th row and is not on the A column
@@ -177,11 +155,9 @@ std::vector<Move> Game::pseudo_legal_w_pawn_moves(Square square) const
 	if (!pawn_on_7th_row && !pawn_on_h_col &&
 		((pawn_bitboard << 7) & black_bitboard != 0))
 	{
-		possible_moves.append(create_move(
+		possible_moves.push_back(create_normal_move(
 				square,
-				static_cast<Square>(static_cast<int>(square) + 7),
-				Promotion_piece::none,
-				Move_type::normal
+				static_cast<Square>(static_cast<int>(square) + 7)
 		));
 	}
 	if (pawn_on_7th_row && !pawn_on_h_col &&

@@ -30,7 +30,7 @@ Move Game::best_move()
 	}
 
 	// Go through all the moves and pick the one with the best evaluation.
-	for (aut const &move : possible_moves)
+	for (auto &move : possible_moves)
 	{
 		// If the move is illegal, skip it.
 		if (!make_move(move))

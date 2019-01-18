@@ -2,6 +2,7 @@
 #define DISCORD_CHESS_BOT_UTILS_H
 
 #include <vector>
+#include <array>
 #include "types.h"
 
 
@@ -49,6 +50,20 @@ Move create_move(
         Promotion_piece promo_piece,
         Move_type move_type
 );
+
+// Creates a normal move (no castling, promotion, or en passant)
+// from one square to another.
+Move create_normal_move(Square origin_sq, Square dest_sq);
+
+// Creates all the promotion moves from one square to another.
+std::array<Move, 4> create_promo_moves(Square origin_sq, Square dest_sq);
+
+// Creates an en passant move from one square to another.
+Move create_en_passant_move(Square origin_sq, Square dest_sq);
+
+// Creates a castling move from one square to another. The origin and
+// destination squares are those of the king.
+Move create_castling_move(Square origin_sq, Square dest_sq);
 
 // Extracts the origin square.
 Square extract_origin_sq(Move move);
