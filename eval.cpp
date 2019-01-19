@@ -103,10 +103,10 @@ int Game::evaluate() const
     return evaluation;
 }
 
-int Game::eval_square(Square square) const
+int Game::eval_square(const Square square) const
 {
-    Piece piece = piece_on(square);
-    Color color = piece_color(piece);
+    const Piece piece = piece_on(square);
+    const Color color = piece_color(piece);
     const int* piece_square_table = nullptr;
 
     // Obtain the appropriate piece-square table.

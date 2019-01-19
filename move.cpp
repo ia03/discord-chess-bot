@@ -3,7 +3,10 @@
 #include "game.h"
 
 
-void Game::update_castling_rights(Square origin_sq, Square dest_sq)
+void Game::update_castling_rights(
+        const Square origin_sq,
+        const Square dest_sq
+)
 {
     // Invalidate a specific type of castling if a rook moves or is captured.
     // White kingside castling
@@ -82,16 +85,16 @@ void Game::invalidate_black_castling()
             ~static_cast<int>(Castling_right::black));
 }
 
-bool Game::make_move(Move move)
+bool Game::make_move(const Move move)
 {
     // Extract data from the move.
-    auto origin_sq = extract_origin_sq(move);
-    auto dest_sq = extract_dest_sq(move);
-    auto promo_piece = extract_promo_piece(move);
-    auto move_type = extract_move_type(move);
+    const auto origin_sq = extract_origin_sq(move);
+    const auto dest_sq = extract_dest_sq(move);
+    const auto promo_piece = extract_promo_piece(move);
+    const auto move_type = extract_move_type(move);
 
-    auto moved_piece = piece_on(origin_sq);
-    auto captured_piece = piece_on(dest_sq);
+    const auto moved_piece = piece_on(origin_sq);
+    const auto captured_piece = piece_on(dest_sq);
 
     // Data needs to be saved to undo moves later.
     Ply_data ply_data;
@@ -103,7 +106,7 @@ bool Game::make_move(Move move)
     
     // Keep track of this hash's occurrence to be able to detect threefold
     // repetition.
-    auto current_game_hash = hash();
+    const auto current_game_hash = hash();
 
     if (hash_count.find(current_game_hash) == hash_count.end())
     {
@@ -236,7 +239,7 @@ void Game::undo()
 {
     end_turn();
 
-    Ply_data last_ply = history.back();
+    const Ply_data last_ply = history.back();
     history.pop_back();
 
     castling_rights = last_ply.castling_rights;
@@ -244,11 +247,11 @@ void Game::undo()
     rule50 = last_ply.rule50;
     Piece captured_piece = last_ply.captured_piece;
 
-    Move move = last_ply.last_move;
-    Square origin_sq = extract_origin_sq(move);
-    Square dest_sq = extract_dest_sq(move);
-    Move_type move_type = extract_move_type(move);
-    Piece moved_piece = piece_on(dest_sq);
+    const Move move = last_ply.last_move;
+    const Square origin_sq = extract_origin_sq(move);
+    const Square dest_sq = extract_dest_sq(move);
+    const Move_type move_type = extract_move_type(move);
+    const Piece moved_piece = piece_on(dest_sq);
 
     switch (move_type)
     {

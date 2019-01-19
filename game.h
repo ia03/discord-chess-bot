@@ -135,7 +135,7 @@ private:
     
     // Checks the origin and destination squares of a move and updates
     // the castling rights accordingly.
-    void update_castling_rights(Square origin_sq, Square dest_sq);
+    void update_castling_rights(const Square origin_sq, const Square dest_sq);
 
     // Invalidates white kingside castling.
     void invalidate_w_kingside_castling();
@@ -156,19 +156,25 @@ private:
     void invalidate_black_castling();
     
     // Returns a reference to the specified piece type's bitboard.
-    Bitboard &get_piece_bitboard(Piece piece);
+    Bitboard &get_piece_bitboard(const Piece piece);
     
     // Returns a reference to the specified color's bitboard.
-    Bitboard &get_color_bitboard(Color color);
+    Bitboard &get_color_bitboard(const Color color);
     
     // Adds a piece to the board.
-    void add_piece(Piece piece, Square square);
+    void add_piece(const Piece piece, const Square square);
 
     // Adds a piece to the board.
-    void remove_piece(Piece piece, Square square);
+    void remove_piece(const Piece piece, const Square square);
 
     // Gets the type of piece on a certain square.
-    Piece piece_on(Square square) const;
+    Piece piece_on(const Square square) const;
+    
+    // Checks if the specified square is occupied.
+    bool is_occupied(const Square square) const;
+    
+    // Checks if the specified square is occupied by a certain colour.
+    bool is_occupied(const Square square, const Color color) const;
 
     // Undoes the last move.
     void undo();
@@ -184,99 +190,99 @@ private:
     
     // Generates the pawn north-by-1 move using the origin square. Returns
     // Move::none if the move would not be pseudo-legal.
-    Move pawn_north_move(Square origin_sq) const;
+    Move pawn_north_move(const Square origin_sq) const;
     
     // Generates the pawn south-by-1 move using the origin square. Returns
     // Move::none if the move would not be pseudo-legal.
-    Move pawn_south_move(Square origin_sq) const;
+    Move pawn_south_move(const Square origin_sq) const;
     
     // Generates the pawn north-by-2 move using the origin square. Returns
     // Move::none if the move would not be pseudo-legal.
-    Move pawn_north_north_move(Square origin_sq) const;
+    Move pawn_north_north_move(const Square origin_sq) const;
     
     // Generates the pawn south-by-2 move using the origin square. Returns
     // Move::none if the move would not be pseudo-legal.
-    Move pawn_south_south_move(Square origin_sq) const;
+    Move pawn_south_south_move(const Square origin_sq) const;
     
     // Generates the pawn north-east capture move using the origin square.
     // Returns Move::none if the move would not be pseudo-legal.
-    Move pawn_north_east_move(Square origin_sq) const;
+    Move pawn_north_east_move(const Square origin_sq) const;
     
     // Generates the pawn south-east capture move using the origin square.
     // Returns Move::none if the move would not be pseudo-legal.
-    Move pawn_south_east_move(Square origin_sq) const;
+    Move pawn_south_east_move(const Square origin_sq) const;
     
     // Generates the pawn north-west capture move using the origin square.
     // Returns Move::none if the move would not be pseudo-legal.
-    Move pawn_north_west_move(Square origin_sq) const;
+    Move pawn_north_west_move(const Square origin_sq) const;
     
     // Generates the pawn south-west capture move using the origin square.
     // Returns Move::none if the move would not be pseudo-legal.
-    Move pawn_north_south_move(Square origin_sq) const;
+    Move pawn_south_west_move(const Square origin_sq) const;
     
     // Generates the pawn north-east en passant move using the origin square.
     // Returns Move::none if the move would not be pseudo-legal.
-    Move pawn_ep_north_east_move(Square origin_sq) const;
+    Move pawn_ep_north_east_move(const Square origin_sq) const;
     
     // Generates the pawn south-east en passant move using the origin square.
     // Returns Move::none if the move would not be pseudo-legal.
-    Move pawn_ep_south_east_move(Square origin_sq) const;
+    Move pawn_ep_south_east_move(const Square origin_sq) const;
     
     // Generates the pawn north-west en passant move using the origin square.
     // Returns Move::none if the move would not be pseudo-legal.
-    Move pawn_ep_north_west_move(Square origin_sq) const;
+    Move pawn_ep_north_west_move(const Square origin_sq) const;
     
     // Generates the pawn south-west en passant move using the origin square.
     // Returns Move::none if the move would not be pseudo-legal.
-    Move pawn_ep_south_west_move(Square origin_sq) const;
+    Move pawn_ep_south_west_move(const Square origin_sq) const;
     
     // Generates the 4 north-by-1 promotion moves using the origin square.
     // Returns Move::none if the moves would not be pseudo-legal.
-    std::array<Move, 4> pawn_promo_north_moves(Square origin_sq) const;
+    std::array<Move, 4> pawn_promo_north_moves(const Square origin_sq) const;
     
     // Generates the 4 south-by-1 promotion moves using the origin square.
     // Returns Move::none if the moves would not be pseudo-legal.
-    std::array<Move, 4> pawn_promo_south_moves(Square origin_sq) const;
+    std::array<Move, 4> pawn_promo_south_moves(const Square origin_sq) const;
     
     // Generates the 4 north-east promotion capture moves using the origin
     // square. Returns Move::none if the moves would not be pseudo-legal.
-    std::array<Move, 4> pawn_promo_north_east_moves(Square origin_sq) const;
+    std::array<Move, 4> pawn_promo_north_east_moves(const Square origin_sq) const;
     
     // Generates the 4 south-east promotion capture moves using the origin
     // square. Returns Move::none if the moves would not be pseudo-legal.
-    std::array<Move, 4> pawn_promo_south_east_moves(Square origin_sq) const;
+    std::array<Move, 4> pawn_promo_south_east_moves(const Square origin_sq) const;
     
     // Generates the 4 north-west promotion capture moves using the origin
     // square. Returns Move::none if the moves would not be pseudo-legal.
-    std::array<Move, 4> pawn_promo_north_west_moves(Square origin_sq) const;
+    std::array<Move, 4> pawn_promo_north_west_moves(const Square origin_sq) const;
     
     // Generates the 4 south-west promotion capture moves using the origin
     // square. Returns Move::none if the moves would not be pseudo-legal.
-    std::array<Move, 4> pawn_promo_south_west_moves(Square origin_sq) const;
+    std::array<Move, 4> pawn_promo_south_west_moves(const Square origin_sq) const;
 
     // Generates all pseudo-legal moves for a white pawn that belongs to the
     // player to move this turn.
-    std::vector<Move> pseudo_legal_w_pawn_moves(Square square) const;
+    std::vector<Move> pseudo_legal_w_pawn_moves(const Square square) const;
     
     // Generates all pseudo-legal moves for a black pawn that belongs to the
     // player to move this turn.
-    std::vector<Move> pseudo_legal_b_pawn_moves(Square square) const;
+    std::vector<Move> pseudo_legal_b_pawn_moves(const Square square) const;
 
     // Generates all pseudo-legal knight moves for a knight that belongs to the
     // player to move this turn.
-    std::vector<Move> pseudo_legal_knight_moves(Square square) const;
+    std::vector<Move> pseudo_legal_knight_moves(const Square square) const;
 
     // Generates all pseudo-legal bishop moves for a bishop that belongs to the
     // player to move this turn.
-    std::vector<Move> pseudo_legal_bishop_moves(Square square) const;
+    std::vector<Move> pseudo_legal_bishop_moves(const Square square) const;
 
     // Generates all pseudo-legal rook moves for a rook that belongs to the
     // player to move this turn. Castling does not count as a rook move.
-    std::vector<Move> pseudo_legal_rook_moves(Square square) const;
+    std::vector<Move> pseudo_legal_rook_moves(const Square square) const;
 
     // Generates all pseudo-legal queen moves for a queen that belongs to the
     // player to move this turn.
-    std::vector<Move> pseudo_legal_queen_moves(Square square) const;
+    std::vector<Move> pseudo_legal_queen_moves(const Square square) const;
 
     // Generates all pseudo-legal king moves for the king that belongs to the
     // player to move this turn.
@@ -288,7 +294,7 @@ private:
     int minimax(int depth, int alpha, int beta, bool is_maximizing);
 
     // Uses piece-square tables to evaluate a square.
-    int eval_square(Square square) const;
+    int eval_square(const Square square) const;
 
     // Uses piece-square tables to evaluate the board in its current state.
     int evaluate() const;
@@ -302,15 +308,6 @@ private:
     
     // Checks if the specified player's king is in check.
     bool king_in_check(Color color) const;
-    
-    // Checks if the specified square is occupied.
-    bool is_occupied(Square square) const;
-    
-    // Checks if the specified square is occupied by a white piece.
-    bool is_occupied_by_white(Square square) const;
-    
-    // Checks if the specified square is occupied by a black piece.
-    bool is_occupied_by_black(Square square) const;
 public:
     // Initializes Zobrist hashing.
     Game();
@@ -321,7 +318,7 @@ public:
     // Makes a move and saves the ply data required to undo that move if it is
     // legal. If the move is illegal, it undoes the move after making it and
     // returns false. The move is assumed to be pseudo-legal.
-    bool make_move(Move move);
+    bool make_move(const Move move);
 
     // Checks if a move is pseudo-legal.
     bool is_pseudo_legal(Move move);
@@ -335,10 +332,10 @@ public:
     // the ending position. The fifth optional character indicates the
     // promotion piece. Returns Move::none if the string is invalid.
     // Examples: "b5f8" or "f7F8q"
-    Move string_to_move(std::string string) const;
+    Move string_to_move(const std::string string) const;
 
     // Converts a move to its string representation.
-    std::string move_to_string(Move move) const;
+    std::string move_to_string(const Move move) const;
 
     // Returns the FEN representation of the board.
     std::string fen() const;
@@ -348,7 +345,7 @@ public:
     
     // Using a list of possible moves, checks if the game has ended, and if
     // so, why.
-    Game_state game_state(std::vector<Move> possible_moves);
+    Game_state game_state(const std::vector<Move> &possible_moves);
 };
 
 #endif  //DISCORD_CHESS_BOT_GAME_H

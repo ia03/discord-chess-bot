@@ -104,6 +104,14 @@ enum class Color
     black
 };
 
+enum class Direction
+{
+    north,
+    east,
+    south,
+    west
+};
+
 enum class Game_state
 {
     in_progress,

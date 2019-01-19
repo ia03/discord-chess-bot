@@ -4,7 +4,7 @@
 #include "utils.h"
 
 
-Color reverse_color(Color color)
+Color reverse_color(const Color color)
 {
     if (color == Color::white)
     {
@@ -21,10 +21,10 @@ Color reverse_color(Color color)
 }
 
 Move create_move(
-        Square origin_sq,
-        Square dest_sq,
-        Promotion_piece promo_piece,
-        Move_type move_type
+        const Square origin_sq,
+        const Square dest_sq,
+        const Promotion_piece promo_piece,
+        const Move_type move_type
 )
 {
     Move move = Move::none;
@@ -38,7 +38,7 @@ Move create_move(
     return move;
 }
 
-Move create_normal_move(Square origin_sq, Square dest_sq)
+Move create_normal_move(const Square origin_sq, const Square dest_sq)
 {
     return create_move(
             origin_sq,
@@ -48,7 +48,10 @@ Move create_normal_move(Square origin_sq, Square dest_sq)
     );
 }
 
-std::array<Move, 4> create_promo_moves(Square origin_sq, Square dest_sq)
+std::array<Move, 4> create_promo_moves(
+        const Square origin_sq,
+        const Square dest_sq
+)
 {
     std::array<Move, 4> moves;
     
@@ -87,7 +90,7 @@ std::array<Move, 4> create_promo_moves(Square origin_sq, Square dest_sq)
     return moves;
 }
 
-Move create_en_passant_move(Square origin_sq, Square dest_sq)
+Move create_en_passant_move(const Square origin_sq, const Square dest_sq)
 {
     return create_move(
             origin_sq,
@@ -97,7 +100,7 @@ Move create_en_passant_move(Square origin_sq, Square dest_sq)
     );
 }
 
-Move create_castling_move(Square origin_sq, Square dest_sq)
+Move create_castling_move(const Square origin_sq, const Square dest_sq)
 {
     return create_move(
             origin_sq,
@@ -107,63 +110,63 @@ Move create_castling_move(Square origin_sq, Square dest_sq)
     );
 }
 
-Move set_origin_sq(Move move, Square origin_sq)
+Move set_origin_sq(const Move move, const Square origin_sq)
 {
     // Origin square is bits 0-5.
     return static_cast<Move>(
 			static_cast<int>(move) | static_cast<int>(origin_sq));
 }
 
-Move set_dest_sq(Move move, Square dest_sq)
+Move set_dest_sq(const Move move, const Square dest_sq)
 {
     // Destination square is bits 6-11.
     return static_cast<Move>(
 			static_cast<int>(move) | (static_cast<int>(dest_sq) << 6));
 }
 
-Move set_promo_piece(Move move, Promotion_piece promo_piece)
+Move set_promo_piece(const Move move, const Promotion_piece promo_piece)
 {
     // Promotion piece flag is bits 12-13.
     return static_cast<Move>(
 			static_cast<int>(move) | static_cast<int>(promo_piece));
 }
 
-Move set_move_type(Move move, Move_type move_type)
+Move set_move_type(const Move move, const Move_type move_type)
 {
     // Special move flag is bits 14-15.
     return static_cast<Move>(
 			static_cast<int>(move) | static_cast<int>(move_type));
 }
 
-Square extract_origin_sq(Move move)
+Square extract_origin_sq(const Move move)
 {
     // Origin square is bits 0-5.
     return static_cast<Square>(
 			static_cast<int>(move) & 0b0000000000111111);
 }
 
-Square extract_dest_sq(Move move)
+Square extract_dest_sq(const Move move)
 {
     // Destination square is bits 6-11.
     return static_cast<Square>(
 			static_cast<int>(move) & 0b0000111111000000);
 }
 
-Promotion_piece extract_promo_piece(Move move)
+Promotion_piece extract_promo_piece(const Move move)
 {
     // Promotion piece flag is bits 12-13.
     return static_cast<Promotion_piece>(
 			static_cast<int>(move) & 0b0011000000000000);
 }
 
-Move_type extract_move_type(Move move)
+Move_type extract_move_type(const Move move)
 {
     // Special move flag is bits 14-15.
     return (Move_type)(
 			static_cast<int>(move) & 0b1100000000000000);
 }
 
-Color piece_color(Piece piece)
+Color piece_color(const Piece piece)
 {
     switch (piece)
     {
@@ -191,8 +194,8 @@ Color piece_color(Piece piece)
 void find_enemy_pawn_ep(
         Piece &enemy_pawn_type,
         Square &enemy_pawn_square,
-        Square dest_sq,
-        Color turn
+        const Square dest_sq,
+        const Color turn
 )
 {
     // If this is White's move, the captured pawn will be 1 square
@@ -214,8 +217,8 @@ void castle_rook_squares(
         Piece &rook_type,
         Square &rook_origin_sq,
         Square &rook_dest_sq,
-        Square king_origin_sq,
-        Square king_dest_sq
+        const Square king_origin_sq,
+        const Square king_dest_sq
 )
 {
     // White
@@ -256,7 +259,10 @@ void castle_rook_squares(
     }
 }
 
-Piece promo_piece_to_piece(Promotion_piece promo_piece, Color color)
+Piece promo_piece_to_piece(
+        const Promotion_piece promo_piece,
+        const Color color
+)
 {
     if (color == Color::white)
     {
@@ -298,13 +304,15 @@ Bitstring rand_hash()
     return generator();
 }
 
-std::vector<Move> gen_moves_from_bitboard(Square origin_sq, Bitboard bitboard)
+std::vector<Move> gen_moves_from_bitboard(
+        const Square origin_sq,
+        Bitboard bitboard
+)
 {
     std::vector<Move> moves;
-    Move template_move = Move::none;
     
     // Set the origin square.
-    template_move = set_origin_sq(template_move, origin_sq);
+    const Move template_move = set_origin_sq(template_move, origin_sq);
 
     // Get the positions of the set bits in the bitboard and use them to
     // create moves.
@@ -335,37 +343,94 @@ int count_bits_set(Bitboard bitboard)
     return i;
 }
 
-Bitboard square_to_bb(Square square)
+Bitboard square_to_bb(const Square square)
 {
     return 1 << static_cast<int>(square);
 }
 
-Square north_of(Square origin_sq)
+Square north_of(const Square origin_sq)
 {
     return static_cast<Square>(static_cast<int>(origin_sq) + 8);
 }
 
-Square south_of(Square origin_sq)
+Square south_of(const Square origin_sq)
 {
     return static_cast<Square>(static_cast<int>(origin_sq) - 8);
 }
 
-Square east_of(Square origin_sq)
+Square east_of(const Square origin_sq)
 {
     return static_cast<Square>(static_cast<int>(origin_sq) + 1);
 }
 
-Square west_of(Square origin_sq)
+Square west_of(const Square origin_sq)
 {
     return static_cast<Square>(static_cast<int>(origin_sq) - 8);
 }
 
-bool on_bitboard(Square square, Bitboard bitboard)
+bool on_bitboard(const Square square, const Bitboard bitboard)
 {
     return on_bitboard(square_to_bb(square), bitboard);
 }
 
-bool on_bitboard(Bitboard bitboard1, Bitboard bitboard2)
+bool on_bitboard(const Bitboard bitboard1, const Bitboard bitboard2)
 {
     return bitboard1 & bitboard2 != 0;
+}
+
+Square find_dest_square(
+        const Square origin_sq,
+        const std::vector<Direction> &directions
+)
+{
+    auto dest_sq = origin_sq;
+    const Bitboard origin_bb = square_to_bb(origin_sq);
+    int north_count = 0;
+    int east_count = 0;
+    int south_count = 0;
+    int west_count = 0;
+    
+    // Keep track of each directional move of the square, making sure it does
+    // not exit the boundaries of the board. If it does not, then continue
+    // moving it until all the requested moves have been made.
+    for (const auto &direction : directions)
+    {
+        switch (direction)
+        {
+            case Direction::north:
+                if (on_bitboard(origin_bb, rows[7 - north_count]))
+                {
+                    return Square::none;
+                }
+                dest_sq = north_of(dest_sq);
+                north_count++;
+                break;
+            case Direction::east:
+                if (on_bitboard(origin_bb, cols[7 - east_count]))
+                {
+                    return Square::none;
+                }
+                dest_sq = east_of(dest_sq);
+                east_count++;
+                break;
+            case Direction::south:
+                if (on_bitboard(origin_bb, rows[south_count]))
+                {
+                    return Square::none;
+                }
+                dest_sq = south_of(dest_sq);
+                south_count++;
+                break;
+            case Direction::west:
+                if (on_bitboard(origin_bb, cols[west_count]))
+                {
+                    return Square::none;
+                }
+                dest_sq = west_of(dest_sq);
+                west_count++;
+                break;
+        }
+    }
+    
+    return dest_sq;
 }

@@ -9,7 +9,7 @@ const int infinity = 9999999;
 
 Move Game::best_move()
 {
-    std::vector<Move> possible_moves = pseudo_legal_moves();
+    const std::vector<Move> possible_moves = pseudo_legal_moves();
 	Move best_move;
 	
 	int best_eval;
@@ -30,14 +30,14 @@ Move Game::best_move()
 	}
 
 	// Go through all the moves and pick the one with the best evaluation.
-	for (auto &move : possible_moves)
+	for (const auto &move : possible_moves)
 	{
 		// If the move is illegal, skip it.
 		if (!make_move(move))
 		{
 			continue;
 		}
-		int eval = minimax(depth, -infinity, infinity, !is_maximizing);
+		const int eval = minimax(depth, -infinity, infinity, !is_maximizing);
 		undo();
 		
 		if (is_maximizing)
@@ -63,9 +63,9 @@ Move Game::best_move()
 
 int Game::minimax(int depth, int alpha, int beta, bool is_maximizing)
 {
-	std::vector<Move> possible_moves = pseudo_legal_moves();
+	const std::vector<Move> possible_moves = pseudo_legal_moves();
 
-	Game_state state = game_state(possible_moves);
+	const Game_state state = game_state(possible_moves);
 
 	// A checkmate should be counted as an evaluation of infinity for White or
 	// an evaluation of -infinity for Black, as it is the best position for
@@ -95,7 +95,7 @@ int Game::minimax(int depth, int alpha, int beta, bool is_maximizing)
 	
 	if (is_maximizing)
 	{
-		int best_eval = -infinity;
+		const int best_eval = -infinity;
 		for (auto const &move : possible_moves)
 		{
 			// If the move is illegal, skip it.
@@ -103,7 +103,7 @@ int Game::minimax(int depth, int alpha, int beta, bool is_maximizing)
 			{
 				continue;
 			}
-			int eval = minimax(depth - 1, alpha, beta, false);
+			const int eval = minimax(depth - 1, alpha, beta, false);
 			undo();
 			
 			// Alpha-beta pruning - stops the search of this position when it
@@ -121,14 +121,14 @@ int Game::minimax(int depth, int alpha, int beta, bool is_maximizing)
 	}
 	else
 	{
-		int best_eval = infinity;
+		const int best_eval = infinity;
 		for (auto const &move : possible_moves)
 		{
 			if (!make_move(move))
 			{
 				continue;
 			}
-			int eval = minimax(depth - 1, alpha, beta, true);
+			const int eval = minimax(depth - 1, alpha, beta, true);
 			undo();
 			
 			// Alpha-beta pruning - stops the search of this position when it

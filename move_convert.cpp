@@ -50,9 +50,9 @@ std::map<Promotion_piece, std::string> promo_bin_to_str =
 };
 
 
-Move Game::string_to_move(std::string move_str) const
+Move Game::string_to_move(const std::string move_str) const
 {
-    int str_len = move_str.length();
+    const int str_len = move_str.length();
     Move_type move_type = Move_type::normal;
 
     // The input string has an invalid length.
@@ -62,7 +62,7 @@ Move Game::string_to_move(std::string move_str) const
     }
 
     // First two characters are the origin square.
-    std::string origin_str = move_str.substr(0, 2);
+    const std::string origin_str = move_str.substr(0, 2);
 
     // Invalid origin square.
     if (coord_to_index.find(origin_str) == coord_to_index.end())
@@ -70,10 +70,10 @@ Move Game::string_to_move(std::string move_str) const
         return Move::none;
     }
 
-    Square origin_sq = coord_to_index[origin_str];
+    const Square origin_sq = coord_to_index[origin_str];
 
     // Third and fourth characters are the destination square.
-    std::string destination_str = move_str.substr(2, 2);
+    const std::string destination_str = move_str.substr(2, 2);
 
     // Invalid destination square.
     if (coord_to_index.find(destination_str) == coord_to_index.end())
@@ -81,16 +81,16 @@ Move Game::string_to_move(std::string move_str) const
         return Move::none;
     }
 
-    Square dest_sq = coord_to_index[destination_str];
+    const Square dest_sq = coord_to_index[destination_str];
     
-    Bitboard dest_bb = square_to_bb(dest_sq);
+    const Bitboard dest_bb = square_to_bb(dest_sq);
 
     Promotion_piece promo_piece = Promotion_piece::none;
 
     if (str_len == 5)
     {
         // Fifth character is the promotion type (optional).
-        std::string promo_str = move_str.substr(4, 1);
+        const std::string promo_str = move_str.substr(4, 1);
 
         // Invalid promotion type.
         if(promo_str_to_bin.find(promo_str) == promo_str_to_bin.end())
@@ -101,7 +101,7 @@ Move Game::string_to_move(std::string move_str) const
         promo_piece = promo_str_to_bin[promo_str];
     }
 
-    Piece piece_moved = piece_on(origin_sq);
+    const Piece piece_moved = piece_on(origin_sq);
 
     // Check if this is a castling move.
     if (piece_moved == Piece::w_king || piece_moved == Piece::b_king)
@@ -160,28 +160,28 @@ Move Game::string_to_move(std::string move_str) const
     return create_move(origin_sq, dest_sq, promo_piece, move_type);
 }
 
-std::string Game::move_to_string(Move move) const
+std::string Game::move_to_string(const Move move) const
 {
     // Extract the origin and destination squares.
-    Square origin_sq = extract_origin_sq(move);
-    Square dest_sq = extract_dest_sq(move);
-    Move_type move_type = extract_move_type(move);
+    const Square origin_sq = extract_origin_sq(move);
+    const Square dest_sq = extract_dest_sq(move);
+    const Move_type move_type = extract_move_type(move);
 
 
-    std::string origin_str = index_to_coord[origin_sq];
-    std::string dest_str = index_to_coord[dest_sq];
+    const std::string origin_str = index_to_coord[origin_sq];
+    const std::string dest_str = index_to_coord[dest_sq];
 
     // Combine the string representations of the origin and destination
     // squares.
     std::string move_str = origin_str + dest_str;
 
-    Piece piece_moved = piece_on(origin_sq);
+    const Piece piece_moved = piece_on(origin_sq);
 
     // If this is a promotion move, add the promotion piece string too.
     if (move_type == Move_type::promotion)
     {
-        Promotion_piece promo_piece = extract_promo_piece(move);
-        std::string promo_str = promo_bin_to_str[promo_piece];
+        const Promotion_piece promo_piece = extract_promo_piece(move);
+        const std::string promo_str = promo_bin_to_str[promo_piece];
         move_str += promo_str;
     }
 

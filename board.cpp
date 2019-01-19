@@ -22,7 +22,7 @@ std::map<Piece, std::string> piece_fen =
     {Piece::b_king,   "k"}
 };
 
-Bitboard &Game::get_piece_bitboard(Piece piece)
+Bitboard &Game::get_piece_bitboard(const Piece piece)
 {
     switch (piece)
     {
@@ -54,7 +54,7 @@ Bitboard &Game::get_piece_bitboard(Piece piece)
     }
 }
 
-Bitboard &Game::get_color_bitboard(Color color)
+Bitboard &Game::get_color_bitboard(const Color color)
 {
     if (color == Color::white)
     {
@@ -66,14 +66,14 @@ Bitboard &Game::get_color_bitboard(Color color)
     }
 }
 
-void Game::add_piece(Piece piece, Square square)
+void Game::add_piece(const Piece piece, const Square square)
 {
     if (piece == Piece::none)
     {
         return;
     }
     
-    Bitboard piece_position = square_to_bb(square);
+    const Bitboard piece_position = square_to_bb(square);
     Bitboard &piece_bitboard = get_piece_bitboard(piece);
     Bitboard &color_bitboard = get_color_bitboard(piece_color(piece));
 
@@ -89,7 +89,7 @@ void Game::add_piece(Piece piece, Square square)
     position_hash ^= hash_square(square);
 }
 
-void Game::remove_piece(Piece piece, Square square)
+void Game::remove_piece(const Piece piece, const Square square)
 {
     if (piece == Piece::none)
     {
@@ -99,7 +99,7 @@ void Game::remove_piece(Piece piece, Square square)
     // Update the position hash.
     position_hash ^= hash_square(square);
     
-    Bitboard piece_position = square_to_bb(square);
+    const Bitboard piece_position = square_to_bb(square);
     Bitboard &piece_bitboard = get_piece_bitboard(piece);
     Bitboard &color_bitboard = get_color_bitboard(piece_color(piece));
     
@@ -112,7 +112,7 @@ void Game::remove_piece(Piece piece, Square square)
     pieces_on_board[static_cast<int>(square)] = Piece::none;
 }
 
-Piece Game::piece_on(Square square) const
+Piece Game::piece_on(const Square square) const
 {
     return pieces_on_board[static_cast<int>(square)];
 }
@@ -157,22 +157,24 @@ bool Game::insufficient_material() const
     return true;
 }
 
-bool Game::is_occupied(Square square) const
+bool Game::is_occupied(const Square square) const
 {
     return square_to_bb(square) & all_bitboard != 0;
 }
 
-bool Game::is_occupied_by_white(Square square) const
+bool Game::is_occupied(const Square square, const Color color) const
 {
-    return square_to_bb(square) & white_bitboard != 0;
+    if (color == Color::white)
+    {
+        return square_to_bb(square) & white_bitboard != 0;
+    }
+    else
+    {
+        return square_to_bb(square) & black_bitboard != 0;
+    }
 }
 
-bool Game::is_occupied_by_black(Square square) const
-{
-    return square_to_bb(square) & black_bitboard != 0;
-}
-
-Game_state Game::game_state(std::vector<Move> possible_moves)
+Game_state Game::game_state(const std::vector<Move> &possible_moves)
 {
     bool legal_moves_exist = false;
     
@@ -252,14 +254,14 @@ std::string Game::fen() const
         // Go through each square in this row.
         for (auto position = row * 8; position < 8; position++)
         {
-            Piece piece = piece_on(static_cast<Square>(position));
+            const Piece piece = piece_on(static_cast<Square>(position));
             if (piece != Piece::none)
             {
                 fen_str += piece_fen[piece];
             }
             else
             {
-                char last_char = fen_str.back();
+                const char last_char = fen_str.back();
                 // Add 1 to the last character if it is a number.
                 if (isdigit(last_char))
                 {
