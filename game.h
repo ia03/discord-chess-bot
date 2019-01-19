@@ -230,6 +230,9 @@ private:
     
     // Checks if the specified player's king is in check.
     bool king_in_check(Color color) const;
+    
+    // Checks if the specified square is occupied.
+    bool is_occupied(Square square) const;
 public:
     // Initializes Zobrist hashing.
     Game();

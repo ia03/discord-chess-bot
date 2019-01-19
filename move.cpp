@@ -136,19 +136,15 @@ bool Game::make_move(Move move)
             // If the move was a two-square pawn move, set the en passant
             // square.
             if ((moved_piece == Piece::w_pawn) &&
-                (dest_sq == static_cast<Square>(
-						static_cast<int>(origin_sq) + 16)))
+                (dest_sq == north_of(north_of(origin_sq))))
             {
-                en_passant_square = static_cast<Square>(
-                        static_cast<int>(origin_sq) + 8);
+                en_passant_square = north_of(origin_sq);
             }
             // Two-square black pawn move.
             else if ((moved_piece == Piece::b_pawn) &&
-                     (dest_sq == static_cast<Square>(
-							static_cast<int>(origin_sq) - 16)))
+                     (dest_sq == south_of(south_of(origin_sq))))
             {
-                en_passant_square = static_cast<Square>(
-                        static_cast<int>(origin_sq) - 8);
+                en_passant_square = south_of(origin_sq);
             }
 
             // If a piece was captured or a pawn was moved, reset the 50-move

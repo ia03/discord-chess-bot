@@ -73,7 +73,7 @@ void Game::add_piece(Piece piece, Square square)
         return;
     }
     
-    Bitboard piece_position = 1 << static_cast<int>(square);
+    Bitboard piece_position = square_to_bb(square);
     Bitboard &piece_bitboard = get_piece_bitboard(piece);
     Bitboard &color_bitboard = get_color_bitboard(piece_color(piece));
 
@@ -99,7 +99,7 @@ void Game::remove_piece(Piece piece, Square square)
     // Update the position hash.
     position_hash ^= hash_square(square);
     
-    Bitboard piece_position = 1 << static_cast<int>(square);
+    Bitboard piece_position = square_to_bb(square);
     Bitboard &piece_bitboard = get_piece_bitboard(piece);
     Bitboard &color_bitboard = get_color_bitboard(piece_color(piece));
     
@@ -115,6 +115,61 @@ void Game::remove_piece(Piece piece, Square square)
 Piece Game::piece_on(Square square) const
 {
     return pieces_on_board[static_cast<int>(square)];
+}
+
+bool Game::insufficient_material() const
+{
+    // If any pawns, rooks, or queens exist on the board, we know a
+    // checkmate is possible.
+    if (w_pawn_bitboard != 0 || b_pawn_bitboard != 0 ||
+        w_rook_bitboard != 0 || b_rook_bitboard != 0 ||
+        w_queen_bitboard != 0 || b_queen_bitboard != 0)
+    {
+        return false;
+    }
+    
+    // If a player has 2 bishops of different square colours, a checkmate is
+    // possible.
+    if (((w_bishop_bitboard & white_squares) != 0 &&
+         (w_bishop_bitboard & black_squares) != 0) ||
+        ((b_bishop_bitboard & white_squares) != 0 &&
+         (b_bishop_bitboard & black_squares) != 0))
+    {
+        return false;
+    }
+    
+    // If a player has 2 knights, a checkmate is possible.
+    if (count_bits_set(w_knight_bitboard) > 1 ||
+        count_bits_set(b_knight_bitboard) > 1)
+    {
+        return false;
+    }
+    
+    // If a player has a knight and a bishop, a checkmate is possible.
+    if ((w_knight_bitboard != 0 && w_bishop_bitboard != 0) ||
+        (b_knight_bitboard != 0 && b_bishop_bitboard != 0))
+    {
+        return false;
+    }
+    
+    // If none of the above conditions are met, we can assume that a checkmate
+    // would not be possible.
+    return true;
+}
+
+bool is_occupied(Square square) const
+{
+    return square_to_bb(square) & all_bitboard != 0;
+}
+
+bool is_occupied_by_white(Square square) const
+{
+    return square_to_bb(square) & white_bitboard != 0;
+}
+
+bool is_occupied_by_black(Square square) const
+{
+    return square_to_bb(square) & black_bitboard != 0;
 }
 
 Game_state Game::game_state(std::vector<Move> possible_moves)
@@ -185,45 +240,7 @@ Game_state Game::game_state()
     return game_state(pseudo_legal_moves());
 }
 
-bool Game::insufficient_material() const
-{
-    // If any pawns, rooks, or queens exist on the board, we know a
-    // checkmate is possible.
-    if (w_pawn_bitboard != 0 || b_pawn_bitboard != 0 ||
-        w_rook_bitboard != 0 || b_rook_bitboard != 0 ||
-        w_queen_bitboard != 0 || b_queen_bitboard != 0)
-    {
-        return false;
-    }
-    
-    // If a player has 2 bishops of different square colours, a checkmate is
-    // possible.
-    if (((w_bishop_bitboard & white_squares) != 0 &&
-         (w_bishop_bitboard & black_squares) != 0) ||
-        ((b_bishop_bitboard & white_squares) != 0 &&
-         (b_bishop_bitboard & black_squares) != 0))
-    {
-        return false;
-    }
-    
-    // If a player has 2 knights, a checkmate is possible.
-    if (count_bits_set(w_knight_bitboard) > 1 ||
-        count_bits_set(b_knight_bitboard) > 1)
-    {
-        return false;
-    }
-    
-    // If a player has a knight and a bishop, a checkmate is possible.
-    if ((w_knight_bitboard != 0 && w_bishop_bitboard != 0) ||
-        (b_knight_bitboard != 0 && b_bishop_bitboard != 0))
-    {
-        return false;
-    }
-    
-    // If none of the above conditions are met, we can assume that a checkmate
-    // would not be possible.
-    return true;
-}
+
 
 std::string Game::fen() const
 {

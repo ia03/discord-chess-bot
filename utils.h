@@ -117,4 +117,16 @@ int count_bits_set(Bitboard bitboard);
 // Converts a square to a bitboard with a single bit turned on.
 Bitboard square_to_bb(Square square);
 
+// Returns the square north of the origin square.
+Square north_of(Square origin_sq);
+
+// Returns the square south of the origin square.
+Square south_of(Square origin_sq);
+
+// Determines if a square is on a bitboard.
+bool on_bitboard(Square square, Bitboard bitboard);
+
+// Determines if a bitboard has any set bits on another bitboard.
+bool on_bitboard(Bitboard bitboard1, Bitboard bitboard2);
+
 #endif  //DISCORD_CHESS_BOT_UTILS_H

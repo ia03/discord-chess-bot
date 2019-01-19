@@ -137,7 +137,7 @@ Move Game::string_to_move(std::string move_str) const
             move_type = Move_type::en_passant;
         }
         // To 8th or 1st row - promotion.
-        else if ((dest_bb & row_8) != 0 || (dest_bb & row_1) != 0)
+        else if (on_bitboard(dest_bb, row_8) || on_bitboard(dest_bb, row_1))
         {
             move_type = Move_type::promotion;
         }

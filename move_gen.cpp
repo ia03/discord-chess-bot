@@ -1,4 +1,5 @@
 #include <vector>
+#include <array>
 #include "game.h"
 #include "utils.h"
 
@@ -9,27 +10,24 @@ std::vector<Move> Game::pseudo_legal_w_moves() const
 	for (auto square_index = 0; square_index < 64; square_index++)
 	{
 		std::vector<Move> piece_moves;
-		switch (piece_on(static_cast<Square>(square_index)))
+        Square square = static_cast<Square>(square_index);
+        
+		switch (piece_on(square))
 		{
 			case Piece::w_pawn:
-				piece_moves = pseudo_legal_w_pawn_moves(
-						static_cast<Square>(square_index));
+				piece_moves = pseudo_legal_w_pawn_moves(square);
 				break;
 			case Piece::w_knight:
-				piece_moves = pseudo_legal_knight_moves(
-						static_cast<Square>(square_index));
+				piece_moves = pseudo_legal_knight_moves(square);
 				break;
 			case Piece::w_bishop:
-				piece_moves = pseudo_legal_bishop_moves(
-						static_cast<Square>(square_index));
+				piece_moves = pseudo_legal_bishop_moves(square);
 				break;
 			case Piece::w_rook:
-				piece_moves = pseudo_legal_rook_moves(
-						static_cast<Square>(square_index));
+				piece_moves = pseudo_legal_rook_moves(square);
 				break;
 			case Piece::w_queen:
-				piece_moves = pseudo_legal_queen_moves(
-						static_cast<Square>(square_index));
+				piece_moves = pseudo_legal_queen_moves(square);
 				break;
 			case Piece::w_king:
 				piece_moves = pseudo_legal_king_moves();
@@ -52,27 +50,24 @@ std::vector<Move> Game::pseudo_legal_b_moves() const
 	for (auto square_index = 0; square_index < 64; square_index++)
 	{
 		std::vector<Move> piece_moves;
-		switch (piece_on(static_cast<Square>(square_index)))
+        Square square = static_cast<Square>(square_index);
+        
+		switch (piece_on(square))
 		{
 			case Piece::b_pawn:
-				piece_moves = pseudo_legal_b_pawn_moves(
-						static_cast<Square>(square_index));
+				piece_moves = pseudo_legal_b_pawn_moves(square);
 				break;
 			case Piece::b_knight:
-				piece_moves = pseudo_legal_knight_moves(
-						static_cast<Square>(square_index));
+				piece_moves = pseudo_legal_knight_moves(square);
 				break;
 			case Piece::b_bishop:
-				piece_moves = pseudo_legal_bishop_moves(
-						static_cast<Square>(square_index));
+				piece_moves = pseudo_legal_bishop_moves(square);
 				break;
 			case Piece::b_rook:
-				piece_moves = pseudo_legal_rook_moves(
-						static_cast<Square>(square_index));
+				piece_moves = pseudo_legal_rook_moves(square);
 				break;
 			case Piece::b_queen:
-				piece_moves = pseudo_legal_queen_moves(
-						static_cast<Square>(square_index));
+				piece_moves = pseudo_legal_queen_moves(square);
 				break;
 			case Piece::b_king:
 				piece_moves = pseudo_legal_king_moves();
@@ -101,6 +96,34 @@ std::vector<Move> Game::pseudo_legal_moves() const
 	}
 }
 
+Move Game::pawn_north_move(Square origin_sq) const
+{
+    Square dest_sq = north_of(origin_sq);
+    
+    // Generate the non-attack move of moving north by 1 square as long as
+    // the pawn is not on the 7th row and that square is not occupied.
+    if (!on_bitboard(origin_sq, row_7) && !is_occupied(dest_sq))
+	{
+		return create_normal_move(origin_sq, dest_sq);
+	}
+    else
+    {
+        return Move::none;
+    }
+}
+
+std::array<Move, 4> Game::w_promo_non_capture_moves(Square origin_sq) const
+{
+    Square dest_sq = north_of(origin_sq);
+    
+    // If the pawn is on the 7th row and the square in front of it is not
+	// occupied, generate all non-capture promotion moves.
+    if (on_bitboard(origin_sq, row_7) && !is_occupied(dest_sq))
+	{
+        return create_promo_moves(square, dest_sq);
+	}
+}
+
 std::vector<Move> Game::pseudo_legal_w_pawn_moves(Square square) const
 {
 	std::vector<Move> possible_moves;
@@ -111,32 +134,18 @@ std::vector<Move> Game::pseudo_legal_w_pawn_moves(Square square) const
 	
 	const bool pawn_on_a_col = (pawn_bitboard & col_a) != 0;
 	const bool pawn_on_h_col = (pawn_bitboard & col_h) != 0;
+    
+    possible_moves.push_back(pawn_north_move(square));
+    
+    auto promo_non_capture = w_promo_non_capture_moves(square);
+    
+    possible_moves.insert(
+            possible_moves.end(),
+            promo_non_capture.begin(),
+            promo_non_capture.end()
+    );
+    
 	
-    // Generate the non-attack move of moving north by 1 square as long as
-    // the pawn is not on the 7th row and that square is not occupied.
-    if (!pawn_on_7th_row && ((pawn_bitboard << 8) & all_bitboard == 0))
-	{
-		possible_moves.push_back(create_normal_move(
-				square,
-				static_cast<Square>(static_cast<int>(square) + 8),
-		));
-	}
-	
-    // If the pawn is on the 7th row and the square in front of it is not
-	// occupied, generate all non-capture promotion moves.
-	if (pawn_on_7th_row && ((pawn_bitboard << 8) & all_bitboard == 0))
-	{
-        auto promo_moves = create_promo_moves(
-                square,
-                static_cast<Square>(static_cast<int>(square) + 8)
-        );
-        
-        possible_moves.insert(
-                possible_moves.end(),
-                promo_moves.begin(),
-                promo_moves.end()
-        );
-	}
 	
     // If the pawn is not on the 7th row and is not on the H column
 	// and there is a black piece on the square north east of the pawn's

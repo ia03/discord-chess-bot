@@ -201,14 +201,12 @@ void find_enemy_pawn_ep(
     if (turn == Color::white)
     {
         enemy_pawn_type = Piece::b_pawn;
-        enemy_pawn_square = static_cast<Square>(
-                static_cast<int>(dest_sq) - 8);
+        enemy_pawn_square = south_of(dest_sq);
     }
     else
     {
         enemy_pawn_type = Piece::w_pawn;
-        enemy_pawn_square = static_cast<Square>(
-                static_cast<int>(dest_sq) + 8);
+        enemy_pawn_square = north_of(dest_sq);
     }
 }
 
@@ -310,9 +308,9 @@ std::vector<Move> gen_moves_from_bitboard(Square origin_sq, Bitboard bitboard)
 
     // Get the positions of the set bits in the bitboard and use them to
     // create moves.
-    for(int position = 0; bitboard != 0; position++)
+    for(auto position = 0; bitboard != 0; position++)
     {
-        if ((bitboard & 2) == 1)
+        if ((bitboard & 1) == 1)
         {
             moves.push_back(set_dest_sq(
                     template_move,
@@ -340,4 +338,24 @@ int count_bits_set(Bitboard bitboard)
 Bitboard square_to_bb(Square square)
 {
     return 1 << static_cast<int>(square);
+}
+
+Square north_of(Square origin_sq)
+{
+    return static_cast<Square>(static_cast<int>(origin_sq) + 8);
+}
+
+Square south_of(Square origin_sq)
+{
+    return static_cast<Square>(static_cast<int>(origin_sq) - 8);
+}
+
+bool on_bitboard(Square square, Bitboard bitboard)
+{
+    return on_bitboard(square_to_bb(square), bitboard);
+}
+
+bool on_bitboard(Bitboard bitboard1, Bitboard bitboard2)
+{
+    return bitboard1 & bitboard2 != 0;
 }
