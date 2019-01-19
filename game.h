@@ -188,6 +188,23 @@ private:
     // Generates all pseudo-legal moves for Black.
     std::vector<Move> pseudo_legal_b_moves() const;
     
+    // If the destination square is invalid or is occupied by a friendly
+    // piece, this returns Move::none. Otherwise, it returns a normal move
+    // with the origin and destination squares set. Used with
+    // find_dest_square() to generate simple moves.
+    Move pseudo_legal_normal_move(
+            const Square origin_sq,
+            const Square dest_sq
+    ) const;
+    
+    // Generates a normal move from the origin square to wherever the
+    // directions lead to if that is a square within the boundaries of the
+    // board and is not occupied by any friendly pieces.
+    Move pseudo_legal_normal_move(
+            const Square origin_sq,
+            const std::vector<Direction> &directions
+    ) const;
+    
     // Generates the pawn north-by-1 move using the origin square. Returns
     // Move::none if the move would not be pseudo-legal.
     Move pawn_north_move(const Square origin_sq) const;

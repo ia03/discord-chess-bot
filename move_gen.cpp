@@ -100,20 +100,45 @@ std::vector<Move> Game::pseudo_legal_moves() const
 	}
 }
 
+Move Game::pseudo_legal_normal_move(
+        const Square origin_sq,
+        const Square dest_sq
+) const
+{
+    // Return Move::none if the destination square is invalid or is occupied
+    // by a friendly piece.
+    if (dest_sq != Square::none && !is_occupied(dest_sq, turn))
+    {
+        return create_normal_move(origin_sq, dest_sq);
+    }
+    else
+    {
+        return Move::none;
+    }
+}
+
+Move Game::pseudo_legal_normal_move(
+        const Square origin_sq,
+        const std::vector<Direction> &directions
+) const
+{
+    const auto dest_sq = find_dest_square(
+            origin_sq,
+            directions
+    );
+    
+    // Generate a move to the specified square as long as it is within the
+    // boundaries of the board and is not occupied by any friendly pieces.
+    return pseudo_legal_normal_move(origin_sq, dest_sq);
+}
+
 Move Game::pawn_north_move(const Square origin_sq) const
 {
     const auto dest_sq = find_dest_square(origin_sq, {Direction::north});
     
     // Generate the non-attack move of moving north by 1 square as long as
     // that square is in the boundaries of the board and is not occupied.
-    if (dest_sq != Square::none && !is_occupied(dest_sq))
-	{
-		return create_normal_move(origin_sq, dest_sq);
-	}
-    else
-    {
-        return Move::none;
-    }
+    return pseudo_legal_normal_move(origin_sq, dest_sq);
 }
 
 Move Game::pawn_south_move(const Square origin_sq) const
@@ -122,14 +147,7 @@ Move Game::pawn_south_move(const Square origin_sq) const
     
     // Generate the non-attack move of moving south by 1 square as long as
     // that square is in the boundaries of the board and is not occupied.
-    if (dest_sq != Square::none && !is_occupied(dest_sq))
-	{
-		return create_normal_move(origin_sq, dest_sq);
-	}
-    else
-    {
-        return Move::none;
-    }
+    return pseudo_legal_normal_move(origin_sq, dest_sq);
 }
 
 Move Game::pawn_north_north_move(const Square origin_sq) const
@@ -373,7 +391,7 @@ std::array<Move, 4> Game::pawn_promo_north_east_moves(
     // If the pawn is on the 7th row and is not on the H column and there
 	// is a black piece on the square north east of the pawn's square,
 	// generate all promotion attack moves to that square.
-    if (on_bitboard(origin_sq, row_7 | ~col_h) &&
+    if (on_bitboard(origin_sq, row_7 & ~col_h) &&
         is_occupied(dest_sq, Color::black))
     {
         return create_promo_moves(origin_sq, dest_sq);
@@ -393,7 +411,7 @@ std::array<Move, 4> Game::pawn_promo_south_east_moves(
     // If the pawn is on the 2nd row and is not on the H column and there
 	// is a white piece on the square south east of the pawn's square,
 	// generate all promotion attack moves to that square.
-    if (on_bitboard(origin_sq, row_2 | ~col_h) &&
+    if (on_bitboard(origin_sq, row_2 & ~col_h) &&
         is_occupied(dest_sq, Color::white))
     {
         return create_promo_moves(origin_sq, dest_sq);
@@ -413,7 +431,7 @@ std::array<Move, 4> Game::pawn_promo_north_west_moves(
     // If the pawn is on the 7th row and is not on the A column and there is a
 	// black piece on the square north west of the pawn's square, generate all
 	// promotion attack moves to that square.
-    if (on_bitboard(origin_sq, row_7 | ~col_a) &&
+    if (on_bitboard(origin_sq, row_7 & ~col_a) &&
         is_occupied(dest_sq, Color::black))
     {
         return create_promo_moves(origin_sq, dest_sq);
@@ -433,7 +451,7 @@ std::array<Move, 4> Game::pawn_promo_south_west_moves(
     // If the pawn is on the 2nd row and is not on the A column and there is a
 	// white piece on the square south west of the pawn's square, generate all
 	// promotion attack moves to that square.
-    if (on_bitboard(origin_sq, row_2 | ~col_a) &&
+    if (on_bitboard(origin_sq, row_2 & ~col_a) &&
         is_occupied(dest_sq, Color::white))
     {
         return create_promo_moves(origin_sq, dest_sq);
@@ -443,43 +461,6 @@ std::array<Move, 4> Game::pawn_promo_south_west_moves(
         return {Move::none, Move::none, Move::none, Move::none};
     }
 }
-/*
-Move knight_north_north_east_move(Square origin_sq) const
-{
-    auto dest_sq = north_of(north_of(east_of(origin_sq)));
-    
-    // If the knight is not on the H column and is not on the 7th or 8th rows,
-	// generate a move to the north north east square as long as it is not
-	// occupied by any friendly pieces.
-    if (!on_bitboard(origin_sq, col_h | ~row_7 | ~row_8) &&
-        !is_occupied(dest_sq, turn))
-    {
-        return create_normal_move(origin_sq, dest_sq);
-    }
-    else
-    {
-        return Move::none;
-    }
-}
-
-Move knight north_north_west_move(Square origin_sq) const
-{
-    auto dest_sq = north_of(north_of(west_of(origin_sq)));
-    
-    // If the knight is not on the A column and is not on the 7th or 8th rows,
-	// generate a move to the north north west square as long as it is not
-	// occupied by any friendly pieces.
-    if (!on_bitboard(origin_sq, col_a | ~col_7 | ~col_8) &&
-        !is_occupied(dest_sq, turn))
-    {
-        return create_normal_move(origin_sq, dest_sq);
-    }
-    else
-    {
-        return Move::none;
-    }
-}
-*/
 
 std::vector<Move> Game::pseudo_legal_w_pawn_moves(const Square square) const
 {
@@ -523,7 +504,7 @@ std::vector<Move> Game::pseudo_legal_w_pawn_moves(const Square square) const
             promo_north_west.end()
     );
     
-    // Remove the moves that are not pseudo-legal.
+    // Remove invalid moves.
     std::remove(possible_moves.begin(), possible_moves.end(), Move::none);
     
     return possible_moves;
@@ -571,32 +552,66 @@ std::vector<Move> Game::pseudo_legal_b_pawn_moves(const Square square) const
             promo_south_west.end()
     );
     
-    // Remove the moves that are not pseudo-legal.
+    // Remove invalid moves.
     std::remove(possible_moves.begin(), possible_moves.end(), Move::none);
     
     return possible_moves;
 }
-/*
-std::vector<Move> Game::pseudo_legal_knight_moves(Square square) const
+
+std::vector<Move> Game::pseudo_legal_knight_moves(const Square square) const
 {
 	std::vector<Move> possible_moves;
     
-	possible_moves.append(knight_north_north_east_move(square));
-	
-	// If the knight is not on the A column and is not on the 7th or 8th rows,
-	// generate a move to the north north west square as long as it is not
-	// occupied by any friendly pieces.
-	if (!knight_on_a_col && !knight_on_7th_row && !knight_on_8th_row &&
-		(((static_cast<int>(square) + 23) & friendly_bitboard == 0)))
-	{
-		
-	}
-	
-	// If the knight is not on the G or H columns and is not on the 8th row, generate a move to the north east east square as long as it is not occupied by any friendly pieces.
-	// If the knight is not on the A or B columns and is not on the 8th row, generate a move to the north west west square as long as it is not occupied by any friendly pieces.
-	// If the knight is not on the H column and is not on the 1st or 2nd rows, generate a move to the south south east square as long as it is not occupied by any friendly pieces.
-	// If the knight is not on the A column and is not on the 1st or 2nd rows, generate a move to the south south west square as long as it is not occupied by any friendly pieces.
-	// If the knight is not on the G or H columns and is not on the 1st row, generate a move to the south east east square as long as it is not occupied by any friendly pieces.
-	// If the knight is not on the A or B columns and is not on the 1st row, generate a move to the south west west square as long as it is not occupied by any friendly pieces.
+    // North North East
+    possible_moves.push_back(pseudo_legal_normal_move(
+            square,
+            {Direction::north, Direction::north, Direction::east}
+    ));
+    
+    // North North West
+    possible_moves.push_back(pseudo_legal_normal_move(
+            square,
+            {Direction::north, Direction::north, Direction::west}
+    ));
+    
+    // North East East
+    possible_moves.push_back(pseudo_legal_normal_move(
+            square,
+            {Direction::north, Direction::east, Direction::east}
+    ));
+    
+    // North West West
+    possible_moves.push_back(pseudo_legal_normal_move(
+            square,
+            {Direction::north, Direction::west, Direction::west}
+    ));
+    
+    // South South East
+    possible_moves.push_back(pseudo_legal_normal_move(
+            square,
+            {Direction::south, Direction::south, Direction::east}
+    ));
+    
+    // South South West
+    possible_moves.push_back(pseudo_legal_normal_move(
+            square,
+            {Direction::south, Direction::south, Direction::west}
+    ));
+    
+    // South East East
+    possible_moves.push_back(pseudo_legal_normal_move(
+            square,
+            {Direction::south, Direction::east, Direction::east}
+    ));
+    
+    // South West West
+    possible_moves.push_back(pseudo_legal_normal_move(
+            square,
+            {Direction::south, Direction::west, Direction::west}
+    ));
+    
+    // Remove invalid moves.
+    std::remove(possible_moves.begin(), possible_moves.end(), Move::none);
+    
+    return possible_moves;
 }
-*/
