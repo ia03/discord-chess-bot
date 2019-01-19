@@ -450,6 +450,8 @@ std::vector<Move> Game::pseudo_legal_w_pawn_moves(Square square) const
     
     // Remove the moves that are not pseudo-legal.
     std::remove(possible_moves.begin(), possible_moves.end(), Move::none);
+    
+    return possible_moves;
 }
 
 std::vector<Move> Game::pseudo_legal_b_pawn_moves(Square square) const
@@ -496,6 +498,8 @@ std::vector<Move> Game::pseudo_legal_b_pawn_moves(Square square) const
     
     // Remove the moves that are not pseudo-legal.
     std::remove(possible_moves.begin(), possible_moves.end(), Move::none);
+    
+    return possible_moves;
 }
 
 std::vector<Move> Game::pseudo_legal_knight_moves(Square square) const
