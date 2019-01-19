@@ -123,6 +123,12 @@ Square north_of(Square origin_sq);
 // Returns the square south of the origin square.
 Square south_of(Square origin_sq);
 
+// Returns the square east of the origin square.
+Square east_of(Square origin_sq);
+
+// Returns the square west of the origin square.
+Square west_of(Square origin_sq);
+
 // Determines if a square is on a bitboard.
 bool on_bitboard(Square square, Bitboard bitboard);
 

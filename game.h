@@ -181,6 +181,78 @@ private:
     
     // Generates all pseudo-legal moves for Black.
     std::vector<Move> pseudo_legal_b_moves() const;
+    
+    // Generates the pawn north-by-1 move using the origin square. Returns
+    // Move::none if the move would not be pseudo-legal.
+    Move pawn_north_move(Square origin_sq) const;
+    
+    // Generates the pawn south-by-1 move using the origin square. Returns
+    // Move::none if the move would not be pseudo-legal.
+    Move pawn_south_move(Square origin_sq) const;
+    
+    // Generates the pawn north-by-2 move using the origin square. Returns
+    // Move::none if the move would not be pseudo-legal.
+    Move pawn_north_north_move(Square origin_sq) const;
+    
+    // Generates the pawn south-by-2 move using the origin square. Returns
+    // Move::none if the move would not be pseudo-legal.
+    Move pawn_south_south_move(Square origin_sq) const;
+    
+    // Generates the pawn north-east capture move using the origin square.
+    // Returns Move::none if the move would not be pseudo-legal.
+    Move pawn_north_east_move(Square origin_sq) const;
+    
+    // Generates the pawn south-east capture move using the origin square.
+    // Returns Move::none if the move would not be pseudo-legal.
+    Move pawn_south_east_move(Square origin_sq) const;
+    
+    // Generates the pawn north-west capture move using the origin square.
+    // Returns Move::none if the move would not be pseudo-legal.
+    Move pawn_north_west_move(Square origin_sq) const;
+    
+    // Generates the pawn south-west capture move using the origin square.
+    // Returns Move::none if the move would not be pseudo-legal.
+    Move pawn_north_south_move(Square origin_sq) const;
+    
+    // Generates the pawn north-east en passant move using the origin square.
+    // Returns Move::none if the move would not be pseudo-legal.
+    Move pawn_ep_north_east_move(Square origin_sq) const;
+    
+    // Generates the pawn south-east en passant move using the origin square.
+    // Returns Move::none if the move would not be pseudo-legal.
+    Move pawn_ep_south_east_move(Square origin_sq) const;
+    
+    // Generates the pawn north-west en passant move using the origin square.
+    // Returns Move::none if the move would not be pseudo-legal.
+    Move pawn_ep_north_west_move(Square origin_sq) const;
+    
+    // Generates the pawn south-west en passant move using the origin square.
+    // Returns Move::none if the move would not be pseudo-legal.
+    Move pawn_ep_south_west_move(Square origin_sq) const;
+    
+    // Generates the 4 north-by-1 promotion moves using the origin square.
+    // Returns Move::none if the moves would not be pseudo-legal.
+    std::array<Move, 4> pawn_promo_north_moves(Square origin_sq) const;
+    
+    // Generates the 4 south-by-1 promotion moves using the origin square.
+    // Returns Move::none if the moves would not be pseudo-legal.
+    std::array<Move, 4> pawn_promo_south_moves(Square origin_sq) const;
+    
+    // Generates the 4 north-east promotion capture moves using the origin
+    // square. Returns Move::none if the moves would not be pseudo-legal.
+    std::array<Move, 4> pawn_promo_north_east_moves(Square origin_sq) const;
+    
+    // Generates the 4 south-east promotion capture moves using the origin
+    // square. Returns Move::none if the moves would not be pseudo-legal.
+    std::array<Move, 4> pawn_promo_south_east_moves(Square origin_sq) const;
+    
+    // Generates the 4 north-west promotion capture moves using the origin
+    // square. Returns Move::none if the moves would not be pseudo-legal.
+    std::array<Move, 4> pawn_promo_north_west_moves(Square origin_sq) const;
+    
+    // Generates the 4 south-west promotion capture moves using the origin
+    // square. Returns Move::none if the moves would not be pseudo-legal.
+    std::array<Move, 4> pawn_promo_south_west_moves(Square origin_sq) const;
 
     // Generates all pseudo-legal moves for a white pawn that belongs to the
     // player to move this turn.
@@ -233,6 +305,12 @@ private:
     
     // Checks if the specified square is occupied.
     bool is_occupied(Square square) const;
+    
+    // Checks if the specified square is occupied by a white piece.
+    bool is_occupied_by_white(Square square) const;
+    
+    // Checks if the specified square is occupied by a black piece.
+    bool is_occupied_by_black(Square square) const;
 public:
     // Initializes Zobrist hashing.
     Game();

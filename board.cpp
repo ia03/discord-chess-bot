@@ -157,17 +157,17 @@ bool Game::insufficient_material() const
     return true;
 }
 
-bool is_occupied(Square square) const
+bool Game::is_occupied(Square square) const
 {
     return square_to_bb(square) & all_bitboard != 0;
 }
 
-bool is_occupied_by_white(Square square) const
+bool Game::is_occupied_by_white(Square square) const
 {
     return square_to_bb(square) & white_bitboard != 0;
 }
 
-bool is_occupied_by_black(Square square) const
+bool Game::is_occupied_by_black(Square square) const
 {
     return square_to_bb(square) & black_bitboard != 0;
 }

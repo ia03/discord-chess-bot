@@ -350,6 +350,16 @@ Square south_of(Square origin_sq)
     return static_cast<Square>(static_cast<int>(origin_sq) - 8);
 }
 
+Square east_of(Square origin_sq)
+{
+    return static_cast<Square>(static_cast<int>(origin_sq) + 1);
+}
+
+Square west_of(Square origin_sq)
+{
+    return static_cast<Square>(static_cast<int>(origin_sq) - 8);
+}
+
 bool on_bitboard(Square square, Bitboard bitboard)
 {
     return on_bitboard(square_to_bb(square), bitboard);
