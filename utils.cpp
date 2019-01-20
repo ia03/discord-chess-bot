@@ -359,7 +359,7 @@ int set_bit_pos(Bitboard bitboard)
 
 Bitboard square_to_bb(const Square square)
 {
-    return 1 << static_cast<int>(square);
+    return static_cast<Bitboard>(1) << static_cast<Bitboard>(square);
 }
 
 Square north_of(const Square origin_sq)

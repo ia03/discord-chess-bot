@@ -1,3 +1,4 @@
+#include <array>
 #include "types.h"
 #include "utils.h"
 #include "game.h"
@@ -5,7 +6,7 @@
 
 // Piece-square tables - from http://www.chessbin.com/post/Piece-Square-Table.aspx
 
-const int pawn_pst [64] =
+const std::array<int, 64> pawn_pst =
 {
       0,   0,   0,   0,   0,   0,   0,   0,
     105, 110, 110,  75,  75, 110, 110, 105,
@@ -17,7 +18,7 @@ const int pawn_pst [64] =
       0,   0,   0,   0,   0,   0,   0,   0
 };
 
-const int knight_pst [64] =
+const std::array<int, 64> knight_pst =
 {
     250, 260, 280, 270, 270, 280, 260, 250,
     260, 280, 300, 305, 305, 300, 280, 260,
@@ -29,7 +30,7 @@ const int knight_pst [64] =
     250, 260, 270, 270, 270, 270, 260, 250
 };
 
-const int bishop_pst [64] =
+const std::array<int, 64> bishop_pst =
 {
     305, 315, 285, 315, 315, 285, 315, 305,
     315, 330, 325, 325, 325, 325, 330, 335,
@@ -41,7 +42,7 @@ const int bishop_pst [64] =
     305, 315, 315, 315, 315, 315, 315, 305
 };
 
-const int rook_pst [64] =
+const std::array<int, 64> rook_pst =
 {
     500, 500, 500, 500, 500, 500, 500, 500,
     500, 500, 500, 500, 500, 500, 500, 500,
@@ -53,7 +54,7 @@ const int rook_pst [64] =
     500, 500, 500, 500, 500, 500, 500, 500
 };
 
-const int queen_pst [64] =
+const std::array<int, 64> queen_pst =
 {
     900, 900, 900, 900, 900, 900, 900, 900,
     900, 900, 900, 900, 900, 900, 900, 900,
@@ -65,7 +66,7 @@ const int queen_pst [64] =
     900, 900, 900, 900, 900, 900, 900, 900
 };
 
-const int king_pst [64] =
+const std::array<int, 64> king_pst =
 {
     20,   30,  10,   0,   0,  10,  30,  20,
     20,   20,   0,   0,   0,   0,  20,  20,
@@ -78,7 +79,7 @@ const int king_pst [64] =
 };
 
 // Used to flip the board for black pieces.
-const int flip[64] =
+const std::array<int, 64> flip =
 {
     56,  57,  58,  59,  60,  61,  62,  63,
     48,  49,  50,  51,  52,  53,  54,  55,
@@ -107,7 +108,7 @@ int Game::eval_square(const Square square) const
 {
     const Piece piece = piece_on(square);
     const Color color = piece_color(piece);
-    const int* piece_square_table = nullptr;
+    const int *piece_square_table = nullptr;
 
     // Obtain the appropriate piece-square table.
     switch (piece)
@@ -116,27 +117,27 @@ int Game::eval_square(const Square square) const
             return 0;
         case Piece::w_pawn:
         case Piece::b_pawn:
-            piece_square_table = pawn_pst;
+            piece_square_table = pawn_pst.data();
             break;
         case Piece::w_knight:
         case Piece::b_knight:
-            piece_square_table = knight_pst;
+            piece_square_table = knight_pst.data();
             break;
         case Piece::w_bishop:
         case Piece::b_bishop:
-            piece_square_table = bishop_pst;
+            piece_square_table = bishop_pst.data();
             break;
         case Piece::w_rook:
         case Piece::b_rook:
-            piece_square_table = rook_pst;
+            piece_square_table = rook_pst.data();
             break;
         case Piece::w_queen:
         case Piece::b_queen:
-            piece_square_table = queen_pst;
+            piece_square_table = queen_pst.data();
             break;
         case Piece::w_king:
         case Piece::b_king:
-            piece_square_table = king_pst;
+            piece_square_table = king_pst.data();
             break;
     }
 

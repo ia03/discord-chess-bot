@@ -108,7 +108,7 @@ bool Game::make_move(const Move move)
         // Make a normal move (no castling, promotion, or en passant).
         case Move_type::normal:
             remove_piece(moved_piece, origin_sq);
-            remove_piece(moved_piece, dest_sq);
+            remove_piece(captured_piece, dest_sq);
             add_piece(moved_piece, dest_sq);
 
             // If the move was a two-square pawn move, set the en passant

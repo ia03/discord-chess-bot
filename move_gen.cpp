@@ -52,7 +52,7 @@ std::vector<Move> Game::pseudo_legal_b_moves() const
     for (auto square_index = 0; square_index < 64; square_index++)
     {
         std::vector<Move> piece_moves;
-        const Square square = static_cast<Square>(square_index);
+        const auto square = static_cast<Square>(square_index);
         
         switch (piece_on(square))
         {
@@ -89,7 +89,6 @@ std::vector<Move> Game::pseudo_legal_b_moves() const
 
 std::vector<Move> Game::pseudo_legal_moves() const
 {
-    
     if (turn == Color::white)
     {
         return pseudo_legal_w_moves();
