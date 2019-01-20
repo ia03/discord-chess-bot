@@ -4,7 +4,7 @@
 #include "game.h"
 
 
-const int depth = 6;
+const int depth = 3;
 const int infinity = 9999999;
 
 Move Game::best_move()

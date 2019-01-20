@@ -8,7 +8,7 @@
 
 std::map<Piece, std::string> piece_fen =
 {
-    {Piece::w_pawn,   "W"},
+    {Piece::w_pawn,   "P"},
     {Piece::w_knight, "N"},
     {Piece::w_bishop, "B"},
     {Piece::w_rook,   "R"},
@@ -242,7 +242,38 @@ Game_state Game::game_state()
     return game_state(pseudo_legal_moves());
 }
 
-bool Game::king_in_check(const Color color) const
+bool Game::square_attacked(const Square square, const Color attacker)
+{
+    bool attacker_is_opponent = false;
+    
+    if (turn != attacker)
+    {
+        attacker_is_opponent = true;
+        end_turn();
+    }
+    std::vector<Move> possible_moves = pseudo_legal_moves();
+    
+    for (auto const &move : possible_moves)
+    {
+        if (extract_dest_sq(move) == square)
+        {
+            if (attacker_is_opponent)
+            {
+                end_turn();
+            }
+            return true;
+        }
+    }
+    
+    if (attacker_is_opponent)
+    {
+        end_turn();
+    }
+    
+    return false;
+}
+
+bool Game::king_in_check(const Color color)
 {
     // Find the square the king is on.
     Square king_square;
@@ -264,10 +295,10 @@ std::string Game::fen() const
     std::string fen_str;
     
     // Generate an FEN string for each row.
-    for (auto row = 0; row < 8; row++)
+    for (auto row = 7; row >= 0; row--)
     {
         // Go through each square in this row.
-        for (auto position = row * 8; position < 8; position++)
+        for (auto position = row * 8; position < ((row + 1) * 8); position++)
         {
             const Piece piece = piece_on(static_cast<Square>(position));
             if (piece != Piece::none)

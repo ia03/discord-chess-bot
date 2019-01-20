@@ -149,7 +149,7 @@ Square extract_dest_sq(const Move move)
 {
     // Destination square is bits 6-11.
     return static_cast<Square>(
-			static_cast<int>(move) & 0b0000111111000000);
+			((static_cast<int>(move) & 0b0000111111000000) >> 6));
 }
 
 Promotion_piece extract_promo_piece(const Move move)

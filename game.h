@@ -93,7 +93,7 @@ private:
           Piece::none,     Piece::none,     Piece::none,    Piece::none,   Piece::none,     Piece::none,     Piece::none,   Piece::none,
           Piece::none,     Piece::none,     Piece::none,    Piece::none,   Piece::none,     Piece::none,     Piece::none,   Piece::none,
         Piece::b_pawn,   Piece::b_pawn,   Piece::b_pawn,  Piece::b_pawn, Piece::b_pawn,   Piece::b_pawn,   Piece::b_pawn, Piece::b_pawn,
-        Piece::b_rook, Piece::b_knight, Piece::b_bishop, Piece::w_queen, Piece::b_king, Piece::b_bishop, Piece::b_knight, Piece::b_rook
+        Piece::b_rook, Piece::b_knight, Piece::b_bishop, Piece::b_queen, Piece::b_king, Piece::b_bishop, Piece::b_knight, Piece::b_rook
     };
 
     // The square a pawn would end up if it performed en passant.
@@ -357,10 +357,10 @@ private:
     bool insufficient_material() const;
 
     // Checks if the specified square is under attack by a specified player.
-    bool square_attacked(Square square, Color attacker) const;
+    bool square_attacked(const Square square, const Color attacker);
     
     // Checks if the specified player's king is in check.
-    bool king_in_check(const Color color) const;
+    bool king_in_check(const Color color);
 public:
     // Initializes Zobrist hashing.
     Game();

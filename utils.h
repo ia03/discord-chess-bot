@@ -18,7 +18,7 @@ const Bitboard row_3 = 0xFF0000;
 const Bitboard row_2 = 0xFF00;
 const Bitboard row_1 = 0xFF;
 
-const Bitboard rows[8] =
+const std::array<Bitboard, 8> rows =
 {
     row_1,
     row_2,
@@ -39,7 +39,7 @@ const Bitboard col_f = 0x2020202020202020;
 const Bitboard col_g = 0x4040404040404040;
 const Bitboard col_h = 0x8080808080808080;
 
-const Bitboard cols[8] =
+const std::array<Bitboard, 8> cols =
 {
     col_a,
     col_b,
