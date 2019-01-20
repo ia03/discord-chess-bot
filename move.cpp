@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "utils.h"
 #include "types.h"
 #include "game.h"
@@ -43,46 +44,20 @@ void Game::update_castling_rights(
     }
 }
 
-void Game::invalidate_w_kingside_castling()
+bool Game::is_pseudo_legal(Move move) const
 {
-    castling_rights = static_cast<Castling_right>(
-             static_cast<int>(castling_rights) &
-            ~static_cast<int>(Castling_right::w_kingside));
-}
-
-void Game::invalidate_w_queenside_castling()
-{
-    castling_rights = static_cast<Castling_right>(
-             static_cast<int>(castling_rights) &
-            ~static_cast<int>(Castling_right::w_queenside));
-}
-
-void Game::invalidate_white_castling()
-{
-    castling_rights = static_cast<Castling_right>(
-             static_cast<int>(castling_rights) &
-            ~static_cast<int>(Castling_right::white));
-}
-
-void Game::invalidate_b_kingside_castling()
-{
-    castling_rights = static_cast<Castling_right>(
-             static_cast<int>(castling_rights) &
-            ~static_cast<int>(Castling_right::b_kingside));
-}
-
-void Game::invalidate_b_queenside_castling()
-{
-    castling_rights = static_cast<Castling_right>(
-            static_cast<int>(castling_rights) &
-            ~static_cast<int>(Castling_right::b_queenside));
-}
-
-void Game::invalidate_black_castling()
-{
-    castling_rights = static_cast<Castling_right>(
-            static_cast<int>(castling_rights) &
-            ~static_cast<int>(Castling_right::black));
+    std::vector<Move> moves = pseudo_legal_moves();
+    
+    // Check if the move was found in the list of generated pseudo-legal
+    // moves.
+    if (std::find(moves.begin(), moves.end(), move) != moves.end())
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 bool Game::make_move(const Move move)

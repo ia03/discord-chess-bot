@@ -31,7 +31,7 @@ std::vector<Move> Game::pseudo_legal_w_moves() const
 				piece_moves = pseudo_legal_queen_moves(square);
 				break;
 			case Piece::w_king:
-				piece_moves = pseudo_legal_king_moves();
+				piece_moves = pseudo_legal_king_moves(square);
 				break;
 			default:
 				continue;
@@ -72,7 +72,7 @@ std::vector<Move> Game::pseudo_legal_b_moves() const
 				piece_moves = pseudo_legal_queen_moves(square);
 				break;
 			case Piece::b_king:
-				piece_moves = pseudo_legal_king_moves();
+				piece_moves = pseudo_legal_king_moves(square);
 				break;
 			default:
 				continue;
@@ -130,6 +130,19 @@ Move Game::pseudo_legal_normal_move(
     // Generate a move to the specified square as long as it is within the
     // boundaries of the board and is not occupied by any friendly pieces.
     return pseudo_legal_normal_move(origin_sq, dest_sq);
+}
+
+Bitboard Game::discard_self_captures(const Bitboard attack_bitboard) const
+{
+    // Discard self-captures.
+    if (turn == Color::white)
+    {
+        return attack_bitboard & ~white_bitboard;
+    }
+    else
+    {
+        return attack_bitboard & ~black_bitboard;
+    }
 }
 
 Move Game::pawn_north_move(const Square origin_sq) const
@@ -462,6 +475,66 @@ std::array<Move, 4> Game::pawn_promo_south_west_moves(
     }
 }
 
+Move Game::white_kingside_castle_move(const Square origin_sq) const
+{
+    // Make sure castling has not been invalidated and no pieces are blocking
+    // it.
+    if (!w_kingside_castling_invalidated() && !is_occupied(Square::F1) &&
+        !is_occupied(Square::G1))
+    {
+        return create_castling_move(origin_sq, Square::G1);
+    }
+    else
+    {
+        return Move::none;
+    }
+}
+
+Move Game::white_queenside_castle_move(const Square origin_sq) const
+{
+    // Make sure castling has not been invalidated and no pieces are blocking
+    // it.
+    if (!w_queenside_castling_invalidated() && !is_occupied(Square::D1) &&
+        !is_occupied(Square::C1))
+    {
+        return create_castling_move(origin_sq, Square::C1);
+    }
+    else
+    {
+        return Move::none;
+    }
+}
+
+Move Game::black_kingside_castle_move(const Square origin_sq) const
+{
+    // Make sure castling has not been invalidated and no pieces are blocking
+    // it.
+    if (!b_kingside_castling_invalidated() && !is_occupied(Square::F8) &&
+        !is_occupied(Square::G8))
+    {
+        return create_castling_move(origin_sq, Square::G8);
+    }
+    else
+    {
+        return Move::none;
+    }
+}
+
+Move Game::black_queenside_castle_move(const Square origin_sq) const
+{
+    // Make sure castling has not been invalidated and no pieces are blocking
+    // it.
+    if (!b_queenside_castling_invalidated() && !is_occupied(Square::D8) &&
+        !is_occupied(Square::C8))
+    {
+        return create_castling_move(origin_sq, Square::C8);
+    }
+    else
+    {
+        return Move::none;
+    }
+}
+
 std::vector<Move> Game::pseudo_legal_w_pawn_moves(const Square square) const
 {
 	std::vector<Move> possible_moves;
@@ -609,6 +682,121 @@ std::vector<Move> Game::pseudo_legal_knight_moves(const Square square) const
             square,
             {Direction::south, Direction::west, Direction::west}
     ));
+    
+    // Remove invalid moves.
+    std::remove(possible_moves.begin(), possible_moves.end(), Move::none);
+    
+    return possible_moves;
+}
+
+std::vector<Move> Game::pseudo_legal_bishop_moves(const Square square) const
+{
+    // Use magic bitboards to generate the attack bitboard.
+    Bitboard attack_bitboard = slider_attacks.BishopAttacks(
+            all_bitboard,
+            static_cast<int>(square)
+    );
+    
+    // Discard self-captures.
+    attack_bitboard = discard_self_captures(attack_bitboard);
+    
+    return gen_moves_from_bitboard(square, attack_bitboard);
+}
+
+std::vector<Move> Game::pseudo_legal_rook_moves(const Square square) const
+{
+    // Use magic bitboards to generate the attack bitboard.
+    Bitboard attack_bitboard = slider_attacks.RookAttacks(
+            all_bitboard,
+            static_cast<int>(square)
+    );
+    
+    // Discard self-captures.
+    attack_bitboard = discard_self_captures(attack_bitboard);
+    
+    return gen_moves_from_bitboard(square, attack_bitboard);
+}
+
+std::vector<Move> Game::pseudo_legal_queen_moves(const Square square) const
+{
+    // Use magic bitboards to generate the attack bitboard.
+    Bitboard attack_bitboard = slider_attacks.QueenAttacks(
+            all_bitboard,
+            static_cast<int>(square)
+    );
+    
+    // Discard self-captures.
+    attack_bitboard = discard_self_captures(attack_bitboard);
+    
+    return gen_moves_from_bitboard(square, attack_bitboard);
+}
+
+std::vector<Move> Game::pseudo_legal_king_moves(const Square square) const
+{
+    std::vector<Move> possible_moves;
+    
+    // Normal moves
+    
+    // North
+    possible_moves.push_back(pseudo_legal_normal_move(
+            square,
+            {Direction::north}
+    ));
+    
+    // North East
+    possible_moves.push_back(pseudo_legal_normal_move(
+            square,
+            {Direction::north, Direction::east}
+    ));
+    
+    // East
+    possible_moves.push_back(pseudo_legal_normal_move(
+            square,
+            {Direction::east}
+    ));
+    
+    // South East
+    possible_moves.push_back(pseudo_legal_normal_move(
+            square,
+            {Direction::south, Direction::east}
+    ));
+    
+    // South
+    possible_moves.push_back(pseudo_legal_normal_move(
+            square,
+            {Direction::south}
+    ));
+    
+    // South West
+    possible_moves.push_back(pseudo_legal_normal_move(
+            square,
+            {Direction::south, Direction::west}
+    ));
+    
+    // West
+    possible_moves.push_back(pseudo_legal_normal_move(
+            square,
+            {Direction::west}
+    ));
+    
+    // North West
+    possible_moves.push_back(pseudo_legal_normal_move(
+            square,
+            {Direction::north, Direction::west}
+    ));
+    
+    // Castling moves
+    
+    if (turn == Color::white)
+    {
+        possible_moves.push_back(white_kingside_castle_move(square));
+        possible_moves.push_back(white_queenside_castle_move(square));
+    }
+    else
+    {
+        possible_moves.push_back(black_kingside_castle_move(square));
+        possible_moves.push_back(black_queenside_castle_move(square));
+    }
     
     // Remove invalid moves.
     std::remove(possible_moves.begin(), possible_moves.end(), Move::none);

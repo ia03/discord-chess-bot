@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <string>
 #include "types.h"
+#include "lib/slider_attacks.h"
 
 
 // Represents a chess game
@@ -117,6 +118,8 @@ private:
     Castling_right castling_rights = Castling_right::all_castling;
 
     Color turn = Color::white;
+    
+    SliderAttacks slider_attacks;
 
     // Initializes the random bitstrings require for Zobrist hashing.
     void init_zobrist();
@@ -137,6 +140,18 @@ private:
     // the castling rights accordingly.
     void update_castling_rights(const Square origin_sq, const Square dest_sq);
 
+    // Determines if white kingside castling has been invalidated. 
+    bool w_kingside_castling_invalidated() const;
+    
+    // Determines if white queenside castling has been invalidated.
+    bool w_queenside_castling_invalidated() const;
+    
+    // Determines if black kingside castling has been invalidated.
+    bool b_kingside_castling_invalidated() const;
+    
+    // Determines if white queenside castling has been invalidated.
+    bool b_queenside_castling_invalidated() const;
+    
     // Invalidates white kingside castling.
     void invalidate_w_kingside_castling();
     
@@ -173,8 +188,13 @@ private:
     // Checks if the specified square is occupied.
     bool is_occupied(const Square square) const;
     
-    // Checks if the specified square is occupied by a certain colour.
+    // Checks if the specified square is occupied by a piece of a certain
+    // colour.
     bool is_occupied(const Square square, const Color color) const;
+    
+    // Removes squares from an attack bitboard that are occupied by pieces
+    // belonging to the player who is to move this turn.
+    Bitboard discard_self_captures(const Bitboard attack_bitboard) const;
 
     // Undoes the last move.
     void undo();
@@ -276,6 +296,22 @@ private:
     // Generates the 4 south-west promotion capture moves using the origin
     // square. Returns Move::none if the moves would not be pseudo-legal.
     std::array<Move, 4> pawn_promo_south_west_moves(const Square origin_sq) const;
+    
+    // Generates the white kingside castling move as long as it has not been
+    // invalidated and no pieces are blocking it.
+    Move white_kingside_castle_move(const Square origin_sq) const;
+    
+    // Generates the white queenside castling move as long as it has not been
+    // invalidated and no pieces are blocking it.
+    Move white_queenside_castle_move(const Square origin_sq) const;
+    
+    // Generates the black kingside castling move as long as it has not been
+    // invalidated and no pieces are blocking it.
+    Move black_kingside_castle_move(const Square origin_sq) const;
+    
+    // Generates the blacka queenside castling move as long as it has not been
+    // invalidated and no pieces are blocking it.
+    Move black_queenside_castle_move(const Square origin_sq) const;
 
     // Generates all pseudo-legal moves for a white pawn that belongs to the
     // player to move this turn.
@@ -303,7 +339,7 @@ private:
 
     // Generates all pseudo-legal king moves for the king that belongs to the
     // player to move this turn.
-    std::vector<Move> pseudo_legal_king_moves() const;
+    std::vector<Move> pseudo_legal_king_moves(const Square square) const;
 
     // The recursive function that returns the best evaluation found for a
     // ply. It utilizes minimax with alpha-beta pruning. This will not be
@@ -338,7 +374,7 @@ public:
     bool make_move(const Move move);
 
     // Checks if a move is pseudo-legal.
-    bool is_pseudo_legal(Move move);
+    bool is_pseudo_legal(Move move) const;
 
     // Search function used for the root ply. It uses minimax and alpha-beta
     // pruning to return the best legal move for the current position.
