@@ -42,7 +42,7 @@ enum class Square : int
 //
 // none is a special case because the origin square is always different from
 // the destination square, so it is guaranteed to never be a possible move.
-enum class Move : int
+enum class Move : unsigned int
 {
     none
 };
@@ -68,7 +68,7 @@ enum class Piece
     b_king
 };
 
-enum class Promotion_piece : int
+enum class Promotion_piece : unsigned int
 {
     none,  // None is the same as the value for queen.
     queen  = 0,
@@ -77,7 +77,7 @@ enum class Promotion_piece : int
     knight = 3 << 12
 };
 
-enum class Move_type : int
+enum class Move_type : unsigned int
 {
     normal,
     castling   = 1 << 14,
@@ -85,7 +85,7 @@ enum class Move_type : int
     en_passant = 3 << 14
 };
 
-enum class Castling_right : int
+enum class Castling_right : unsigned int
 {
     no_castling,
     w_kingside,

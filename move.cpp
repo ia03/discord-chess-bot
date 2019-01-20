@@ -180,8 +180,9 @@ bool Game::make_move(const Move move)
             // Move the friendly pawn and remove the enemy pawn.
             remove_piece(moved_piece, origin_sq);
             add_piece(moved_piece, dest_sq);
-            Square enemy_pawn_sq;
+
             Piece enemy_pawn;
+            Square enemy_pawn_sq;
 
             find_enemy_pawn_ep(
                     enemy_pawn,
