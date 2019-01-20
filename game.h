@@ -11,7 +11,7 @@
 // Represents a chess game
 class Game
 {
-public:
+private:
     // Store data of previous plies to undo moves
     std::vector<Ply_data> history;
     
@@ -378,7 +378,7 @@ public:
 
     // Search function used for the root ply. It uses minimax and alpha-beta
     // pruning to return the best legal move for the current position.
-    Move best_move();
+    Move best_move(const int depth);
 
     // Generates and returns a move using a string. The first two characters
     // indicate the starting position, the two characters after that indicate

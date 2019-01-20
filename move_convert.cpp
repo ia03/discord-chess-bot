@@ -175,8 +175,6 @@ std::string Game::move_to_string(const Move move) const
     // squares.
     std::string move_str = origin_str + dest_str;
 
-    const Piece piece_moved = piece_on(origin_sq);
-
     // If this is a promotion move, add the promotion piece string too.
     if (move_type == Move_type::promotion)
     {

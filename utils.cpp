@@ -312,7 +312,7 @@ std::vector<Move> gen_moves_from_bitboard(
     std::vector<Move> moves;
     
     // Set the origin square.
-    const Move template_move = set_origin_sq(template_move, origin_sq);
+    const Move template_move = set_origin_sq(static_cast<Move>(0), origin_sq);
 
     // Get the positions of the set bits in the bitboard and use them to
     // create moves.

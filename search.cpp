@@ -4,10 +4,9 @@
 #include "game.h"
 
 
-const int depth = 3;
 const int infinity = 9999999;
 
-Move Game::best_move()
+Move Game::best_move(const int depth)
 {
     const std::vector<Move> possible_moves = pseudo_legal_moves();
     Move best_move;
@@ -95,7 +94,7 @@ int Game::minimax(int depth, int alpha, int beta, bool is_maximizing)
     
     if (is_maximizing)
     {
-        const int best_eval = -infinity;
+        int best_eval = -infinity;
         for (auto const &move : possible_moves)
         {
             // If the move is illegal, skip it.
@@ -105,6 +104,8 @@ int Game::minimax(int depth, int alpha, int beta, bool is_maximizing)
             }
             const int eval = minimax(depth - 1, alpha, beta, false);
             undo();
+            
+            best_eval = std::max(best_eval, eval);
             
             // Alpha-beta pruning - stops the search of this position when it
             // is certain that it is better than all the previously evaluated
@@ -121,7 +122,7 @@ int Game::minimax(int depth, int alpha, int beta, bool is_maximizing)
     }
     else
     {
-        const int best_eval = infinity;
+        int best_eval = infinity;
         for (auto const &move : possible_moves)
         {
             if (!make_move(move))
@@ -130,6 +131,8 @@ int Game::minimax(int depth, int alpha, int beta, bool is_maximizing)
             }
             const int eval = minimax(depth - 1, alpha, beta, true);
             undo();
+            
+            best_eval = std::min(best_eval, eval);
             
             // Alpha-beta pruning - stops the search of this position when it
             // is certain that it is better than all the previously evaluated
