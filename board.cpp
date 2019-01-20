@@ -212,12 +212,12 @@ Game_state Game::game_state(const std::vector<Move> &possible_moves)
         }
     }
     
-	// If the same position has occurred three times in the past, this is a
-	// draw.
+    // If the same position has occurred three times in the past, this is a
+    // draw.
     if (threefold_repetition)
-	{
-		return Game_state::threefold_repetition;
-	}
+    {
+        return Game_state::threefold_repetition;
+    }
     
     // If 50 moves (100 plies) have been played with no pawn movements or
     // piece captures, it is a draw.
@@ -225,16 +225,16 @@ Game_state Game::game_state(const std::vector<Move> &possible_moves)
     {
         return Game_state::fifty_move;
     }
-	
-	// If there is insufficient material to perform a checkmate using any
-	// possible sequence of legal moves, this is a draw.
-	if (insufficient_material())
-	{
-		return Game_state::insufficient_material;
-	}
-	
-	// If none of the above criteria have been met, the game has not ended.
-	return Game_state::in_progress;
+    
+    // If there is insufficient material to perform a checkmate using any
+    // possible sequence of legal moves, this is a draw.
+    if (insufficient_material())
+    {
+        return Game_state::insufficient_material;
+    }
+    
+    // If none of the above criteria have been met, the game has not ended.
+    return Game_state::in_progress;
 }
 
 Game_state Game::game_state()

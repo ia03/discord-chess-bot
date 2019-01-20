@@ -7,97 +7,97 @@
 
 std::vector<Move> Game::pseudo_legal_w_moves() const
 {
-	std::vector<Move> all_moves;
-	for (auto square_index = 0; square_index < 64; square_index++)
-	{
-		std::vector<Move> piece_moves;
+    std::vector<Move> all_moves;
+    for (auto square_index = 0; square_index < 64; square_index++)
+    {
+        std::vector<Move> piece_moves;
         const Square square = static_cast<Square>(square_index);
         
-		switch (piece_on(square))
-		{
-			case Piece::w_pawn:
-				piece_moves = pseudo_legal_w_pawn_moves(square);
-				break;
-			case Piece::w_knight:
-				piece_moves = pseudo_legal_knight_moves(square);
-				break;
-			case Piece::w_bishop:
-				piece_moves = pseudo_legal_bishop_moves(square);
-				break;
-			case Piece::w_rook:
-				piece_moves = pseudo_legal_rook_moves(square);
-				break;
-			case Piece::w_queen:
-				piece_moves = pseudo_legal_queen_moves(square);
-				break;
-			case Piece::w_king:
-				piece_moves = pseudo_legal_king_moves(square);
-				break;
-			default:
-				continue;
-		}
-		
-		all_moves.insert(
-				all_moves.end(),
-				piece_moves.begin(),
-				piece_moves.end());
-	}
-	
-	return all_moves;
+        switch (piece_on(square))
+        {
+            case Piece::w_pawn:
+                piece_moves = pseudo_legal_w_pawn_moves(square);
+                break;
+            case Piece::w_knight:
+                piece_moves = pseudo_legal_knight_moves(square);
+                break;
+            case Piece::w_bishop:
+                piece_moves = pseudo_legal_bishop_moves(square);
+                break;
+            case Piece::w_rook:
+                piece_moves = pseudo_legal_rook_moves(square);
+                break;
+            case Piece::w_queen:
+                piece_moves = pseudo_legal_queen_moves(square);
+                break;
+            case Piece::w_king:
+                piece_moves = pseudo_legal_king_moves(square);
+                break;
+            default:
+                continue;
+        }
+        
+        all_moves.insert(
+                all_moves.end(),
+                piece_moves.begin(),
+                piece_moves.end());
+    }
+    
+    return all_moves;
 }
 
 std::vector<Move> Game::pseudo_legal_b_moves() const
 {
     std::vector<Move> all_moves;
-	for (auto square_index = 0; square_index < 64; square_index++)
-	{
-		std::vector<Move> piece_moves;
+    for (auto square_index = 0; square_index < 64; square_index++)
+    {
+        std::vector<Move> piece_moves;
         const Square square = static_cast<Square>(square_index);
         
-		switch (piece_on(square))
-		{
-			case Piece::b_pawn:
-				piece_moves = pseudo_legal_b_pawn_moves(square);
-				break;
-			case Piece::b_knight:
-				piece_moves = pseudo_legal_knight_moves(square);
-				break;
-			case Piece::b_bishop:
-				piece_moves = pseudo_legal_bishop_moves(square);
-				break;
-			case Piece::b_rook:
-				piece_moves = pseudo_legal_rook_moves(square);
-				break;
-			case Piece::b_queen:
-				piece_moves = pseudo_legal_queen_moves(square);
-				break;
-			case Piece::b_king:
-				piece_moves = pseudo_legal_king_moves(square);
-				break;
-			default:
-				continue;
-		}
-		
-		all_moves.insert(
-				all_moves.end(),
-				piece_moves.begin(),
-				piece_moves.end());
-	}
+        switch (piece_on(square))
+        {
+            case Piece::b_pawn:
+                piece_moves = pseudo_legal_b_pawn_moves(square);
+                break;
+            case Piece::b_knight:
+                piece_moves = pseudo_legal_knight_moves(square);
+                break;
+            case Piece::b_bishop:
+                piece_moves = pseudo_legal_bishop_moves(square);
+                break;
+            case Piece::b_rook:
+                piece_moves = pseudo_legal_rook_moves(square);
+                break;
+            case Piece::b_queen:
+                piece_moves = pseudo_legal_queen_moves(square);
+                break;
+            case Piece::b_king:
+                piece_moves = pseudo_legal_king_moves(square);
+                break;
+            default:
+                continue;
+        }
+        
+        all_moves.insert(
+                all_moves.end(),
+                piece_moves.begin(),
+                piece_moves.end());
+    }
     
     return all_moves;
 }
 
 std::vector<Move> Game::pseudo_legal_moves() const
 {
-	
-	if (turn == Color::white)
-	{
-		return pseudo_legal_w_moves();
-	}
-	else
-	{
-		return pseudo_legal_b_moves();
-	}
+    
+    if (turn == Color::white)
+    {
+        return pseudo_legal_w_moves();
+    }
+    else
+    {
+        return pseudo_legal_b_moves();
+    }
 }
 
 Move Game::pseudo_legal_normal_move(
@@ -168,13 +168,13 @@ Move Game::pawn_north_north_move(const Square origin_sq) const
     const auto dest_sq = north_of(north_of(origin_sq));
     
     // If the pawn is on the 2nd row (meaning it has not moved yet), generate
-	// the 2-squares-north move as long as both squares north of the pawn are
-	// not occupied.
+    // the 2-squares-north move as long as both squares north of the pawn are
+    // not occupied.
     if (on_bitboard(origin_sq, row_2) && !is_occupied(north_of(dest_sq)) &&
         !is_occupied(dest_sq))
     {
-		return create_normal_move(origin_sq, dest_sq);
-	}
+        return create_normal_move(origin_sq, dest_sq);
+    }
     else
     {
         return Move::none;
@@ -186,13 +186,13 @@ Move Game::pawn_south_south_move(const Square origin_sq) const
     const auto dest_sq = south_of(south_of(origin_sq));
     
     // If the pawn is on the 7th row (meaning it has not moved yet), generate
-	// the 2-squares-south move as long as both squares south of the pawn are
-	// not occupied.
+    // the 2-squares-south move as long as both squares south of the pawn are
+    // not occupied.
     if (on_bitboard(origin_sq, row_7) && !is_occupied(south_of(dest_sq)) &&
         !is_occupied(dest_sq))
     {
-		return create_normal_move(origin_sq, dest_sq);
-	}
+        return create_normal_move(origin_sq, dest_sq);
+    }
     else
     {
         return Move::none;
@@ -366,11 +366,11 @@ std::array<Move, 4> Game::pawn_promo_north_moves(
     const auto dest_sq = north_of(origin_sq);
     
     // If the pawn is on the 7th row and the square in front of it is not
-	// occupied, generate all non-capture promotion moves.
+    // occupied, generate all non-capture promotion moves.
     if (on_bitboard(origin_sq, row_7) && !is_occupied(dest_sq))
-	{
+    {
         return create_promo_moves(origin_sq, dest_sq);
-	}
+    }
     else
     {
         return {Move::none, Move::none, Move::none, Move::none};
@@ -384,11 +384,11 @@ std::array<Move, 4> Game::pawn_promo_south_moves(
     const auto dest_sq = south_of(origin_sq);
     
     // If the pawn is on the 2nd row and the square in front of it is not
-	// occupied, generate all non-capture promotion moves.
+    // occupied, generate all non-capture promotion moves.
     if (on_bitboard(origin_sq, row_2) && !is_occupied(dest_sq))
-	{
+    {
         return create_promo_moves(origin_sq, dest_sq);
-	}
+    }
     else
     {
         return {Move::none, Move::none, Move::none, Move::none};
@@ -402,8 +402,8 @@ std::array<Move, 4> Game::pawn_promo_north_east_moves(
     const auto dest_sq = north_of(east_of(origin_sq));
     
     // If the pawn is on the 7th row and is not on the H column and there
-	// is a black piece on the square north east of the pawn's square,
-	// generate all promotion attack moves to that square.
+    // is a black piece on the square north east of the pawn's square,
+    // generate all promotion attack moves to that square.
     if (on_bitboard(origin_sq, row_7 & ~col_h) &&
         is_occupied(dest_sq, Color::black))
     {
@@ -422,8 +422,8 @@ std::array<Move, 4> Game::pawn_promo_south_east_moves(
     const auto dest_sq = south_of(east_of(origin_sq));
     
     // If the pawn is on the 2nd row and is not on the H column and there
-	// is a white piece on the square south east of the pawn's square,
-	// generate all promotion attack moves to that square.
+    // is a white piece on the square south east of the pawn's square,
+    // generate all promotion attack moves to that square.
     if (on_bitboard(origin_sq, row_2 & ~col_h) &&
         is_occupied(dest_sq, Color::white))
     {
@@ -442,8 +442,8 @@ std::array<Move, 4> Game::pawn_promo_north_west_moves(
     const auto dest_sq = north_of(west_of(origin_sq));
     
     // If the pawn is on the 7th row and is not on the A column and there is a
-	// black piece on the square north west of the pawn's square, generate all
-	// promotion attack moves to that square.
+    // black piece on the square north west of the pawn's square, generate all
+    // promotion attack moves to that square.
     if (on_bitboard(origin_sq, row_7 & ~col_a) &&
         is_occupied(dest_sq, Color::black))
     {
@@ -462,8 +462,8 @@ std::array<Move, 4> Game::pawn_promo_south_west_moves(
     const auto dest_sq = south_of(west_of(origin_sq));
     
     // If the pawn is on the 2nd row and is not on the A column and there is a
-	// white piece on the square south west of the pawn's square, generate all
-	// promotion attack moves to that square.
+    // white piece on the square south west of the pawn's square, generate all
+    // promotion attack moves to that square.
     if (on_bitboard(origin_sq, row_2 & ~col_a) &&
         is_occupied(dest_sq, Color::white))
     {
@@ -537,7 +537,7 @@ Move Game::black_queenside_castle_move(const Square origin_sq) const
 
 std::vector<Move> Game::pseudo_legal_w_pawn_moves(const Square square) const
 {
-	std::vector<Move> possible_moves;
+    std::vector<Move> possible_moves;
     
     // Generate non-capture moves.
     possible_moves.push_back(pawn_north_move(square));
@@ -633,7 +633,7 @@ std::vector<Move> Game::pseudo_legal_b_pawn_moves(const Square square) const
 
 std::vector<Move> Game::pseudo_legal_knight_moves(const Square square) const
 {
-	std::vector<Move> possible_moves;
+    std::vector<Move> possible_moves;
     
     // North North East
     possible_moves.push_back(pseudo_legal_normal_move(

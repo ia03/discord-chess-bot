@@ -98,7 +98,7 @@ Bitstring Game::hash() const
     if (en_passant_square != Square::none)
     {
         hash_result ^= en_passant_bitstrings[
-				static_cast<int>(en_passant_square)];
+                static_cast<int>(en_passant_square)];
     }
 
     return hash_result;
