@@ -11,7 +11,7 @@
 // Represents a chess game
 class Game
 {
-private:
+public:
     // Store data of previous plies to undo moves
     std::vector<Ply_data> history;
     

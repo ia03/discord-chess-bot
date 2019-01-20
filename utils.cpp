@@ -389,7 +389,7 @@ bool on_bitboard(const Square square, const Bitboard bitboard)
 
 bool on_bitboard(const Bitboard bitboard1, const Bitboard bitboard2)
 {
-    return bitboard1 & bitboard2 != 0;
+    return (bitboard1 & bitboard2) != 0;
 }
 
 Square find_dest_square(

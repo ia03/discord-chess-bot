@@ -159,18 +159,18 @@ bool Game::insufficient_material() const
 
 bool Game::is_occupied(const Square square) const
 {
-    return square_to_bb(square) & all_bitboard != 0;
+    return (square_to_bb(square) & all_bitboard) != 0;
 }
 
 bool Game::is_occupied(const Square square, const Color color) const
 {
     if (color == Color::white)
     {
-        return square_to_bb(square) & white_bitboard != 0;
+        return (square_to_bb(square) & white_bitboard) != 0;
     }
     else
     {
-        return square_to_bb(square) & black_bitboard != 0;
+        return (square_to_bb(square) & black_bitboard) != 0;
     }
 }
 

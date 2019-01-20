@@ -170,7 +170,7 @@ Move Game::pawn_north_north_move(const Square origin_sq) const
     // If the pawn is on the 2nd row (meaning it has not moved yet), generate
     // the 2-squares-north move as long as both squares north of the pawn are
     // not occupied.
-    if (on_bitboard(origin_sq, row_2) && !is_occupied(north_of(dest_sq)) &&
+    if (on_bitboard(origin_sq, row_2) && !is_occupied(north_of(origin_sq)) &&
         !is_occupied(dest_sq))
     {
         return create_normal_move(origin_sq, dest_sq);
@@ -188,7 +188,7 @@ Move Game::pawn_south_south_move(const Square origin_sq) const
     // If the pawn is on the 7th row (meaning it has not moved yet), generate
     // the 2-squares-south move as long as both squares south of the pawn are
     // not occupied.
-    if (on_bitboard(origin_sq, row_7) && !is_occupied(south_of(dest_sq)) &&
+    if (on_bitboard(origin_sq, row_7) && !is_occupied(south_of(origin_sq)) &&
         !is_occupied(dest_sq))
     {
         return create_normal_move(origin_sq, dest_sq);
@@ -578,7 +578,14 @@ std::vector<Move> Game::pseudo_legal_w_pawn_moves(const Square square) const
     );
     
     // Remove invalid moves.
-    std::remove(possible_moves.begin(), possible_moves.end(), Move::none);
+    possible_moves.erase(
+            std::remove(
+                    possible_moves.begin(),
+                    possible_moves.end(),
+                    Move::none
+            ),
+            possible_moves.end()
+    );
     
     return possible_moves;
 }
@@ -626,7 +633,14 @@ std::vector<Move> Game::pseudo_legal_b_pawn_moves(const Square square) const
     );
     
     // Remove invalid moves.
-    std::remove(possible_moves.begin(), possible_moves.end(), Move::none);
+    possible_moves.erase(
+            std::remove(
+                    possible_moves.begin(),
+                    possible_moves.end(),
+                    Move::none
+            ),
+            possible_moves.end()
+    );
     
     return possible_moves;
 }
@@ -684,7 +698,14 @@ std::vector<Move> Game::pseudo_legal_knight_moves(const Square square) const
     ));
     
     // Remove invalid moves.
-    std::remove(possible_moves.begin(), possible_moves.end(), Move::none);
+    possible_moves.erase(
+            std::remove(
+                    possible_moves.begin(),
+                    possible_moves.end(),
+                    Move::none
+            ),
+            possible_moves.end()
+    );
     
     return possible_moves;
 }
@@ -799,7 +820,14 @@ std::vector<Move> Game::pseudo_legal_king_moves(const Square square) const
     }
     
     // Remove invalid moves.
-    std::remove(possible_moves.begin(), possible_moves.end(), Move::none);
+    possible_moves.erase(
+            std::remove(
+                    possible_moves.begin(),
+                    possible_moves.end(),
+                    Move::none
+            ),
+            possible_moves.end()
+    );
     
     return possible_moves;
 }
