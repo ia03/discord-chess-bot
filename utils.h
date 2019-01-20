@@ -145,6 +145,9 @@ std::vector<Move> gen_moves_from_bitboard(
 // Counts the number of set bits in a bitboard.
 int count_bits_set(Bitboard bitboard);
 
+// Finds the position of the only set bit on a bitboard.
+int set_bit_pos(Bitboard bitboard);
+
 // Converts a square to a bitboard with a single bit turned on.
 Bitboard square_to_bb(const Square square);
 

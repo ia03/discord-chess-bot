@@ -242,7 +242,22 @@ Game_state Game::game_state()
     return game_state(pseudo_legal_moves());
 }
 
-
+bool Game::king_in_check(const Color color) const
+{
+    // Find the square the king is on.
+    Square king_square;
+    if (color == Color::white)
+    {
+        king_square = static_cast<Square>(set_bit_pos(w_king_bitboard));
+    }
+    else
+    {
+        king_square = static_cast<Square>(set_bit_pos(b_king_bitboard));
+    }
+    
+    // Check if the square is under attack by the other player.
+    return square_attacked(king_square, reverse_color(color));
+}
 
 std::string Game::fen() const
 {

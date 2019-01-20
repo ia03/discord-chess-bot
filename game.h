@@ -360,7 +360,7 @@ private:
     bool square_attacked(Square square, Color attacker) const;
     
     // Checks if the specified player's king is in check.
-    bool king_in_check(Color color) const;
+    bool king_in_check(const Color color) const;
 public:
     // Initializes Zobrist hashing.
     Game();

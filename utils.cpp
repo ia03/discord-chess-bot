@@ -343,6 +343,20 @@ int count_bits_set(Bitboard bitboard)
     return i;
 }
 
+int set_bit_pos(Bitboard bitboard)
+{
+    int position = 0;
+    
+    // Keep right shifting the bitboard by 1 bit until the first bit is set.
+    while ((bitboard & 1) == 0)
+    {
+        bitboard >>= 1;
+        position++;
+    }
+    
+    return position;
+}
+
 Bitboard square_to_bb(const Square square)
 {
     return 1 << static_cast<int>(square);
