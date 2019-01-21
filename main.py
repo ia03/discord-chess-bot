@@ -224,6 +224,8 @@ async def start(ctx, target_user: discord.Member = None):
     source_user_mention = mention(source_user_id)
     target_user_mention = mention(target_user_id)
     
+    is_bot_game = target_user_id == bot.user.id
+    
     # Make sure the user is not requesting to play with themselves.
     if source_user_id == target_user_id:
         await bot.say(source_user_mention + ", you can't play with yourself.")
@@ -232,7 +234,7 @@ async def start(ctx, target_user: discord.Member = None):
     
     # Make sure the source user is not already in a game.
     if any(game.white_id == source_user_id or game.black_id == source_user_id
-           for key, game in games.items()):
+           for key, game in games.items()) and not is_bot_game:
         await bot.say(source_user_mention + ", you are already in a game.")
         return
     
@@ -243,7 +245,7 @@ async def start(ctx, target_user: discord.Member = None):
         return
     
     # If the target user is not the bot, make sure the game request is mutual.
-    if target_user_id != bot.user.id:
+    if not is_bot_game:
         # If the game request is not mutual, store the object in case the
         # target user does decide to make it so. Inform both users of the
         # request.
