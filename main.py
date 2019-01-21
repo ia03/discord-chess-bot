@@ -67,9 +67,9 @@ class Game():
     def get_player_id_to_move(self):
         """Gets the user ID of the player who is to play this turn."""
         if self.get_turn() == chessbot.Color_white:
-            return game.white_id
+            return self.white_id
         else:
-            return game.black_id
+            return self.black_id
             
     def get_game_state(self):
         """Gets the current state of the game."""
