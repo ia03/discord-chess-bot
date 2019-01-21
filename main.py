@@ -224,6 +224,26 @@ async def resign(ctx):
     
     del servers[server_id].games[key]
     
+@bot.command(pass_context=True)
+async def changeprefix(ctx, new_prefix : str):
+    """When executed by a server manager, this command changes the server
+    prefix of the server.
+    """
+    if not ctx.message.author.server_permission.manage_server:
+        await bot.say("You must have the \"Manage Server\" permission to"
+                      "change the prefix of this server.")
+        return
+    servers[ctx.message.server.id].prefix = new_prefix
+    await bot.say("The prefix has successfully been changed to " +
+                  new_prefix)
+
+@bot.command(pass_Context=True)
+async def move(ctx, move_str : str):
+    """Makes the inputted move in the game the user is in.
+    
+    
+    """
+    pass
     
     
 def save_data():
