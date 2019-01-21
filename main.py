@@ -298,17 +298,17 @@ async def resign(ctx):
         await bot.say(user_mention + ", you are not currently in a game.")
         return
     
-    white_mention = mention(servers[server_id].games[key].white_id)
-    black_mention = mention(servers[server_id].games[key].black_id)
+    white_mention = mention(servers[server_id].games[game_key].white_id)
+    black_mention = mention(servers[server_id].games[game_key].black_id)
     
     await bot.say("The game between " + white_mention + " and " +
                   black_mention + " has ended due to resignation by " +
                   user_mention)
     
     await bot.say("Final chessboard position. " +
-				  servers[server_id].games[key].get_board_url())
+				  servers[server_id].games[game_key].get_board_url())
     
-    del servers[server_id].games[key]
+    del servers[server_id].games[game_key]
     
 @bot.command(pass_context=True)
 async def changeprefix(ctx, new_prefix: str):
