@@ -150,7 +150,10 @@ Move Game::pawn_north_move(const Square origin_sq) const
     
     // Generate the non-attack move of moving north by 1 square as long as
     // that square is in the boundaries of the board and is not occupied.
-    return pseudo_legal_normal_move(origin_sq, dest_sq);
+    if (dest_sq != Move::none && !is_occupied(dest_sq))
+    {
+        return create_normal_move(origin_sq, dest_sq);
+    }
 }
 
 Move Game::pawn_south_move(const Square origin_sq) const
@@ -159,7 +162,10 @@ Move Game::pawn_south_move(const Square origin_sq) const
     
     // Generate the non-attack move of moving south by 1 square as long as
     // that square is in the boundaries of the board and is not occupied.
-    return pseudo_legal_normal_move(origin_sq, dest_sq);
+    if (dest_sq != Move::none && !is_occupied(dest_sq))
+    {
+        return create_normal_move(origin_sq, dest_sq);
+    }
 }
 
 Move Game::pawn_north_north_move(const Square origin_sq) const
