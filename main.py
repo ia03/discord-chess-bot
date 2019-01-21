@@ -323,7 +323,7 @@ async def changeprefix(ctx, new_prefix: str):
     await bot.say("The prefix has successfully been changed to " +
                   new_prefix)
 
-@bot.command(pass_Context=True)
+@bot.command(pass_context=True)
 async def move(ctx, move_str: str):
     """Makes the inputted move in the game the user is in.
     
