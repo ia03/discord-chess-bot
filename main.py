@@ -376,7 +376,8 @@ async def move(ctx, move_str: str):
     
     # If the game has not ended and it is the bot's turn to play, make a move.
     if opponent_id == bot.user.id:
-        bot_move_str = servers[server_id].games[game_key].make_best_move()
+        bot_move_str = await servers[server_id].games[game_key] \
+											  .make_best_move()
         await bot.say(servers[server_id].games[game_key].get_board_url())
         await bot.say(user_id + ", the bot has made move " + bot_move_str)
         
