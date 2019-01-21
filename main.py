@@ -96,7 +96,11 @@ class Server():
 
 def prefix(bot, message):
     """Returns the prefix of the server a message was sent in."""
-    return servers[message.server.id].prefix
+    if message.server.id in servers:
+        return servers[message.server.id].prefix
+    else:
+        servers[message.server.id] = Server()
+        return servers[message.server.id].prefix
 
 description = "A bot that can manage chess games and play in them."
 bot = commands.Bot(command_prefix=prefix, description=description)
@@ -117,8 +121,6 @@ async def on_ready():
 @bot.event
 async def on_server_join(server):
     servers[server.id] = Server()
-    print(server.id)
-    print(servers)
 
 @bot.command(pass_context=True)
 async def start(ctx, target_user : discord.Member = None):
@@ -204,7 +206,7 @@ async def resign(ctx):
     for key, game in games.items():
         if game.white_id == user_id or game.black_id == user_id:
             user_in_game = True
-            return
+            break
     
     # Error out if the user is not in a game.
     if not user_in_game:
