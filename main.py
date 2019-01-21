@@ -61,56 +61,56 @@ class Game():
         return template.format(self.game.fen())
         
     def get_turn(self):
-		"""Gets the color of the player who is to play this turn."""
+        """Gets the color of the player who is to play this turn."""
         return self.game.get_turn()
-		
-	def get_player_id_to_move(self):
-		"""Gets the user ID of the player who is to play this turn."""
-		if game.get_turn() == chessbot.Color_white:
-			return game.white_id
-		else:
-			return game.black_id
-			
-	def get_game_state(self):
-		"""Gets the current state of the game."""
-		return self.game.get_game_state()
-	
-	def ended(self):
-		"""Checks if the game has ended."""
-		return self.get_game_state() != chessbot.Game_state_in_progress
-	
-	def end_game_message(self):
-		"""Returns a message to be outputted when the game has ended."""
-		white_mention = self.white_id
-		black_mention = self.black_id
-		
-		winner_mention = None
-		loser_mention = None
+        
+    def get_player_id_to_move(self):
+        """Gets the user ID of the player who is to play this turn."""
+        if game.get_turn() == chessbot.Color_white:
+            return game.white_id
+        else:
+            return game.black_id
+            
+    def get_game_state(self):
+        """Gets the current state of the game."""
+        return self.game.get_game_state()
+    
+    def ended(self):
+        """Checks if the game has ended."""
+        return self.get_game_state() != chessbot.Game_state_in_progress
+    
+    def end_game_message(self):
+        """Returns a message to be outputted when the game has ended."""
+        white_mention = self.white_id
+        black_mention = self.black_id
+        
+        winner_mention = None
+        loser_mention = None
 
-		if (game_state == chessbot.Game_state_checkmate_by_white or
-			game_state == chessbot.Game_state_checkmate_by_black):
-			if game_state == chessbot.Game_state_checkmate_by_white:
-				winner_mention = white_mention
-				loser_mention = black_mention
-			else:
-				winner_mention = black_mention
-				loser_mention = white_mention
-			return winner_mention + " has checkmated " + loser_mention
-		elif game_state == chessbot.Game_state_stalemate:
-			return "The game between " + white_mention + " and " +
-					black_mention + " has ended due to stalemate."
-		elif game_state == chessbot.Game_state_threefold_repetition:
-			return "The game between " + white_mention + " and " +
-				   black_mention + " has ended due to stalemate."
-		elif game_state == chessbot.Game_state_fifty_move:
-			return "The game between " + white_mention + " and " +
-				   black_mention + " has ended due to the fifty move "
-				   "rule."
-		elif game_state == chessbot.Game_state_insufficient_material:
-			return "The game between " + white_mention + " and " +
-				   black_mention + " has ended due to insufficient "
-				   "material for a checkmate to be possible."
-		
+        if (game_state == chessbot.Game_state_checkmate_by_white or
+            game_state == chessbot.Game_state_checkmate_by_black):
+            if game_state == chessbot.Game_state_checkmate_by_white:
+                winner_mention = white_mention
+                loser_mention = black_mention
+            else:
+                winner_mention = black_mention
+                loser_mention = white_mention
+            return winner_mention + " has checkmated " + loser_mention
+        elif game_state == chessbot.Game_state_stalemate:
+            return "The game between " + white_mention + " and " +
+                    black_mention + " has ended due to stalemate."
+        elif game_state == chessbot.Game_state_threefold_repetition:
+            return "The game between " + white_mention + " and " +
+                   black_mention + " has ended due to stalemate."
+        elif game_state == chessbot.Game_state_fifty_move:
+            return "The game between " + white_mention + " and " +
+                   black_mention + " has ended due to the fifty move "
+                   "rule."
+        elif game_state == chessbot.Game_state_insufficient_material:
+            return "The game between " + white_mention + " and " +
+                   black_mention + " has ended due to insufficient "
+                   "material for a checkmate to be possible."
+        
     
     async def make_move(self, move_str):
         """Uses the string representation of a move to make that move. Throws
@@ -157,33 +157,33 @@ bot = commands.Bot(command_prefix=prefix, description=description)
 servers = {}
 
 def mention(user_id):
-	"""Returns a mention of the user ID passed.
-	
-	user_id - the ID of the user to mention
-	"""
+    """Returns a mention of the user ID passed.
+    
+    user_id - the ID of the user to mention
+    """
     return mention_template.format(user_id)
 
 def find_game_key(server_id, user_id):
-	"""Returns the key of the game a user is in on a specified server.
-	
-	Returns None if the game was not found.
-	
-	server_id - the ID of the server in which to look for the game
-	user_id - the ID of the user for which to look for a game
-	"""
-	for key, game in servers[server_id].games.items():
+    """Returns the key of the game a user is in on a specified server.
+    
+    Returns None if the game was not found.
+    
+    server_id - the ID of the server in which to look for the game
+    user_id - the ID of the user for which to look for a game
+    """
+    for key, game in servers[server_id].games.items():
         if game.white_id == user_id or game.black_id == user_id:
             return key
-	return None
+    return None
 
 def is_to_play(game, user_id):
-	"""Checks if the specified user is to play this turn in the specified
-	game.
-	
-	game - the game to check if the user is in
-	user_id - the ID of the user for which to check if playing
-	"""
-	return game.get_player_id_to_move() == user_id
+    """Checks if the specified user is to play this turn in the specified
+    game.
+    
+    game - the game to check if the user is in
+    user_id - the ID of the user for which to check if playing
+    """
+    return game.get_player_id_to_move() == user_id
 
 @bot.event
 async def on_ready():
@@ -195,19 +195,19 @@ async def on_ready():
     
 @bot.event
 async def on_server_join(server):
-	"""Initializes a server object when joining a new server."""
+    """Initializes a server object when joining a new server."""
     servers[server.id] = Server()
 
 @bot.command(pass_context=True)
 async def start(ctx, target_user : discord.Member = None):
-	"""Used to start a game with another user.
-	
-	Errors out if the user requests to play with themselves, is already in a
-	game, or is requesting to play with someone who is in a game.
-	
-	Two users must use this command on each other in order for the game to
-	start. This is not required for games against the bot.
-	"""
+    """Used to start a game with another user.
+    
+    Errors out if the user requests to play with themselves, is already in a
+    game, or is requesting to play with someone who is in a game.
+    
+    Two users must use this command on each other in order for the game to
+    start. This is not required for games against the bot.
+    """
     if not target_user:
         target_user = ctx.message.server.get_member(bot.user.id)
 
@@ -279,10 +279,10 @@ async def start(ctx, target_user : discord.Member = None):
 
 @bot.command(pass_context=True)
 async def resign(ctx):
-	"""Used to resign from a game.
-	
-	Errors out if the user executing this command is not in a game.
-	"""
+    """Used to resign from a game.
+    
+    Errors out if the user executing this command is not in a game.
+    """
     user_id = ctx.message.author.id
     user_mention = mention(user_id)
     server_id = ctx.message.server.id
@@ -291,7 +291,7 @@ async def resign(ctx):
     user_in_game = False
     
     # Look for the game the user is in.
-	game_key = find_game_key(server_id, user_id)
+    game_key = find_game_key(server_id, user_id)
     
     # Error out if the user is not in a game.
     if not game_key:
@@ -327,63 +327,63 @@ async def move(ctx, move_str : str):
     """Makes the inputted move in the game the user is in.
     
     An error is outputted if the user is not in a game, the move is
-	invalid/illegal, or it is not the user’s turn.
+    invalid/illegal, or it is not the user’s turn.
     """
     user_id = ctx.message.author.id
-	user_mention = mention(user_id)
-	
-	server_id = ctx.message.server.id
-	
-	user_in_game = False
-	
-	# Look for the game the user is in.
-	game_key = find_game_key(server_id, user_id)
-	
-	# Make sure the user is in a game.
-	if not game_key:
-		await bot.say("You must be in a game to make a move, " + user_mention)
-		return
-	
-	# Make sure it is the user's turn to play.
-	if not is_to_play(servers[server_id].games[game_key], user_id):
-		await bot.say("It is not your turn to play, " + user_mention)
-		return
-	
-	# Make the move and make sure it is valid.
-	try:
-		servers[server_id].games[game_key].make_move(move_str)
-	except InvalidMove:
-		await bot.say("That move is invalid, " + user_mention)
-		return
-	
-	opponent_id = servers[server_id].games[game_key] \
-									.get_player_id_to_move()
-	
-	opponent_mention = mention(opponent_id)
+    user_mention = mention(user_id)
     
-	await bot.say(opponent_mention + ", " + user_mention + " has made move " +
-				  move_str)
+    server_id = ctx.message.server.id
+    
+    user_in_game = False
+    
+    # Look for the game the user is in.
+    game_key = find_game_key(server_id, user_id)
+    
+    # Make sure the user is in a game.
+    if not game_key:
+        await bot.say("You must be in a game to make a move, " + user_mention)
+        return
+    
+    # Make sure it is the user's turn to play.
+    if not is_to_play(servers[server_id].games[game_key], user_id):
+        await bot.say("It is not your turn to play, " + user_mention)
+        return
+    
+    # Make the move and make sure it is valid.
+    try:
+        servers[server_id].games[game_key].make_move(move_str)
+    except InvalidMove:
+        await bot.say("That move is invalid, " + user_mention)
+        return
+    
+    opponent_id = servers[server_id].games[game_key] \
+                                    .get_player_id_to_move()
+    
+    opponent_mention = mention(opponent_id)
+    
+    await bot.say(opponent_mention + ", " + user_mention + " has made move " +
+                  move_str)
     await bot.say(servers[server_id].games[game_key].get_board_url())
 
-	# Check if the game has ended. Send a message if that is the case.
-	if servers[server_id].games[game_key].ended():
-		await bot.say(servers[server_id].games[game_key].end_game_message())
-		del servers[server_id].games[game_key]
-		return
-	
-	# If the game has not ended and it is the bot's turn to play, make a move.
-	if opponent_id == bot.user.id:
-		bot_move_str = servers[server_id].games[game_key].make_best_move()
-		await bot.say(servers[server_id].games[game_key].get_board_url())
-		await bot.say(user_id + ", the bot has made move " + bot_move_str)
-		
-		# If the game ends, inform the user.
-		if servers[server_id].games[game_key].ended():
-			await bot.say(servers[server_id].games[game_key] \
-											.end_game_message())
-			del servers[server_id].games[game_key]
-		
-	
+    # Check if the game has ended. Send a message if that is the case.
+    if servers[server_id].games[game_key].ended():
+        await bot.say(servers[server_id].games[game_key].end_game_message())
+        del servers[server_id].games[game_key]
+        return
+    
+    # If the game has not ended and it is the bot's turn to play, make a move.
+    if opponent_id == bot.user.id:
+        bot_move_str = servers[server_id].games[game_key].make_best_move()
+        await bot.say(servers[server_id].games[game_key].get_board_url())
+        await bot.say(user_id + ", the bot has made move " + bot_move_str)
+        
+        # If the game ends, inform the user.
+        if servers[server_id].games[game_key].ended():
+            await bot.say(servers[server_id].games[game_key] \
+                                            .end_game_message())
+            del servers[server_id].games[game_key]
+        
+    
     
 def save_data():
     """Saves the bot data to a file."""
