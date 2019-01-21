@@ -97,19 +97,19 @@ class Game():
                 loser_mention = white_mention
             return winner_mention + " has checkmated " + loser_mention
         elif game_state == chessbot.Game_state_stalemate:
-            return "The game between " + white_mention + " and " +
-                    black_mention + " has ended due to stalemate."
+            return ("The game between " + white_mention + " and " +
+                    black_mention + " has ended due to stalemate.")
         elif game_state == chessbot.Game_state_threefold_repetition:
-            return "The game between " + white_mention + " and " +
-                   black_mention + " has ended due to stalemate."
+            return ("The game between " + white_mention + " and " +
+                    black_mention + " has ended due to stalemate.")
         elif game_state == chessbot.Game_state_fifty_move:
-            return "The game between " + white_mention + " and " +
-                   black_mention + " has ended due to the fifty move "
-                   "rule."
+            return ("The game between " + white_mention + " and " +
+                    black_mention + " has ended due to the fifty move "
+                    "rule.")
         elif game_state == chessbot.Game_state_insufficient_material:
-            return "The game between " + white_mention + " and " +
-                   black_mention + " has ended due to insufficient "
-                   "material for a checkmate to be possible."
+            return ("The game between " + white_mention + " and " +
+                    black_mention + " has ended due to insufficient "
+                    "material for a checkmate to be possible.")
         
     
     async def make_move(self, move_str):
