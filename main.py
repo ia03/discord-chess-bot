@@ -73,7 +73,7 @@ class Game():
             
     def get_game_state(self):
         """Gets the current state of the game."""
-        return self.game.get_game_state()
+        return self.game.game_state()
     
     def ended(self):
         """Checks if the game has ended."""
