@@ -1,0 +1,3 @@
+#!/bin/bash
+swig -c++ -python chessbot.i
+g++-8.1.0 -fpic -O3 -std=c++17 -shared chessbot_wrap.cxx *.cpp lib/*.cpp -o _chessbot.so -I/usr/include/python3.5 -Wno-psabi

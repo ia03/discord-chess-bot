@@ -109,3 +109,6 @@ venv.bak/
 # SWIG
 chessbot.py
 chessbot_wrap.cxx
+
+# For sensitive data
+config.py

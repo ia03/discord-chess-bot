@@ -383,7 +383,7 @@ Square east_of(const Square origin_sq)
 
 Square west_of(const Square origin_sq)
 {
-    return static_cast<Square>(static_cast<unsigned int>(origin_sq) - 8);
+    return static_cast<Square>(static_cast<unsigned int>(origin_sq) - 1);
 }
 
 bool on_bitboard(const Square square, const Bitboard bitboard)

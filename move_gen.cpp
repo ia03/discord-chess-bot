@@ -291,7 +291,7 @@ Move Game::pawn_ep_north_east_move(const Square origin_sq) const
 
     // If the square north east of the pawn is within the boundaries of the
     // board and is the en passant square, generate the en passant move.
-    if (dest_sq == en_passant_square)
+    if (dest_sq != Square::none && dest_sq == en_passant_square)
     {
         return create_en_passant_move(origin_sq, dest_sq);
     }
@@ -310,7 +310,7 @@ Move Game::pawn_ep_south_east_move(const Square origin_sq) const
 
     // If the square south east of the pawn is within the boundaries of the
     // board and is the en passant square, generate the en passant move.
-    if (dest_sq == en_passant_square)
+    if (dest_sq != Square::none && dest_sq == en_passant_square)
     {
         return create_en_passant_move(origin_sq, dest_sq);
     }
@@ -329,7 +329,7 @@ Move Game::pawn_ep_north_west_move(const Square origin_sq) const
     
     // If the square north west of the pawn is within the boundaries of the
     // board and is the en passant square, generate the en passant move.
-    if (dest_sq == en_passant_square)
+    if (dest_sq != Square::none && dest_sq == en_passant_square)
     {
         return create_en_passant_move(origin_sq, dest_sq);
     }
@@ -348,7 +348,7 @@ Move Game::pawn_ep_south_west_move(const Square origin_sq) const
     
     // If the square south west of the pawn is within the boundaries of the
     // board and is the en passant square, generate the en passant move.
-    if (dest_sq == en_passant_square)
+    if (dest_sq != Square::none && dest_sq == en_passant_square)
     {
         return create_en_passant_move(origin_sq, dest_sq);
     }
@@ -494,7 +494,7 @@ Move Game::white_queenside_castle_move(const Square origin_sq) const
     // Make sure castling has not been invalidated and no pieces are blocking
     // it.
     if (!w_queenside_castling_invalidated() && !is_occupied(Square::D1) &&
-        !is_occupied(Square::C1))
+        !is_occupied(Square::C1) && !is_occupied(Square::B1))
     {
         return create_castling_move(origin_sq, Square::C1);
     }
@@ -524,7 +524,7 @@ Move Game::black_queenside_castle_move(const Square origin_sq) const
     // Make sure castling has not been invalidated and no pieces are blocking
     // it.
     if (!b_queenside_castling_invalidated() && !is_occupied(Square::D8) &&
-        !is_occupied(Square::C8))
+        !is_occupied(Square::C8) && !is_occupied(Square::B8))
     {
         return create_castling_move(origin_sq, Square::C8);
     }
