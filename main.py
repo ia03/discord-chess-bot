@@ -81,8 +81,8 @@ class Game():
     
     def end_game_message(self):
         """Returns a message to be outputted when the game has ended."""
-		game_state = self.get_game_state()
-		
+        game_state = self.get_game_state()
+        
         white_mention = self.white_id
         black_mention = self.black_id
         
@@ -308,7 +308,7 @@ async def resign(ctx):
                   user_mention)
     
     await bot.say("Final chessboard position. " +
-				  servers[server_id].games[game_key].get_board_url())
+                  servers[server_id].games[game_key].get_board_url())
     
     del servers[server_id].games[game_key]
     
