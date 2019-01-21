@@ -83,8 +83,8 @@ class Game():
         """Returns a message to be outputted when the game has ended."""
         game_state = self.get_game_state()
         
-        white_mention = self.white_id
-        black_mention = self.black_id
+        white_mention = mention(self.white_id)
+        black_mention = mention(self.black_id)
         
         winner_mention = None
         loser_mention = None
