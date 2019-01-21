@@ -199,7 +199,7 @@ async def on_server_join(server):
     servers[server.id] = Server()
 
 @bot.command(pass_context=True)
-async def start(ctx, target_user : discord.Member = None):
+async def start(ctx, target_user: discord.Member = None):
     """Used to start a game with another user.
     
     Errors out if the user requests to play with themselves, is already in a
@@ -298,19 +298,20 @@ async def resign(ctx):
         await bot.say(user_mention + ", you are not currently in a game.")
         return
     
-    white_mention = mention(game.white_id)
-    black_mention = mention(game.black_id)
+    white_mention = mention(servers[server_id].games[key].white_id)
+    black_mention = mention(servers[server_id].games[key].black_id)
     
     await bot.say("The game between " + white_mention + " and " +
                   black_mention + " has ended due to resignation by " +
                   user_mention)
     
-    await bot.say("Final chessboard position. " + game.get_board_url())
+    await bot.say("Final chessboard position. " +
+				  servers[server_id].games[key].get_board_url())
     
     del servers[server_id].games[key]
     
 @bot.command(pass_context=True)
-async def changeprefix(ctx, new_prefix : str):
+async def changeprefix(ctx, new_prefix: str):
     """When executed by a server manager, this command changes the server
     prefix of the server.
     """
@@ -323,7 +324,7 @@ async def changeprefix(ctx, new_prefix : str):
                   new_prefix)
 
 @bot.command(pass_Context=True)
-async def move(ctx, move_str : str):
+async def move(ctx, move_str: str):
     """Makes the inputted move in the game the user is in.
     
     An error is outputted if the user is not in a game, the move is
