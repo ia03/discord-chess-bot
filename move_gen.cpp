@@ -154,6 +154,10 @@ Move Game::pawn_north_move(const Square origin_sq) const
     {
         return create_normal_move(origin_sq, dest_sq);
     }
+    else
+    {
+        return Move::none;
+    }
 }
 
 Move Game::pawn_south_move(const Square origin_sq) const
@@ -165,6 +169,10 @@ Move Game::pawn_south_move(const Square origin_sq) const
     if (dest_sq != Square::none && !is_occupied(dest_sq))
     {
         return create_normal_move(origin_sq, dest_sq);
+    }
+    else
+    {
+        return Move::none;
     }
 }
 
