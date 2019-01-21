@@ -354,7 +354,7 @@ async def move(ctx, move_str: str):
     
     # Make the move and make sure it is valid.
     try:
-        servers[server_id].games[game_key].make_move(move_str)
+        await servers[server_id].games[game_key].make_move(move_str)
     except InvalidMove:
         await bot.say("That move is invalid, " + user_mention)
         return
