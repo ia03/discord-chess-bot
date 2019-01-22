@@ -83,7 +83,7 @@ void Game::add_piece(const Piece piece, const Square square)
     all_bitboard |= piece_position;
     
     // Update the piece array.
-    pieces_on_board[static_cast<int>(square)] = piece;
+    pieces_on_board[static_cast<unsigned>(square)] = piece;
     
     // Update the position hash.
     position_hash ^= hash_square(square);
