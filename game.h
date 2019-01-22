@@ -5,7 +5,6 @@
 #include <unordered_map>
 #include <string>
 #include "types.h"
-#include "lib/slider_attacks.h"
 
 
 // Represents a chess game
@@ -118,8 +117,6 @@ private:
     Castling_right castling_rights = Castling_right::all_castling;
 
     Color turn = Color::white;
-    
-    SliderAttacks slider_attacks;
 
     // Initializes the random bitstrings require for Zobrist hashing.
     void init_zobrist();
