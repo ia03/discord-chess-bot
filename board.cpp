@@ -164,14 +164,7 @@ bool Game::is_occupied(const Square square) const
 
 bool Game::is_occupied(const Square square, const Color color) const
 {
-    if (color == Color::white)
-    {
-        return (square_to_bb(square) & white_bitboard) != 0;
-    }
-    else
-    {
-        return (square_to_bb(square) & black_bitboard) != 0;
-    }
+    return (square_to_bb(square) & get_color_bitboard(color)) != 0;
 }
 
 Game_state Game::game_state(const std::vector<Move> &possible_moves)

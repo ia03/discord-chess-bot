@@ -52,6 +52,7 @@ class Game():
         """
         move = self.game.best_move(chess_engine_depth)
         self.game.make_move(move)
+        print(str(move) + " made by the bot.")
         return self.game.move_to_string(move)
     
     def get_board_url(self):
