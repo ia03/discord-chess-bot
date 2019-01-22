@@ -727,7 +727,7 @@ std::vector<Move> Game::pseudo_legal_knight_moves(const Square square) const
 std::vector<Move> Game::pseudo_legal_bishop_moves(const Square square) const
 {
     // Use magic bitboards to generate the attack bitboard.
-    Bitboard attack_bitboard = BMagic(
+    Bitboard attack_bitboard = Bmagic(
             static_cast<unsigned>(square),
             all_bitboard
     );
@@ -741,7 +741,7 @@ std::vector<Move> Game::pseudo_legal_bishop_moves(const Square square) const
 std::vector<Move> Game::pseudo_legal_rook_moves(const Square square) const
 {
     // Use magic bitboards to generate the attack bitboard.
-    Bitboard attack_bitboard = RMagic(
+    Bitboard attack_bitboard = Rmagic(
             static_cast<unsigned>(square),
             all_bitboard
     );
@@ -755,12 +755,12 @@ std::vector<Move> Game::pseudo_legal_rook_moves(const Square square) const
 std::vector<Move> Game::pseudo_legal_queen_moves(const Square square) const
 {
     // Use magic bitboards to generate the attack bitboard.
-    Bitboard bishop_attack_bitboard = BMagic(
+    Bitboard bishop_attack_bitboard = Bmagic(
             static_cast<unsigned>(square),
             all_bitboard
     );
     
-    Bitboard rook_attack_bitboard = RMagic(
+    Bitboard rook_attack_bitboard = Rmagic(
             static_cast<unsigned>(square),
             all_bitboard
     );
