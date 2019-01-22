@@ -3,6 +3,7 @@
 #include <algorithm>
 #include "game.h"
 #include "utils.h"
+#include "lib/magicmoves.h"
 
 
 std::vector<Move> Game::pseudo_legal_w_moves() const
@@ -726,9 +727,9 @@ std::vector<Move> Game::pseudo_legal_knight_moves(const Square square) const
 std::vector<Move> Game::pseudo_legal_bishop_moves(const Square square) const
 {
     // Use magic bitboards to generate the attack bitboard.
-    Bitboard attack_bitboard = slider_attacks.BishopAttacks(
-            all_bitboard,
-            static_cast<int>(square)
+    Bitboard attack_bitboard = Bmagic(
+            static_cast<unsigned>(square),
+            all_bitboard
     );
     
     // Discard self-captures.
@@ -740,9 +741,9 @@ std::vector<Move> Game::pseudo_legal_bishop_moves(const Square square) const
 std::vector<Move> Game::pseudo_legal_rook_moves(const Square square) const
 {
     // Use magic bitboards to generate the attack bitboard.
-    Bitboard attack_bitboard = slider_attacks.RookAttacks(
-            all_bitboard,
-            static_cast<int>(square)
+    Bitboard attack_bitboard = Rmagic(
+            static_cast<unsigned>(square),
+            all_bitboard
     );
     
     // Discard self-captures.
@@ -754,10 +755,17 @@ std::vector<Move> Game::pseudo_legal_rook_moves(const Square square) const
 std::vector<Move> Game::pseudo_legal_queen_moves(const Square square) const
 {
     // Use magic bitboards to generate the attack bitboard.
-    Bitboard attack_bitboard = slider_attacks.QueenAttacks(
-            all_bitboard,
-            static_cast<int>(square)
+    Bitboard bishop_attack_bitboard = Bmagic(
+            static_cast<unsigned>(square),
+            all_bitboard
     );
+    
+    Bitboard rook_attack_bitboard = Rmagic(
+            static_cast<unsigned>(square),
+            all_bitboard
+    );
+    
+    auto attack_bitboard = bishop_attack_bitboard | rook_attack_bitboard;
     
     // Discard self-captures.
     attack_bitboard = discard_self_captures(attack_bitboard);

@@ -7,7 +7,6 @@ Game::Game()
 {
     init_zobrist();
     init_hash();
-    slider_attacks.Initialize();
 }
 
 const Color Game::get_turn() const
