@@ -12,6 +12,11 @@ chess_engine_depth = 2
 file_path = "bot.data"
 mention_template = "<@{}>"
 
+description = "A bot that can manage chess games and play in them."
+bot = commands.Bot(command_prefix=prefix, description=description)
+
+servers = {}
+
 class InvalidMove(Exception):
     """Thrown when an invalid move is made."""
     pass
@@ -154,10 +159,6 @@ def prefix(bot, message):
         servers[message.server.id] = Server()
         return servers[message.server.id].prefix
 
-description = "A bot that can manage chess games and play in them."
-bot = commands.Bot(command_prefix=prefix, description=description)
-
-servers = {}
 
 def mention(user_id):
     """Returns a mention of the user ID passed.
