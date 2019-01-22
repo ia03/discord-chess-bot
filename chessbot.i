@@ -7,6 +7,7 @@
 
 %{
 #include "game.h"
+#include "lib/magicmoves.h"
 %}
 
 namespace std {
@@ -14,3 +15,5 @@ namespace std {
 };
 
 %include "game.h"
+
+extern void initmagicmoves(void);
