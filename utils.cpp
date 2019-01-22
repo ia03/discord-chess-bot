@@ -122,52 +122,52 @@ Move set_dest_sq(const Move move, const Square dest_sq)
 {
     // Destination square is bits 6-11.
     return static_cast<Move>(
-            static_cast<unsigned int>(move) |
-            (static_cast<unsigned int>(dest_sq) << 6));
+            static_cast<unsigned>(move) |
+            (static_cast<unsigned>(dest_sq) << 6));
 }
 
 Move set_promo_piece(const Move move, const Promotion_piece promo_piece)
 {
     // Promotion piece flag is bits 12-13.
     return static_cast<Move>(
-            static_cast<unsigned int>(move) |
-            static_cast<unsigned int>(promo_piece));
+            static_cast<unsigned>(move) |
+            static_cast<unsigned>(promo_piece));
 }
 
 Move set_move_type(const Move move, const Move_type move_type)
 {
     // Special move flag is bits 14-15.
     return static_cast<Move>(
-            static_cast<unsigned int>(move) |
-            static_cast<unsigned int>(move_type));
+            static_cast<unsigned>(move) |
+            static_cast<unsigned>(move_type));
 }
 
 Square extract_origin_sq(const Move move)
 {
     // Origin square is bits 0-5.
     return static_cast<Square>(
-            static_cast<unsigned int>(move) & 0b0000000000111111);
+            static_cast<unsigned>(move) & 0b0000000000111111);
 }
 
 Square extract_dest_sq(const Move move)
 {
     // Destination square is bits 6-11.
     return static_cast<Square>(
-            ((static_cast<unsigned int>(move) & 0b0000111111000000) >> 6));
+            ((static_cast<unsigned>(move) & 0b0000111111000000) >> 6));
 }
 
 Promotion_piece extract_promo_piece(const Move move)
 {
     // Promotion piece flag is bits 12-13.
     return static_cast<Promotion_piece>(
-            static_cast<unsigned int>(move) & 0b0011000000000000);
+            static_cast<unsigned>(move) & 0b0011000000000000);
 }
 
 Move_type extract_move_type(const Move move)
 {
     // Special move flag is bits 14-15.
     return (Move_type)(
-            static_cast<unsigned int>(move) & 0b1100000000000000);
+            static_cast<unsigned>(move) & 0b1100000000000000);
 }
 
 Color piece_color(const Piece piece)
@@ -368,22 +368,22 @@ Bitboard square_to_bb(const Square square)
 
 Square north_of(const Square origin_sq)
 {
-    return static_cast<Square>(static_cast<unsigned int>(origin_sq) + 8);
+    return static_cast<Square>(static_cast<unsigned>(origin_sq) + 8);
 }
 
 Square south_of(const Square origin_sq)
 {
-    return static_cast<Square>(static_cast<unsigned int>(origin_sq) - 8);
+    return static_cast<Square>(static_cast<unsigned>(origin_sq) - 8);
 }
 
 Square east_of(const Square origin_sq)
 {
-    return static_cast<Square>(static_cast<unsigned int>(origin_sq) + 1);
+    return static_cast<Square>(static_cast<unsigned>(origin_sq) + 1);
 }
 
 Square west_of(const Square origin_sq)
 {
-    return static_cast<Square>(static_cast<unsigned int>(origin_sq) - 1);
+    return static_cast<Square>(static_cast<unsigned>(origin_sq) - 1);
 }
 
 bool on_bitboard(const Square square, const Bitboard bitboard)
@@ -403,10 +403,10 @@ Square find_dest_square(
 {
     auto dest_sq = origin_sq;
     const Bitboard origin_bb = square_to_bb(origin_sq);
-    int north_count = 0;
-    int east_count = 0;
-    int south_count = 0;
-    int west_count = 0;
+    unsigned north_count = 0;
+    unsigned east_count = 0;
+    unsigned south_count = 0;
+    unsigned west_count = 0;
     
     // Keep track of each directional move of the square, making sure it does
     // not exit the boundaries of the board. If it does not, then continue

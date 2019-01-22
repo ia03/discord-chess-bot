@@ -49,30 +49,30 @@ Bitstring Game::hash_square(Square square) const
             return 0;
 
         case Piece::w_pawn:
-            return w_pawn_bitstrings[static_cast<int>(square)];
+            return w_pawn_bitstrings[static_cast<unsigned>(square)];
         case Piece::w_knight:
-            return w_knight_bitstrings[static_cast<int>(square)];
+            return w_knight_bitstrings[static_cast<unsigned>(square)];
         case Piece::w_bishop:
-            return w_bishop_bitstrings[static_cast<int>(square)];
+            return w_bishop_bitstrings[static_cast<unsigned>(square)];
         case Piece::w_rook:
-            return w_rook_bitstrings[static_cast<int>(square)];
+            return w_rook_bitstrings[static_cast<unsigned>(square)];
         case Piece::w_queen:
-            return w_queen_bitstrings[static_cast<int>(square)];
+            return w_queen_bitstrings[static_cast<unsigned>(square)];
         case Piece::w_king:
-            return w_king_bitstrings[static_cast<int>(square)];
+            return w_king_bitstrings[static_cast<unsigned>(square)];
 
         case Piece::b_pawn:
-            return b_pawn_bitstrings[static_cast<int>(square)];
+            return b_pawn_bitstrings[static_cast<unsigned>(square)];
         case Piece::b_knight:
-            return b_knight_bitstrings[static_cast<int>(square)];
+            return b_knight_bitstrings[static_cast<unsigned>(square)];
         case Piece::b_bishop:
-            return b_bishop_bitstrings[static_cast<int>(square)];
+            return b_bishop_bitstrings[static_cast<unsigned>(square)];
         case Piece::b_rook:
-            return b_rook_bitstrings[static_cast<int>(square)];
+            return b_rook_bitstrings[static_cast<unsigned>(square)];
         case Piece::b_queen:
-            return b_queen_bitstrings[static_cast<int>(square)];
+            return b_queen_bitstrings[static_cast<unsigned>(square)];
         case Piece::b_king:
-            return b_king_bitstrings[static_cast<int>(square)];
+            return b_king_bitstrings[static_cast<unsigned>(square)];
     }
 }
 
@@ -92,13 +92,16 @@ Bitstring Game::hash() const
         hash_result ^= black_bitstring;
     }
 
-    hash_result ^= castling_bitstrings[static_cast<int>(castling_rights)];
+    hash_result ^= castling_bitstrings[static_cast<unsigned>(
+            castling_rights
+    )];
 
 
     if (en_passant_square != Square::none)
     {
-        hash_result ^= en_passant_bitstrings[
-                static_cast<int>(en_passant_square)];
+        hash_result ^= en_passant_bitstrings[static_cast<unsigned>(
+                en_passant_square
+        )];
     }
 
     return hash_result;

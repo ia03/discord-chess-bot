@@ -17,7 +17,7 @@ private:
     
     // Keep track of the occurrences of each hash to detect threefold
     // repetition.
-    std::unordered_map<Bitstring, int> hash_count;
+    std::unordered_map<Bitstring, unsigned> hash_count;
 
     // Zobrist hash for the piece positions only
     Bitstring position_hash;
@@ -102,7 +102,7 @@ private:
 
     // Number of plies that have elapsed since a pawn was moved or a piece was
     // captured. Used for the 50-move rule.
-    int rule50 = 0;
+    unsigned rule50 = 0;
     
     // Is true when threefold repetition has been reached.
     bool threefold_repetition = false;

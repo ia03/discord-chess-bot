@@ -145,13 +145,13 @@ int Game::eval_square(const Square square) const
     // evaluation.
     if (color == Color::white)
     {
-        return piece_square_table[static_cast<int>(square)];
+        return piece_square_table[static_cast<unsigned>(square)];
     }
     // Black pieces have a negated evaluation, and the board should be
     // flipped when evaluating them.
     else
     {
-        return -piece_square_table[flip[static_cast<int>(square)]];
+        return -piece_square_table[flip[static_cast<unsigned>(square)]];
     }
 }
 

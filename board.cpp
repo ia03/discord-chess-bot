@@ -109,12 +109,12 @@ void Game::remove_piece(const Piece piece, const Square square)
     all_bitboard &= ~piece_position;
     
     // Update the piece array.
-    pieces_on_board[static_cast<int>(square)] = Piece::none;
+    pieces_on_board[static_cast<unsigned>(square)] = Piece::none;
 }
 
 Piece Game::piece_on(const Square square) const
 {
-    return pieces_on_board[static_cast<int>(square)];
+    return pieces_on_board[static_cast<unsigned>(square)];
 }
 
 bool Game::insufficient_material() const
@@ -164,7 +164,14 @@ bool Game::is_occupied(const Square square) const
 
 bool Game::is_occupied(const Square square, const Color color) const
 {
-    return (square_to_bb(square) & get_color_bitboard(color)) != 0;
+    if (color == Color::white)
+    {
+        return (square_to_bb(square) & white_bitboard) != 0;
+    }
+    else
+    {
+        return (square_to_bb(square) & black_bitboard) != 0;
+    }
 }
 
 Game_state Game::game_state(const std::vector<Move> &possible_moves)
