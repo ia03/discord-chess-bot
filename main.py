@@ -409,6 +409,9 @@ def save_loop():
 def main():
     """Initializes the bot and its data-saving mechanism."""
     
+    # Initialize the magic moves library.
+    chessbot.initmagicmoves()
+    
     # If the bot data file exists, load it, deserialize the data, and use it.
     if os.path.exists(file_path):
         global servers
@@ -421,6 +424,8 @@ def main():
     
     save_loop()
     atexit.register(save_data)
+    
+    # Run the bot.
     bot.run(config.token)
     
 
