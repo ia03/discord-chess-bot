@@ -102,6 +102,9 @@ private:
     // Number of plies that have elapsed since a pawn was moved or a piece was
     // captured. Used for the 50-move rule.
     unsigned rule50 = 0;
+    
+    // The evaluation of the board calculated using piece-square tables.
+    int evaluation;
 
     // Only the least significant 4 bits are used.
     // Bit 0: white kingside castle
@@ -121,6 +124,9 @@ private:
 
     // Initializes the Zobrist hash for the piece positions.
     void init_hash();
+    
+    // Initializes the evaluation of the board.
+    void init_eval();
 
     // Returns the bitstring for a square.
     Bitstring hash_square(Square square) const;
