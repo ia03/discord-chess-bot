@@ -70,6 +70,8 @@ bool Game::make_move(const Move move)
 
     const auto moved_piece = piece_on(origin_sq);
     const auto captured_piece = piece_on(dest_sq);
+    
+    bool is_illegal_move = false;
 
     // Data needs to be saved to undo moves later.
     Ply_data ply_data;
@@ -78,24 +80,8 @@ bool Game::make_move(const Move move)
     ply_data.castling_rights = castling_rights;
     ply_data.en_passant_square = en_passant_square;
     ply_data.rule50 = rule50;
+    ply_data.threefold_repetition = false;
     
-    // Keep track of this hash's occurrence to be able to detect threefold
-    // repetition.
-    const auto current_game_hash = hash();
-
-    if (hash_count.find(current_game_hash) == hash_count.end())
-    {
-        hash_count[current_game_hash] = 1;
-    }
-    else
-    {
-        hash_count[current_game_hash]++;
-        // Check if threefold repetition has occurred.
-        if (hash_count[current_game_hash] >= 3)
-        {
-            threefold_repetition = true;
-        }
-    }
 
     // Update the castling rights.
     update_castling_rights(origin_sq, dest_sq);
@@ -160,10 +146,8 @@ bool Game::make_move(const Move move)
             if (square_attacked(origin_sq, reverse_color(turn)) ||
                 square_attacked(rook_dest_sq, reverse_color((turn))))
             {
-                history.push_back(ply_data);
-                end_turn();
-                undo();
-                return false;
+                is_illegal_move = true;
+                break;
             }
             break;
         // Make a promotion move.
@@ -196,6 +180,24 @@ bool Game::make_move(const Move move)
             rule50 = 0;
             break;
     }
+    
+    // Keep track of this hash's occurrence to be able to detect threefold
+    // repetition.
+    const auto current_game_hash = hash();
+
+    if (hash_count.find(current_game_hash) == hash_count.end())
+    {
+        hash_count[current_game_hash] = 1;
+    }
+    else
+    {
+        hash_count[current_game_hash]++;
+        // Check if threefold repetition has occurred.
+        if (hash_count[current_game_hash] >= 3)
+        {
+            ply_data.threefold_repetition = true;
+        }
+    }
 
     history.push_back(ply_data);
     end_turn();
@@ -203,6 +205,11 @@ bool Game::make_move(const Move move)
     // If the player who made the move is now in check, this is an illegal
     // move.
     if (king_in_check(reverse_color(turn)))
+    {
+        is_illegal_move = true;
+    }
+    
+    if (is_illegal_move)
     {
         undo();
         return false;
@@ -299,5 +306,4 @@ void Game::undo()
     // threefold repetition.
     
     hash_count[hash()]--;
-    threefold_repetition = false;
 }

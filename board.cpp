@@ -214,7 +214,7 @@ Game_state Game::game_state(const std::vector<Move> &possible_moves)
     
     // If the same position has occurred three times in the past, this is a
     // draw.
-    if (threefold_repetition)
+    if (history.back().threefold_repetition)
     {
         return Game_state::threefold_repetition;
     }

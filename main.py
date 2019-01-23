@@ -104,7 +104,7 @@ class Game():
                     black_mention + " has ended due to stalemate.")
         elif game_state == chessbot.Game_state_threefold_repetition:
             return ("The game between " + white_mention + " and " +
-                    black_mention + " has ended due to stalemate.")
+                    black_mention + " has ended due to threefold repetition.")
         elif game_state == chessbot.Game_state_fifty_move:
             return ("The game between " + white_mention + " and " +
                     black_mention + " has ended due to the fifty move "
@@ -253,7 +253,7 @@ async def start(ctx, target_user: discord.Member = None):
         if (target_user_id not in game_requests or
             source_user_id not in game_requests[target_user_id]):
             await bot.say(target_user_mention + ", " + source_user_mention +
-                          "has requested that you play with them.")
+                          " has requested that you play with them.")
             if source_user_id not in game_requests:
                 game_requests[source_user_id] = []
             game_requests[source_user_id].append(target_user_id)
