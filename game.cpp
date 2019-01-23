@@ -5,8 +5,12 @@
 
 Game::Game()
 {
+    // Initialize variables needed for hashing.
     init_zobrist();
     init_hash();
+    
+    // Initialize the evaluation variable.
+    init_eval();
 }
 
 const Color Game::get_turn() const
