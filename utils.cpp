@@ -6,6 +6,7 @@
 
 Color reverse_color(const Color color)
 {
+    // Return the opposite color.
     if (color == Color::white)
     {
         return Color::black;
@@ -27,10 +28,8 @@ Move create_move(
         const Move_type move_type
 )
 {
-    Move move = Move::none;
-
     // Set the values of the move.
-    move = set_origin_sq(move, origin_sq);
+    auto move = set_origin_sq(Move::none, origin_sq);
     move = set_dest_sq(move, dest_sq);
     move = set_promo_piece(move, promo_piece);
     move = set_move_type(move, move_type);

@@ -113,6 +113,7 @@ private:
     // bits are on.
     Castling_right castling_rights = Castling_right::all_castling;
 
+    // The color of the player who is to play this turn.
     Color turn = Color::white;
 
     // Initializes the random bitstrings require for Zobrist hashing.
@@ -180,7 +181,7 @@ private:
     bool is_occupied(const Square square) const;
     
     // Checks if the specified square is occupied by a piece of a certain
-    // colour.
+    // color.
     bool is_occupied(const Square square, const Color color) const;
     
     // Removes squares from an attack bitboard that are occupied by pieces

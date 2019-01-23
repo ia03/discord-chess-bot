@@ -8,14 +8,22 @@ import random
 import config
 import atexit
 
+
 chess_engine_depth = 2
 file_path = "bot.data"
 mention_template = "<@{}>"
+
+description = "A bot that can manage chess games and play in them."
+bot = commands.Bot(command_prefix=prefix, description=description)
+
+servers = {}
+
 
 class InvalidMove(Exception):
     """Thrown when an invalid move is made."""
     pass
 
+    
 class Game():
     """Represents a game between two players or a player and the bot.
     
@@ -37,7 +45,9 @@ class Game():
         """Initializes a game between two players. White and Black are chosen
         randomly.
         """
+        # Initialize an instance of the class from the chess library.
         self.game = chessbot.Game()
+        
         # Randomly choose who is White and who is Black.
         if random.randint(0, 1) == 1:
             self.white_id = player_id_1
@@ -46,14 +56,15 @@ class Game():
             self.white_id = player_id_2
             self.black_id = player_id_1
 
+            
     async def make_best_move(self):
         """Makes the best move for the player to move this turn and returns
         the string representation of that move.
         """
         move = self.game.best_move(chess_engine_depth)
         self.game.make_move(move)
-        print(str(move) + " made by the bot.")
         return self.game.move_to_string(move)
+    
     
     def get_board_url(self):
         """Gets the URL to an image of the board in its current state."""
@@ -61,9 +72,11 @@ class Game():
         # Append the FEN of the board to the URL.
         return template.format(self.game.fen())
         
+        
     def get_turn(self):
         """Gets the color of the player who is to play this turn."""
         return self.game.get_turn()
+        
         
     def get_player_id_to_move(self):
         """Gets the user ID of the player who is to play this turn."""
@@ -72,13 +85,16 @@ class Game():
         else:
             return self.black_id
             
+            
     def get_game_state(self):
         """Gets the current state of the game."""
         return self.game.game_state()
     
+    
     def ended(self):
         """Checks if the game has ended."""
         return self.get_game_state() != chessbot.Game_state_in_progress
+    
     
     def end_game_message(self):
         """Returns a message to be outputted when the game has ended."""
@@ -89,32 +105,39 @@ class Game():
         
         winner_mention = None
         loser_mention = None
-
+        
+        # Checkmate
         if (game_state == chessbot.Game_state_checkmate_by_white or
-            game_state == chessbot.Game_state_checkmate_by_black):
+                game_state == chessbot.Game_state_checkmate_by_black):
+            # Checkmate by White
             if game_state == chessbot.Game_state_checkmate_by_white:
                 winner_mention = white_mention
                 loser_mention = black_mention
+            # Checkmate by Black
             else:
                 winner_mention = black_mention
                 loser_mention = white_mention
             return winner_mention + " has checkmated " + loser_mention
+        # Stalemate
         elif game_state == chessbot.Game_state_stalemate:
             return ("The game between " + white_mention + " and " +
                     black_mention + " has ended due to stalemate.")
+        # Threefold repetition
         elif game_state == chessbot.Game_state_threefold_repetition:
             return ("The game between " + white_mention + " and " +
                     black_mention + " has ended due to threefold repetition.")
+        # Fifty-move rule
         elif game_state == chessbot.Game_state_fifty_move:
             return ("The game between " + white_mention + " and " +
                     black_mention + " has ended due to the fifty move "
                     "rule.")
+        # Insufficient material
         elif game_state == chessbot.Game_state_insufficient_material:
             return ("The game between " + white_mention + " and " +
                     black_mention + " has ended due to insufficient "
                     "material for a checkmate to be possible.")
         
-    
+ 
     async def make_move(self, move_str):
         """Uses the string representation of a move to make that move. Throws
         InvalidMove if that move is invalid.
@@ -129,6 +152,7 @@ class Game():
                 not self.game.make_move(move)):
             raise InvalidMove()
 
+            
 class Server():
     """Manages the data for a server.
     
@@ -146,26 +170,27 @@ class Server():
         self.games = {}
         self.game_requests = {}
 
+        
 def prefix(bot, message):
     """Returns the prefix of the server a message was sent in."""
+    # If no instance exists for this server for data to be stored, initialize
+    # one.
     if message.server.id in servers:
         return servers[message.server.id].prefix
     else:
         servers[message.server.id] = Server()
         return servers[message.server.id].prefix
 
-description = "A bot that can manage chess games and play in them."
-bot = commands.Bot(command_prefix=prefix, description=description)
-
-servers = {}
 
 def mention(user_id):
     """Returns a mention of the user ID passed.
     
     user_id - the ID of the user to mention
     """
+    # Use the template to generate a string.
     return mention_template.format(user_id)
 
+    
 def find_game_key(server_id, user_id):
     """Returns the key of the game a user is in on a specified server.
     
@@ -174,11 +199,13 @@ def find_game_key(server_id, user_id):
     server_id - the ID of the server in which to look for the game
     user_id - the ID of the user for which to look for a game
     """
+    # Check every game for the user.
     for key, game in servers[server_id].games.items():
         if game.white_id == user_id or game.black_id == user_id:
             return key
     return None
 
+    
 def is_to_play(game, user_id):
     """Checks if the specified user is to play this turn in the specified
     game.
@@ -188,6 +215,7 @@ def is_to_play(game, user_id):
     """
     return game.get_player_id_to_move() == user_id
 
+    
 @bot.event
 async def on_ready():
     """Prints to the console when the bot is ready."""
@@ -196,11 +224,13 @@ async def on_ready():
     print("ID", bot.user.id)
     print("-----------------------")
     
+    
 @bot.event
 async def on_server_join(server):
     """Initializes a server object when joining a new server."""
     servers[server.id] = Server()
 
+    
 @bot.command(pass_context=True)
 async def start(ctx, target_user: discord.Member = None):
     """Used to start a game with another user.
@@ -211,6 +241,8 @@ async def start(ctx, target_user: discord.Member = None):
     Two users must use this command on each other in order for the game to
     start. This is not required for games against the bot.
     """
+    # If no target user is specified, assume this is a request to play with
+    # the bot.
     if not target_user:
         target_user = ctx.message.server.get_member(bot.user.id)
 
@@ -227,21 +259,20 @@ async def start(ctx, target_user: discord.Member = None):
     
     is_bot_game = target_user_id == bot.user.id
     
-    # Make sure the user is not requesting to play with themselves.
+    # Make sure the source user is not requesting to play with themselves.
     if source_user_id == target_user_id:
         await bot.say(source_user_mention + ", you can't play with yourself.")
         return
     
     
     # Make sure the source user is not already in a game.
-    if any(game.white_id == source_user_id or game.black_id == source_user_id
-           for key, game in games.items()):
+    if find_game_key(server_id, target_user_id) is not None:
         await bot.say(source_user_mention + ", you are already in a game.")
         return
     
     # Make sure the target user is not already in a game.
-    if any(game.white_id == target_user_id or game.black_id == target_user_id
-           for key, game in games.items()) and not is_bot_game:
+    if (find_game_key(server_id, target_user_id) is not None and
+            not is_bot_game):
         await bot.say(target_user_mention + " is already in a game.")
         return
     
@@ -262,14 +293,16 @@ async def start(ctx, target_user: discord.Member = None):
         else:
             game_requests[target_user_id].remove(source_user_id)
     
+    # Initialize a game.
     game = Game(source_user_id, target_user_id)
     
+    # State that the game has started and who is playing for which side.
     await bot.say("A game has started between " + source_user_mention +
                   " and " + target_user_mention + ".")
     await bot.say(mention(game.white_id) + " is playing as White.")
     await bot.say(mention(game.black_id) + " is playing as Black.")
     
-    # If the bot is in the game and has to make a move first.
+    # If the bot is in the game and has to make a move first, do so.
     if game.white_id == bot.user.id:
         move_str = await game.make_best_move()
         await bot.say(game.get_board_url())
@@ -279,6 +312,7 @@ async def start(ctx, target_user: discord.Member = None):
         await bot.say(game.get_board_url())
 
     game_key = frozenset((source_user_id, target_user_id))
+    
     servers[server_id].games[game_key] = game
 
 
@@ -306,6 +340,8 @@ async def resign(ctx):
     white_mention = mention(servers[server_id].games[game_key].white_id)
     black_mention = mention(servers[server_id].games[game_key].black_id)
     
+    # Announce that the game has ended and send an image of the chessboard.
+    
     await bot.say("The game between " + white_mention + " and " +
                   black_mention + " has ended due to resignation by " +
                   user_mention)
@@ -313,21 +349,26 @@ async def resign(ctx):
     await bot.say("Final chessboard position. " +
                   servers[server_id].games[game_key].get_board_url())
     
+    # Delete the game instance.
     del servers[server_id].games[game_key]
+    
     
 @bot.command(pass_context=True)
 async def changeprefix(ctx, new_prefix: str):
     """When executed by a server manager, this command changes the server
     prefix of the server.
     """
+    # Make sure the user has the Manage Server permission.
     if not ctx.message.author.server_permission.manage_server:
         await bot.say("You must have the \"Manage Server\" permission to "
                       "change the prefix of this server.")
         return
+    # Change the prefix and acknowledge that change.
     servers[ctx.message.server.id].prefix = new_prefix
     await bot.say("The prefix has successfully been changed to " +
                   new_prefix)
 
+                  
 @bot.command(pass_context=True)
 async def move(ctx, move_str: str):
     """Makes the inputted move in the game the user is in.
@@ -360,8 +401,6 @@ async def move(ctx, move_str: str):
         await servers[server_id].games[game_key].make_move(move_str)
     except InvalidMove:
         await bot.say("That move is invalid, " + user_mention)
-        await bot.say("This is the chessboard: " +
-                      servers[server_id].games[game_key].get_board_url())
         return
     
     opponent_id = servers[server_id].games[game_key] \
@@ -369,11 +408,13 @@ async def move(ctx, move_str: str):
     
     opponent_mention = mention(opponent_id)
     
+    
     await bot.say(opponent_mention + ", " + user_mention + " has made move " +
                   move_str)
     await bot.say(servers[server_id].games[game_key].get_board_url())
 
-    # Check if the game has ended. Send a message if that is the case.
+    # Check if the game has ended. Send a message and delete the game instance
+    # if that is the case.
     if servers[server_id].games[game_key].ended():
         await bot.say(servers[server_id].games[game_key].end_game_message())
         del servers[server_id].games[game_key]
@@ -387,13 +428,12 @@ async def move(ctx, move_str: str):
         await bot.say(user_mention + ", the bot has made move " +
                       bot_move_str)
         
-        # If the game ends, inform the user.
+        # If the game ends, inform the user and delete the game instance.
         if servers[server_id].games[game_key].ended():
             await bot.say(servers[server_id].games[game_key] \
                                             .end_game_message())
             del servers[server_id].games[game_key]
-        
-    
+
     
 def save_data():
     """Saves the bot data to a file."""
@@ -401,6 +441,7 @@ def save_data():
     pickle.dump(servers, file, protocol=pickle.HIGHEST_PROTOCOL)
     file.close()
     print("saved " + str(servers))
+    
     
 def save_loop():
     """Saves the bot data to a file every 15 seconds."""
@@ -410,7 +451,6 @@ def save_loop():
     
 def main():
     """Initializes the bot and its data-saving mechanism."""
-    
     # Initialize the magic moves library.
     chessbot.initmagicmoves()
     
@@ -429,9 +469,6 @@ def main():
     
     # Run the bot.
     bot.run(config.token)
-    
-
-
     
 
 if __name__ == "__main__":
