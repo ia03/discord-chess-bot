@@ -147,7 +147,6 @@ bool Game::make_move(const Move move)
                 square_attacked(rook_dest_sq, reverse_color((turn))))
             {
                 is_illegal_move = true;
-                break;
             }
             break;
         // Make a promotion move.
@@ -221,6 +220,12 @@ bool Game::make_move(const Move move)
 void Game::undo()
 {
     end_turn();
+    
+
+    // Treat this position as if it never happened for the purposes of
+    // threefold repetition.
+    
+    hash_count[hash()]--;
 
     const Ply_data last_ply = history.back();
     history.pop_back();
@@ -301,9 +306,4 @@ void Game::undo()
             add_piece(enemy_pawn, enemy_pawn_sq);
             break;
     }
-
-    // Treat this position as if it never happened for the purposes of
-    // threefold repetition.
-    
-    hash_count[hash()]--;
 }

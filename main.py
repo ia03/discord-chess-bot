@@ -226,12 +226,12 @@ async def start(ctx, target_user: discord.Member = None):
     target_user_mention = mention(target_user_id)
     
     is_bot_game = target_user_id == bot.user.id
-    '''
+    
     # Make sure the user is not requesting to play with themselves.
     if source_user_id == target_user_id:
         await bot.say(source_user_mention + ", you can't play with yourself.")
         return
-    '''
+    
     
     # Make sure the source user is not already in a game.
     if any(game.white_id == source_user_id or game.black_id == source_user_id
