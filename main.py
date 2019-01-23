@@ -6,7 +6,7 @@ import random
 import config
 
 
-chess_engine_depth = 4
+chess_engine_depth = 2
 file_path = "bot.data"
 mention_template = "<@{}>"
 description = "A bot that can manage chess games and play in them."
