@@ -9,11 +9,23 @@ import config
 chess_engine_depth = 2
 file_path = "bot.data"
 mention_template = "<@{}>"
-
 description = "A bot that can manage chess games and play in them."
-bot = commands.Bot(command_prefix=prefix, description=description)
 
 servers = {}
+
+
+def prefix(bot, message):
+    """Returns the prefix of the server a message was sent in."""
+    # If no instance exists for this server for data to be stored, initialize
+    # one.
+    if message.server.id in servers:
+        return servers[message.server.id].prefix
+    else:
+        servers[message.server.id] = Server()
+        return servers[message.server.id].prefix
+
+    
+bot = commands.Bot(command_prefix=prefix, description=description)
 
 
 class InvalidMove(Exception):
@@ -166,17 +178,6 @@ class Server():
         self.prefix = ","
         self.games = {}
         self.game_requests = {}
-
-        
-def prefix(bot, message):
-    """Returns the prefix of the server a message was sent in."""
-    # If no instance exists for this server for data to be stored, initialize
-    # one.
-    if message.server.id in servers:
-        return servers[message.server.id].prefix
-    else:
-        servers[message.server.id] = Server()
-        return servers[message.server.id].prefix
 
 
 def mention(user_id):
