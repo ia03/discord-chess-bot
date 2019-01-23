@@ -264,7 +264,7 @@ async def start(ctx, target_user: discord.Member = None):
     
     
     # Make sure the source user is not already in a game.
-    if find_game_key(server_id, target_user_id) is not None:
+    if find_game_key(server_id, source_user_id) is not None:
         await bot.say(source_user_mention + ", you are already in a game.")
         return
     
