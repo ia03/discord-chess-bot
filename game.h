@@ -129,9 +129,6 @@ private:
 
     // Ends the current turn.
     void end_turn();
-
-    // Generates the Zobrist key for the current position.
-    Bitstring hash() const;
     
     // Checks the origin and destination squares of a move and updates
     // the castling rights accordingly.
@@ -361,6 +358,9 @@ private:
 public:
     // Initializes Zobrist hashing.
     Game();
+    
+    // Generates the Zobrist key for the current position.
+    Bitstring hash() const;
 
     // Gets the color of the player who is to play this turn.
     const Color get_turn() const;

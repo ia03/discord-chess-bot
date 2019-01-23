@@ -226,22 +226,22 @@ async def start(ctx, target_user: discord.Member = None):
     target_user_mention = mention(target_user_id)
     
     is_bot_game = target_user_id == bot.user.id
-    
+    '''
     # Make sure the user is not requesting to play with themselves.
     if source_user_id == target_user_id:
         await bot.say(source_user_mention + ", you can't play with yourself.")
         return
-    
+    '''
     
     # Make sure the source user is not already in a game.
     if any(game.white_id == source_user_id or game.black_id == source_user_id
-           for key, game in games.items()) and not is_bot_game:
+           for key, game in games.items()):
         await bot.say(source_user_mention + ", you are already in a game.")
         return
     
     # Make sure the target user is not already in a game.
     if any(game.white_id == target_user_id or game.black_id == target_user_id
-           for key, game in games.items()):
+           for key, game in games.items()) and not is_bot_game:
         await bot.say(target_user_mention + " is already in a game.")
         return
     
@@ -360,6 +360,8 @@ async def move(ctx, move_str: str):
         await servers[server_id].games[game_key].make_move(move_str)
     except InvalidMove:
         await bot.say("That move is invalid, " + user_mention)
+        await bot.say("This is the chessboard: " +
+                      servers[server_id].games[game_key].get_board_url())
         return
     
     opponent_id = servers[server_id].games[game_key] \

@@ -74,8 +74,8 @@ void Game::add_piece(const Piece piece, const Square square)
     }
     
     const Bitboard piece_position = square_to_bb(square);
-    Bitboard &piece_bitboard = get_piece_bitboard(piece);
-    Bitboard &color_bitboard = get_color_bitboard(piece_color(piece));
+    auto &piece_bitboard = get_piece_bitboard(piece);
+    auto &color_bitboard = get_color_bitboard(piece_color(piece));
 
     // Update bitboards.
     piece_bitboard |= piece_position;

@@ -35,7 +35,7 @@ void Game::update_castling_rights(
     // White
     if (origin_sq == Square::E1)
     {
-        invalidate_black_castling();
+        invalidate_white_castling();
     }
     // Black
     else if (origin_sq == Square::E8)
@@ -169,7 +169,7 @@ bool Game::make_move(const Move move)
         // Make a promotion move.
         case Move_type::promotion:
             remove_piece(moved_piece, origin_sq);
-            remove_piece(captured_piece, origin_sq);
+            remove_piece(captured_piece, dest_sq);
             add_piece(promo_piece_to_piece(promo_piece, turn), dest_sq);
 
             
@@ -297,6 +297,7 @@ void Game::undo()
 
     // Treat this position as if it never happened for the purposes of
     // threefold repetition.
+    
     hash_count[hash()]--;
     threefold_repetition = false;
 }
