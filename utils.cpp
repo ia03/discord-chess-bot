@@ -4,6 +4,8 @@
 #include "utils.h"
 
 
+// Returns the opposite color. Returns none if the input is not white or
+// black.
 Color reverse_color(const Color color)
 {
     // Return the opposite color.
@@ -21,6 +23,8 @@ Color reverse_color(const Color color)
     }
 }
 
+
+// Creates a move.
 Move create_move(
         const Square origin_sq,
         const Square dest_sq,
@@ -37,6 +41,9 @@ Move create_move(
     return move;
 }
 
+
+// Creates a normal move (no castling, promotion, or en passant)
+// from one square to another.
 Move create_normal_move(const Square origin_sq, const Square dest_sq)
 {
     return create_move(
@@ -47,6 +54,7 @@ Move create_normal_move(const Square origin_sq, const Square dest_sq)
     );
 }
 
+// Creates all the promotion moves from one square to another.
 std::array<Move, 4> create_promo_moves(
         const Square origin_sq,
         const Square dest_sq
@@ -89,6 +97,8 @@ std::array<Move, 4> create_promo_moves(
     return moves;
 }
 
+
+// Creates an en passant move from one square to another.
 Move create_en_passant_move(const Square origin_sq, const Square dest_sq)
 {
     return create_move(
@@ -99,6 +109,9 @@ Move create_en_passant_move(const Square origin_sq, const Square dest_sq)
     );
 }
 
+
+// Creates a castling move from one square to another. The origin and
+// destination squares are those of the king.
 Move create_castling_move(const Square origin_sq, const Square dest_sq)
 {
     return create_move(
@@ -109,6 +122,8 @@ Move create_castling_move(const Square origin_sq, const Square dest_sq)
     );
 }
 
+
+// Sets the origin square.
 Move set_origin_sq(const Move move, const Square origin_sq)
 {
     // Origin square is bits 0-5.
@@ -117,6 +132,8 @@ Move set_origin_sq(const Move move, const Square origin_sq)
             static_cast<unsigned int>(origin_sq));
 }
 
+
+// Sets the destination square.
 Move set_dest_sq(const Move move, const Square dest_sq)
 {
     // Destination square is bits 6-11.
@@ -125,6 +142,8 @@ Move set_dest_sq(const Move move, const Square dest_sq)
             (static_cast<unsigned>(dest_sq) << 6));
 }
 
+
+// Sets the promotion piece type.
 Move set_promo_piece(const Move move, const Promotion_piece promo_piece)
 {
     // Promotion piece flag is bits 12-13.
@@ -133,6 +152,8 @@ Move set_promo_piece(const Move move, const Promotion_piece promo_piece)
             static_cast<unsigned>(promo_piece));
 }
 
+
+// Sets the move type.
 Move set_move_type(const Move move, const Move_type move_type)
 {
     // Special move flag is bits 14-15.
@@ -141,6 +162,8 @@ Move set_move_type(const Move move, const Move_type move_type)
             static_cast<unsigned>(move_type));
 }
 
+
+// Extracts the origin square.
 Square extract_origin_sq(const Move move)
 {
     // Origin square is bits 0-5.
@@ -148,6 +171,8 @@ Square extract_origin_sq(const Move move)
             static_cast<unsigned>(move) & 0b0000000000111111);
 }
 
+
+// Extracts the destination square.
 Square extract_dest_sq(const Move move)
 {
     // Destination square is bits 6-11.
@@ -155,6 +180,8 @@ Square extract_dest_sq(const Move move)
             ((static_cast<unsigned>(move) & 0b0000111111000000) >> 6));
 }
 
+
+// Extracts the promotion piece type.
 Promotion_piece extract_promo_piece(const Move move)
 {
     // Promotion piece flag is bits 12-13.
@@ -162,6 +189,8 @@ Promotion_piece extract_promo_piece(const Move move)
             static_cast<unsigned>(move) & 0b0011000000000000);
 }
 
+
+// Extracts the move type.
 Move_type extract_move_type(const Move move)
 {
     // Special move flag is bits 14-15.
@@ -169,6 +198,8 @@ Move_type extract_move_type(const Move move)
             static_cast<unsigned>(move) & 0b1100000000000000);
 }
 
+
+// Gets the color of a piece type.
 Color piece_color(const Piece piece)
 {
     switch (piece)
@@ -194,6 +225,9 @@ Color piece_color(const Piece piece)
     }
 }
 
+
+// Gets the type and position of the enemy pawn captured in an en passant
+// move and passes them back using the first 2 arguments.
 void find_enemy_pawn_ep(
         Piece &enemy_pawn_type,
         Square &enemy_pawn_square,
@@ -216,6 +250,10 @@ void find_enemy_pawn_ep(
     }
 }
 
+
+// Gets the rook type and origin and destination squares based on the king
+// origin and destination squares. This information is passed back using
+// the first 3 arguments.
 void castle_rook_squares(
         Piece &rook_type,
         Square &rook_origin_sq,
@@ -262,6 +300,8 @@ void castle_rook_squares(
     }
 }
 
+
+// Converts a promotion piece to a piece.
 Piece promo_piece_to_piece(
         const Promotion_piece promo_piece,
         const Color color
@@ -298,6 +338,8 @@ Piece promo_piece_to_piece(
     return Piece::none;
 }
 
+
+// Generates a random bitstring.
 Bitstring rand_hash()
 {
     // Use a Mersenne Twister pseudo-random generator to generate a random
@@ -307,6 +349,8 @@ Bitstring rand_hash()
     return generator();
 }
 
+
+// Generates a vector of moves using a bitboard.
 std::vector<Move> gen_moves_from_bitboard(
         const Square origin_sq,
         Bitboard bitboard
@@ -333,6 +377,8 @@ std::vector<Move> gen_moves_from_bitboard(
     return moves;
 }
 
+
+// Counts the number of set bits in a bitboard.
 int count_bits_set(Bitboard bitboard)
 {
     int i;
@@ -346,6 +392,8 @@ int count_bits_set(Bitboard bitboard)
     return i;
 }
 
+
+// Finds the position of the only set bit on a bitboard.
 int set_bit_pos(Bitboard bitboard)
 {
     int position = 0;
@@ -360,41 +408,60 @@ int set_bit_pos(Bitboard bitboard)
     return position;
 }
 
+
+// Converts a square to a bitboard with a single bit turned on.
 Bitboard square_to_bb(const Square square)
 {
     return static_cast<Bitboard>(1) << static_cast<Bitboard>(square);
 }
 
+
+// Returns the square north of the origin square.
 Square north_of(const Square origin_sq)
 {
     return static_cast<Square>(static_cast<unsigned>(origin_sq) + 8);
 }
 
+
+// Returns the square south of the origin square.
 Square south_of(const Square origin_sq)
 {
     return static_cast<Square>(static_cast<unsigned>(origin_sq) - 8);
 }
 
+
+// Returns the square east of the origin square.
 Square east_of(const Square origin_sq)
 {
     return static_cast<Square>(static_cast<unsigned>(origin_sq) + 1);
 }
 
+
+// Returns the square west of the origin square.
 Square west_of(const Square origin_sq)
 {
     return static_cast<Square>(static_cast<unsigned>(origin_sq) - 1);
 }
 
+
+// Determines if a square is on a bitboard.
 bool on_bitboard(const Square square, const Bitboard bitboard)
 {
     return on_bitboard(square_to_bb(square), bitboard);
 }
 
+
+// Determines if a bitboard has any set bits that also exist in another
+// bitboard.
 bool on_bitboard(const Bitboard bitboard1, const Bitboard bitboard2)
 {
     return (bitboard1 & bitboard2) != 0;
 }
 
+
+// Find the destination square using the origin square and a list of
+// directions. Returns Move::none if the destination square is outside
+// the boundaries.
 Square find_dest_square(
         const Square origin_sq,
         const std::vector<Direction> &directions

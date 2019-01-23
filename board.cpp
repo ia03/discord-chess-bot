@@ -22,6 +22,8 @@ std::map<Piece, std::string> piece_fen =
     {Piece::b_king,   "k"}
 };
 
+
+// Returns a reference to the specified piece type's bitboard.
 Bitboard &Game::get_piece_bitboard(const Piece piece)
 {
     switch (piece)
@@ -54,6 +56,8 @@ Bitboard &Game::get_piece_bitboard(const Piece piece)
     }
 }
 
+
+// Returns a reference to the specified color's bitboard.
 Bitboard &Game::get_color_bitboard(const Color color)
 {
     if (color == Color::white)
@@ -66,6 +70,8 @@ Bitboard &Game::get_color_bitboard(const Color color)
     }
 }
 
+
+// Adds a piece to the specified square.
 void Game::add_piece(const Piece piece, const Square square)
 {
     if (piece == Piece::none)
@@ -92,6 +98,8 @@ void Game::add_piece(const Piece piece, const Square square)
     evaluation += eval_square(square);
 }
 
+
+// Removes a piece from the specified square.
 void Game::remove_piece(const Piece piece, const Square square)
 {
     if (piece == Piece::none)
@@ -117,11 +125,16 @@ void Game::remove_piece(const Piece piece, const Square square)
     pieces_on_board[static_cast<unsigned>(square)] = Piece::none;
 }
 
+
+// Gets the type of piece on a certain square.
 Piece Game::piece_on(const Square square) const
 {
     return pieces_on_board[static_cast<unsigned>(square)];
 }
 
+
+// Checks if there are not enough pieces on the board for a checkmate
+// to be possible.
 bool Game::insufficient_material() const
 {
     // If any pawns, rooks, or queens exist on the board, we know a
@@ -162,11 +175,16 @@ bool Game::insufficient_material() const
     return true;
 }
 
+
+// Checks if the specified square is occupied.
 bool Game::is_occupied(const Square square) const
 {
     return (square_to_bb(square) & all_bitboard) != 0;
 }
 
+
+// Checks if the specified square is occupied by a piece of a certain
+// color.
 bool Game::is_occupied(const Square square, const Color color) const
 {
     if (color == Color::white)
@@ -179,6 +197,9 @@ bool Game::is_occupied(const Square square, const Color color) const
     }
 }
 
+
+// Using a list of possible moves, checks if the game has ended, and if
+// so, why.
 Game_state Game::game_state(const std::vector<Move> &possible_moves)
 {
     bool legal_moves_exist = false;
@@ -242,11 +263,15 @@ Game_state Game::game_state(const std::vector<Move> &possible_moves)
     return Game_state::in_progress;
 }
 
+
+// Checks if the game has ended, and if so, why.
 Game_state Game::game_state()
 {
     return game_state(pseudo_legal_moves());
 }
 
+
+// Checks if the specified square is under attack by a specified player.
 bool Game::square_attacked(const Square square, const Color attacker)
 {
     bool attacker_is_opponent = false;
@@ -284,6 +309,8 @@ bool Game::square_attacked(const Square square, const Color attacker)
     return false;
 }
 
+
+// Checks if the specified player's king is in check.
 bool Game::king_in_check(const Color color)
 {
     // Find the square the king is on.
@@ -301,6 +328,8 @@ bool Game::king_in_check(const Color color)
     return square_attacked(king_square, reverse_color(color));
 }
 
+
+// Returns the FEN representation of the board.
 std::string Game::fen() const
 {
     std::string fen_str;

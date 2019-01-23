@@ -125,11 +125,14 @@ private:
     // Initializes the Zobrist hash for the piece positions.
     void init_hash();
     
-    // Initializes the evaluation of the board.
+    // Initializes the evaluation variable.
     void init_eval();
 
     // Returns the bitstring for a square.
     Bitstring hash_square(Square square) const;
+    
+    // Generates the Zobrist key for the current position.
+    Bitstring hash() const;
 
     // Ends the current turn.
     void end_turn();
@@ -174,10 +177,10 @@ private:
     // Returns a reference to the specified color's bitboard.
     Bitboard &get_color_bitboard(const Color color);
     
-    // Adds a piece to the board.
+    // Adds a piece to the specified square.
     void add_piece(const Piece piece, const Square square);
 
-    // Adds a piece to the board.
+    // Removes a piece from the specified square.
     void remove_piece(const Piece piece, const Square square);
 
     // Gets the type of piece on a certain square.
@@ -194,7 +197,7 @@ private:
     // belonging to the player who is to move this turn.
     Bitboard discard_self_captures(const Bitboard attack_bitboard) const;
 
-    // Undoes the last move.
+    // Undoes the last move made.
     void undo();
 
     // Generates all pseudo-legal moves for the current player.
@@ -307,7 +310,7 @@ private:
     // invalidated and no pieces are blocking it.
     Move black_kingside_castle_move(const Square origin_sq) const;
     
-    // Generates the blacka queenside castling move as long as it has not been
+    // Generates the black queenside castling move as long as it has not been
     // invalidated and no pieces are blocking it.
     Move black_queenside_castle_move(const Square origin_sq) const;
 
@@ -347,7 +350,7 @@ private:
     // Uses piece-square tables to evaluate a square.
     int eval_square(const Square square) const;
 
-    // Uses piece-square tables to evaluate the board in its current state.
+    // Obtains the evaluation of the board in its current state.
     int evaluate() const;
 
     // Checks if there are not enough pieces on the board for a checkmate
@@ -360,11 +363,8 @@ private:
     // Checks if the specified player's king is in check.
     bool king_in_check(const Color color);
 public:
-    // Initializes Zobrist hashing.
+    // Initializes Zobrist hashing and the evaluation variable.
     Game();
-    
-    // Generates the Zobrist key for the current position.
-    Bitstring hash() const;
 
     // Gets the color of the player who is to play this turn.
     const Color get_turn() const;

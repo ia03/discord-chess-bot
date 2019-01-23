@@ -91,6 +91,8 @@ const std::array<int, 64> flip =
     0,   1,   2,   3,   4,   5,   6,   7
 };
 
+
+ // Initializes the evaluation variable.
 void Game::init_eval()
 {
     evaluation = 0;
@@ -102,11 +104,15 @@ void Game::init_eval()
     }
 }
 
+
+// Obtains the evaluation of the board in its current state.
 int Game::evaluate() const
 {
       return evaluation;
 }
 
+
+// Uses piece-square tables to evaluate a square.
 int Game::eval_square(const Square square) const
 {
     const Piece piece = piece_on(square);

@@ -50,6 +50,11 @@ std::map<Promotion_piece, std::string> promo_bin_to_str =
 };
 
 
+// Generates and returns a move using a string. The first two characters
+// indicate the starting position, the two characters after that indicate
+// the ending position. The fifth optional character indicates the
+// promotion piece. Returns Move::none if the string is invalid.
+// Examples: "b5f8" or "f7F8q"
 Move Game::string_to_move(const std::string move_str) const
 {
     const auto str_len = move_str.length();
@@ -93,7 +98,7 @@ Move Game::string_to_move(const std::string move_str) const
         // Fifth character is the promotion type (optional).
         const auto promo_str = move_str.substr(4, 1);
 
-        // Invalid promotion type.
+        // Make sure the promotion type is valid.
         if(promo_str_to_bin.find(promo_str) == promo_str_to_bin.end())
         {
             return Move::none;
@@ -164,6 +169,8 @@ Move Game::string_to_move(const std::string move_str) const
     return create_move(origin_sq, dest_sq, promo_piece, move_type);
 }
 
+
+// Converts a move to its string representation.
 std::string Game::move_to_string(const Move move) const
 {
     // Extract the origin and destination squares.

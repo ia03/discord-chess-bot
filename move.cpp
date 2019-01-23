@@ -4,6 +4,8 @@
 #include "game.h"
 
 
+// Checks the origin and destination squares of a move and updates
+// the castling rights accordingly.
 void Game::update_castling_rights(
         const Square origin_sq,
         const Square dest_sq
@@ -44,6 +46,8 @@ void Game::update_castling_rights(
     }
 }
 
+
+// Checks if a move is pseudo-legal.
 bool Game::is_pseudo_legal(Move move) const
 {
     std::vector<Move> moves = pseudo_legal_moves();
@@ -60,6 +64,10 @@ bool Game::is_pseudo_legal(Move move) const
     }
 }
 
+
+// Makes a move and saves the ply data required to undo that move if it is
+// legal. If the move is illegal, it undoes the move after making it and
+// returns false. The move is assumed to be pseudo-legal.
 bool Game::make_move(const Move move)
 {
     // Extract data from the move.
@@ -85,6 +93,7 @@ bool Game::make_move(const Move move)
     // Update the castling rights.
     update_castling_rights(origin_sq, dest_sq);
     
+    // Update the 50-move and en passant variables.
     rule50++;
     en_passant_square = Square::none;
 
@@ -224,6 +233,8 @@ bool Game::make_move(const Move move)
     return true;
 }
 
+
+// Undoes the last move made.
 void Game::undo()
 {
     end_turn();

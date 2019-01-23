@@ -6,6 +6,9 @@
 
 const int infinity = 9999999;
 
+
+// Search function used for the root ply. It uses minimax and alpha-beta
+// pruning to return the best legal move for the current position.
 Move Game::best_move(const int depth)
 {
     const std::vector<Move> possible_moves = pseudo_legal_moves();
@@ -63,6 +66,10 @@ Move Game::best_move(const int depth)
     return best_move;
 }
 
+
+// The recursive function that returns the best evaluation found for a
+// ply. It utilizes minimax with alpha-beta pruning. This will not be
+// used for the root ply.
 int Game::minimax(int depth, int alpha, int beta, bool is_maximizing)
 {
     const std::vector<Move> possible_moves = pseudo_legal_moves();

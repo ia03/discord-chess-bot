@@ -6,6 +6,7 @@
 #include "lib/magicmoves.h"
 
 
+// Generates all pseudo-legal moves for White.
 std::vector<Move> Game::pseudo_legal_w_moves() const
 {
     std::vector<Move> all_moves;
@@ -49,6 +50,8 @@ std::vector<Move> Game::pseudo_legal_w_moves() const
     return all_moves;
 }
 
+
+// Generates all pseudo-legal moves for Black.
 std::vector<Move> Game::pseudo_legal_b_moves() const
 {
     std::vector<Move> all_moves;
@@ -92,6 +95,8 @@ std::vector<Move> Game::pseudo_legal_b_moves() const
     return all_moves;
 }
 
+
+// Generates all pseudo-legal moves for the current player.
 std::vector<Move> Game::pseudo_legal_moves() const
 {
     if (turn == Color::white)
@@ -104,6 +109,11 @@ std::vector<Move> Game::pseudo_legal_moves() const
     }
 }
 
+
+// If the destination square is invalid or is occupied by a friendly
+// piece, this returns Move::none. Otherwise, it returns a normal move
+// with the origin and destination squares set. Used with
+// find_dest_square() to generate simple moves.
 Move Game::pseudo_legal_normal_move(
         const Square origin_sq,
         const Square dest_sq
@@ -121,6 +131,10 @@ Move Game::pseudo_legal_normal_move(
     }
 }
 
+
+// Generates a normal move from the origin square to wherever the
+// directions lead to if that is a square within the boundaries of the
+// board and is not occupied by any friendly pieces.
 Move Game::pseudo_legal_normal_move(
         const Square origin_sq,
         const std::vector<Direction> &directions
@@ -136,6 +150,9 @@ Move Game::pseudo_legal_normal_move(
     return pseudo_legal_normal_move(origin_sq, dest_sq);
 }
 
+
+// Removes squares from an attack bitboard that are occupied by pieces
+// belonging to the player who is to move this turn.
 Bitboard Game::discard_self_captures(const Bitboard attack_bitboard) const
 {
     // Discard self-captures.
@@ -149,6 +166,9 @@ Bitboard Game::discard_self_captures(const Bitboard attack_bitboard) const
     }
 }
 
+
+// Generates the pawn north-by-1 move using the origin square. Returns
+// Move::none if the move would not be pseudo-legal.
 Move Game::pawn_north_move(const Square origin_sq) const
 {
     const auto dest_sq = find_dest_square(origin_sq, {Direction::north});
@@ -165,6 +185,9 @@ Move Game::pawn_north_move(const Square origin_sq) const
     }
 }
 
+
+// Generates the pawn south-by-1 move using the origin square. Returns
+// Move::none if the move would not be pseudo-legal.
 Move Game::pawn_south_move(const Square origin_sq) const
 {
     const auto dest_sq = find_dest_square(origin_sq, {Direction::south});
@@ -181,6 +204,9 @@ Move Game::pawn_south_move(const Square origin_sq) const
     }
 }
 
+
+// Generates the pawn north-by-2 move using the origin square. Returns
+// Move::none if the move would not be pseudo-legal.
 Move Game::pawn_north_north_move(const Square origin_sq) const
 {
     const auto dest_sq = north_of(north_of(origin_sq));
@@ -199,6 +225,9 @@ Move Game::pawn_north_north_move(const Square origin_sq) const
     }
 }
 
+
+// Generates the pawn south-by-2 move using the origin square. Returns
+// Move::none if the move would not be pseudo-legal.
 Move Game::pawn_south_south_move(const Square origin_sq) const
 {
     const auto dest_sq = south_of(south_of(origin_sq));
@@ -217,6 +246,9 @@ Move Game::pawn_south_south_move(const Square origin_sq) const
     }
 }
 
+
+// Generates the pawn north-east capture move using the origin square.
+// Returns Move::none if the move would not be pseudo-legal.
 Move Game::pawn_north_east_move(const Square origin_sq) const
 {
     const auto dest_sq = find_dest_square(
@@ -238,6 +270,9 @@ Move Game::pawn_north_east_move(const Square origin_sq) const
     }
 }
 
+
+// Generates the pawn south-east capture move using the origin square.
+// Returns Move::none if the move would not be pseudo-legal.
 Move Game::pawn_south_east_move(const Square origin_sq) const
 {
     const auto dest_sq = find_dest_square(
@@ -259,6 +294,9 @@ Move Game::pawn_south_east_move(const Square origin_sq) const
     }
 }
 
+
+// Generates the pawn north-west capture move using the origin square.
+// Returns Move::none if the move would not be pseudo-legal.
 Move Game::pawn_north_west_move(const Square origin_sq) const
 {
     const auto dest_sq = find_dest_square(
@@ -280,6 +318,9 @@ Move Game::pawn_north_west_move(const Square origin_sq) const
     }
 }
 
+
+// Generates the pawn south-west capture move using the origin square.
+// Returns Move::none if the move would not be pseudo-legal.
 Move Game::pawn_south_west_move(const Square origin_sq) const
 {
     const auto dest_sq = find_dest_square(
@@ -301,6 +342,9 @@ Move Game::pawn_south_west_move(const Square origin_sq) const
     }
 }
 
+
+// Generates the pawn north-east en passant move using the origin square.
+// Returns Move::none if the move would not be pseudo-legal.
 Move Game::pawn_ep_north_east_move(const Square origin_sq) const
 {
     const auto dest_sq = find_dest_square(
@@ -320,6 +364,9 @@ Move Game::pawn_ep_north_east_move(const Square origin_sq) const
     }
 }
 
+
+// Generates the pawn south-east en passant move using the origin square.
+// Returns Move::none if the move would not be pseudo-legal.
 Move Game::pawn_ep_south_east_move(const Square origin_sq) const
 {
     const auto dest_sq = find_dest_square(
@@ -339,6 +386,9 @@ Move Game::pawn_ep_south_east_move(const Square origin_sq) const
     }
 }
 
+
+// Generates the pawn north-west en passant move using the origin square.
+// Returns Move::none if the move would not be pseudo-legal.
 Move Game::pawn_ep_north_west_move(const Square origin_sq) const
 {
     const auto dest_sq = find_dest_square(
@@ -358,6 +408,9 @@ Move Game::pawn_ep_north_west_move(const Square origin_sq) const
     }
 }
 
+
+// Generates the pawn south-west en passant move using the origin square.
+// Returns Move::none if the move would not be pseudo-legal.
 Move Game::pawn_ep_south_west_move(const Square origin_sq) const
 {
     const auto dest_sq = find_dest_square(
@@ -377,6 +430,9 @@ Move Game::pawn_ep_south_west_move(const Square origin_sq) const
     }
 }
 
+
+// Generates the 4 north-by-1 promotion moves using the origin square.
+// Returns Move::none if the moves would not be pseudo-legal.
 std::array<Move, 4> Game::pawn_promo_north_moves(
         const Square origin_sq
 ) const
@@ -395,6 +451,9 @@ std::array<Move, 4> Game::pawn_promo_north_moves(
     }
 }
 
+
+// Generates the 4 south-by-1 promotion moves using the origin square.
+// Returns Move::none if the moves would not be pseudo-legal.
 std::array<Move, 4> Game::pawn_promo_south_moves(
         const Square origin_sq
 ) const
@@ -413,6 +472,9 @@ std::array<Move, 4> Game::pawn_promo_south_moves(
     }
 }
 
+
+// Generates the 4 north-east promotion capture moves using the origin
+// square. Returns Move::none if the moves would not be pseudo-legal.
 std::array<Move, 4> Game::pawn_promo_north_east_moves(
         const Square origin_sq
 ) const
@@ -433,6 +495,9 @@ std::array<Move, 4> Game::pawn_promo_north_east_moves(
     }
 }
 
+
+// Generates the 4 south-east promotion capture moves using the origin
+// square. Returns Move::none if the moves would not be pseudo-legal.
 std::array<Move, 4> Game::pawn_promo_south_east_moves(
         const Square origin_sq
 ) const
@@ -453,6 +518,9 @@ std::array<Move, 4> Game::pawn_promo_south_east_moves(
     }
 }
 
+
+// Generates the 4 north-west promotion capture moves using the origin
+// square. Returns Move::none if the moves would not be pseudo-legal.
 std::array<Move, 4> Game::pawn_promo_north_west_moves(
         const Square origin_sq
 ) const
@@ -473,6 +541,9 @@ std::array<Move, 4> Game::pawn_promo_north_west_moves(
     }
 }
 
+
+// Generates the 4 south-west promotion capture moves using the origin
+// square. Returns Move::none if the moves would not be pseudo-legal.
 std::array<Move, 4> Game::pawn_promo_south_west_moves(
         const Square origin_sq
 ) const
@@ -493,6 +564,9 @@ std::array<Move, 4> Game::pawn_promo_south_west_moves(
     }
 }
 
+
+// Generates the white kingside castling move as long as it has not been
+// invalidated and no pieces are blocking it.
 Move Game::white_kingside_castle_move(const Square origin_sq) const
 {
     // Make sure castling has not been invalidated and no pieces are blocking
@@ -508,6 +582,9 @@ Move Game::white_kingside_castle_move(const Square origin_sq) const
     }
 }
 
+
+// Generates the white queenside castling move as long as it has not been
+// invalidated and no pieces are blocking it.
 Move Game::white_queenside_castle_move(const Square origin_sq) const
 {
     // Make sure castling has not been invalidated and no pieces are blocking
@@ -523,6 +600,9 @@ Move Game::white_queenside_castle_move(const Square origin_sq) const
     }
 }
 
+
+// Generates the black kingside castling move as long as it has not been
+// invalidated and no pieces are blocking it.
 Move Game::black_kingside_castle_move(const Square origin_sq) const
 {
     // Make sure castling has not been invalidated and no pieces are blocking
@@ -538,6 +618,9 @@ Move Game::black_kingside_castle_move(const Square origin_sq) const
     }
 }
 
+
+// Generates the black queenside castling move as long as it has not been
+// invalidated and no pieces are blocking it.
 Move Game::black_queenside_castle_move(const Square origin_sq) const
 {
     // Make sure castling has not been invalidated and no pieces are blocking
@@ -553,6 +636,9 @@ Move Game::black_queenside_castle_move(const Square origin_sq) const
     }
 }
 
+
+// Generates all pseudo-legal moves for a white pawn that belongs to the
+// player to move this turn.
 std::vector<Move> Game::pseudo_legal_w_pawn_moves(const Square square) const
 {
     std::vector<Move> possible_moves;
@@ -608,6 +694,9 @@ std::vector<Move> Game::pseudo_legal_w_pawn_moves(const Square square) const
     return possible_moves;
 }
 
+
+// Generates all pseudo-legal moves for a black pawn that belongs to the
+// player to move this turn.
 std::vector<Move> Game::pseudo_legal_b_pawn_moves(const Square square) const
 {
     std::vector<Move> possible_moves;
@@ -663,6 +752,9 @@ std::vector<Move> Game::pseudo_legal_b_pawn_moves(const Square square) const
     return possible_moves;
 }
 
+
+// Generates all pseudo-legal knight moves for a knight that belongs to the
+// player to move this turn.
 std::vector<Move> Game::pseudo_legal_knight_moves(const Square square) const
 {
     std::vector<Move> possible_moves;
@@ -728,6 +820,9 @@ std::vector<Move> Game::pseudo_legal_knight_moves(const Square square) const
     return possible_moves;
 }
 
+
+// Generates all pseudo-legal bishop moves for a bishop that belongs to the
+// player to move this turn.
 std::vector<Move> Game::pseudo_legal_bishop_moves(const Square square) const
 {
     // Use magic bitboards to generate the attack bitboard.
@@ -742,6 +837,9 @@ std::vector<Move> Game::pseudo_legal_bishop_moves(const Square square) const
     return gen_moves_from_bitboard(square, attack_bitboard);
 }
 
+
+// Generates all pseudo-legal rook moves for a rook that belongs to the
+// player to move this turn. Castling does not count as a rook move.
 std::vector<Move> Game::pseudo_legal_rook_moves(const Square square) const
 {
     // Use magic bitboards to generate the attack bitboard.
@@ -756,6 +854,9 @@ std::vector<Move> Game::pseudo_legal_rook_moves(const Square square) const
     return gen_moves_from_bitboard(square, attack_bitboard);
 }
 
+
+// Generates all pseudo-legal queen moves for a queen that belongs to the
+// player to move this turn.
 std::vector<Move> Game::pseudo_legal_queen_moves(const Square square) const
 {
     // Use magic bitboards to generate the attack bitboard.
@@ -777,6 +878,9 @@ std::vector<Move> Game::pseudo_legal_queen_moves(const Square square) const
     return gen_moves_from_bitboard(square, attack_bitboard);
 }
 
+
+// Generates all pseudo-legal king moves for the king that belongs to the
+// player to move this turn.
 std::vector<Move> Game::pseudo_legal_king_moves(const Square square) const
 {
     std::vector<Move> possible_moves;

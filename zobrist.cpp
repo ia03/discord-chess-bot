@@ -3,6 +3,7 @@
 #include "game.h"
 
 
+// Initializes the random bitstrings require for Zobrist hashing.
 void Game::init_zobrist()
 {
     // Initialize player to move bitstrings
@@ -29,6 +30,8 @@ void Game::init_zobrist()
     }
 }
 
+
+// Initializes the Zobrist hash for the piece positions.
 void Game::init_hash()
 {
     position_hash = 0;
@@ -40,6 +43,8 @@ void Game::init_hash()
     }
 }
 
+
+// Returns the bitstring for a square.
 Bitstring Game::hash_square(Square square) const
 {
 
@@ -76,6 +81,8 @@ Bitstring Game::hash_square(Square square) const
     }
 }
 
+
+// Generates the Zobrist key for the current position.
 Bitstring Game::hash() const
 {
     // The position hash is already calculated.

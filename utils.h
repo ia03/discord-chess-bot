@@ -55,18 +55,6 @@ const std::array<Bitboard, 8> cols =
 // black.
 Color reverse_color(const Color color);
 
-// Sets the origin square.
-Move set_origin_sq(const Move move, const Square origin_sq);
-
-// Sets the destination square.
-Move set_dest_sq(const Move move, const Square dest_sq);
-
-// Sets the promotion piece type.
-Move set_promo_piece(const Move move, const Promotion_piece promo_piece);
-
-// Sets the move type.
-Move set_move_type(const Move move, const Move_type move_type);
-
 // Creates a move.
 Move create_move(
         const Square origin_sq,
@@ -91,6 +79,18 @@ Move create_en_passant_move(const Square origin_sq, const Square dest_sq);
 // Creates a castling move from one square to another. The origin and
 // destination squares are those of the king.
 Move create_castling_move(const Square origin_sq, const Square dest_sq);
+
+// Sets the origin square.
+Move set_origin_sq(const Move move, const Square origin_sq);
+
+// Sets the destination square.
+Move set_dest_sq(const Move move, const Square dest_sq);
+
+// Sets the promotion piece type.
+Move set_promo_piece(const Move move, const Promotion_piece promo_piece);
+
+// Sets the move type.
+Move set_move_type(const Move move, const Move_type move_type);
 
 // Extracts the origin square.
 Square extract_origin_sq(const Move move);
