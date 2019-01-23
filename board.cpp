@@ -99,7 +99,7 @@ void Game::remove_piece(const Piece piece, const Square square)
         return;
     }
     // Update the evaluation.
-    eval -= eval_square(square);
+    evaluation -= eval_square(square);
     
     // Update the position hash.
     position_hash ^= hash_square(square);
