@@ -87,6 +87,9 @@ void Game::add_piece(const Piece piece, const Square square)
     
     // Update the position hash.
     position_hash ^= hash_square(square);
+    
+    // Update the evaluation.
+    evaluation += eval_square(square);
 }
 
 void Game::remove_piece(const Piece piece, const Square square)
@@ -95,6 +98,8 @@ void Game::remove_piece(const Piece piece, const Square square)
     {
         return;
     }
+    // Update the evaluation.
+    eval -= eval_square(square);
     
     // Update the position hash.
     position_hash ^= hash_square(square);
