@@ -68,6 +68,7 @@ enum class Piece
     b_king
 };
 
+// Bits 12-13 of a move, so shifted left by 12 bits.
 enum class Promotion_piece : unsigned int
 {
     none,  // None is the same as the value for queen.
@@ -77,6 +78,7 @@ enum class Promotion_piece : unsigned int
     knight = 3 << 12
 };
 
+// Bits 14-15 of a move, so shifted left by 14 bits.
 enum class Move_type : unsigned int
 {
     normal,
@@ -85,6 +87,7 @@ enum class Move_type : unsigned int
     en_passant = 3 << 14
 };
 
+// Each castling right is one bit.
 enum class Castling_right : unsigned int
 {
     no_castling,
@@ -128,9 +131,11 @@ struct Ply_data
 {
     // The move that ended this ply
     Move last_move;
-
     Piece captured_piece;
-
+    
+    // After the move occurred
+    bool threefold_repetition;
+    
     // Before the move occurred
     Castling_right castling_rights;
     Square en_passant_square;

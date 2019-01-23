@@ -102,9 +102,6 @@ private:
     // Number of plies that have elapsed since a pawn was moved or a piece was
     // captured. Used for the 50-move rule.
     unsigned rule50 = 0;
-    
-    // Is true when threefold repetition has been reached.
-    bool threefold_repetition = false;
 
     // Only the least significant 4 bits are used.
     // Bit 0: white kingside castle
@@ -116,6 +113,7 @@ private:
     // bits are on.
     Castling_right castling_rights = Castling_right::all_castling;
 
+    // The color of the player who is to play this turn.
     Color turn = Color::white;
 
     // Initializes the random bitstrings require for Zobrist hashing.
@@ -129,9 +127,6 @@ private:
 
     // Ends the current turn.
     void end_turn();
-
-    // Generates the Zobrist key for the current position.
-    Bitstring hash() const;
     
     // Checks the origin and destination squares of a move and updates
     // the castling rights accordingly.
@@ -186,7 +181,7 @@ private:
     bool is_occupied(const Square square) const;
     
     // Checks if the specified square is occupied by a piece of a certain
-    // colour.
+    // color.
     bool is_occupied(const Square square, const Color color) const;
     
     // Removes squares from an attack bitboard that are occupied by pieces
@@ -361,6 +356,9 @@ private:
 public:
     // Initializes Zobrist hashing.
     Game();
+    
+    // Generates the Zobrist key for the current position.
+    Bitstring hash() const;
 
     // Gets the color of the player who is to play this turn.
     const Color get_turn() const;

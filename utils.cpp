@@ -6,6 +6,7 @@
 
 Color reverse_color(const Color color)
 {
+    // Return the opposite color.
     if (color == Color::white)
     {
         return Color::black;
@@ -27,10 +28,8 @@ Move create_move(
         const Move_type move_type
 )
 {
-    Move move = Move::none;
-
     // Set the values of the move.
-    move = set_origin_sq(move, origin_sq);
+    auto move = set_origin_sq(Move::none, origin_sq);
     move = set_dest_sq(move, dest_sq);
     move = set_promo_piece(move, promo_piece);
     move = set_move_type(move, move_type);
@@ -60,7 +59,7 @@ std::array<Move, 4> create_promo_moves(
             origin_sq,
             dest_sq,
             Promotion_piece::queen,
-            Move_type::normal
+            Move_type::promotion
     );
     
     // Create the rook move.
@@ -68,7 +67,7 @@ std::array<Move, 4> create_promo_moves(
             origin_sq,
             dest_sq,
             Promotion_piece::rook,
-            Move_type::normal
+            Move_type::promotion
     );
     
     // Create the bishop move.
@@ -76,7 +75,7 @@ std::array<Move, 4> create_promo_moves(
             origin_sq,
             dest_sq,
             Promotion_piece::bishop,
-            Move_type::normal
+            Move_type::promotion
     );
     
     // Create the knight move.
@@ -84,7 +83,7 @@ std::array<Move, 4> create_promo_moves(
             origin_sq,
             dest_sq,
             Promotion_piece::knight,
-            Move_type::normal
+            Move_type::promotion
     );
     
     return moves;
@@ -316,7 +315,7 @@ std::vector<Move> gen_moves_from_bitboard(
     std::vector<Move> moves;
     
     // Set the origin square.
-    const Move template_move = set_origin_sq(static_cast<Move>(0), origin_sq);
+    const auto template_move = set_origin_sq(Move::none, origin_sq);
 
     // Get the positions of the set bits in the bitboard and use them to
     // create moves.

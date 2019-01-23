@@ -35,7 +35,7 @@ void Game::update_castling_rights(
     // White
     if (origin_sq == Square::E1)
     {
-        invalidate_black_castling();
+        invalidate_white_castling();
     }
     // Black
     else if (origin_sq == Square::E8)
@@ -70,6 +70,8 @@ bool Game::make_move(const Move move)
 
     const auto moved_piece = piece_on(origin_sq);
     const auto captured_piece = piece_on(dest_sq);
+    
+    bool is_illegal_move = false;
 
     // Data needs to be saved to undo moves later.
     Ply_data ply_data;
@@ -78,25 +80,8 @@ bool Game::make_move(const Move move)
     ply_data.castling_rights = castling_rights;
     ply_data.en_passant_square = en_passant_square;
     ply_data.rule50 = rule50;
+    ply_data.threefold_repetition = false;
     
-    // Keep track of this hash's occurrence to be able to detect threefold
-    // repetition.
-    const auto current_game_hash = hash();
-
-    if (hash_count.find(current_game_hash) == hash_count.end())
-    {
-        hash_count[current_game_hash] = 1;
-    }
-    else
-    {
-        hash_count[current_game_hash]++;
-        // Check if threefold repetition has occurred.
-        if (hash_count[current_game_hash] >= 3)
-        {
-            threefold_repetition = true;
-        }
-    }
-
     // Update the castling rights.
     update_castling_rights(origin_sq, dest_sq);
     
@@ -106,12 +91,14 @@ bool Game::make_move(const Move move)
     switch (move_type)
     {
         // Make a normal move (no castling, promotion, or en passant).
+        // Just move the moved piece to the destination square and after
+        // removing any pieces that exist on that square.
         case Move_type::normal:
             remove_piece(moved_piece, origin_sq);
             remove_piece(captured_piece, dest_sq);
             add_piece(moved_piece, dest_sq);
 
-            // If the move was a two-square pawn move, set the en passant
+            // If this is a two-square pawn move, set the en passant
             // square.
             if ((moved_piece == Piece::w_pawn) &&
                 (dest_sq == north_of(north_of(origin_sq))))
@@ -133,7 +120,8 @@ bool Game::make_move(const Move move)
                 rule50 = 0;
             }
             break;
-        // Make a castling move.
+        // Make a castling move by moving the rook and king to the appropriate
+        // squares.
         case Move_type::castling:
             Square rook_origin_sq;
 
@@ -160,21 +148,20 @@ bool Game::make_move(const Move move)
             if (square_attacked(origin_sq, reverse_color(turn)) ||
                 square_attacked(rook_dest_sq, reverse_color((turn))))
             {
-                history.push_back(ply_data);
-                end_turn();
-                undo();
-                return false;
+                is_illegal_move = true;
             }
             break;
+            
         // Make a promotion move.
         case Move_type::promotion:
             remove_piece(moved_piece, origin_sq);
-            remove_piece(captured_piece, origin_sq);
+            remove_piece(captured_piece, dest_sq);
             add_piece(promo_piece_to_piece(promo_piece, turn), dest_sq);
 
-            
+            // A pawn was moved, so the 50-move rule variable should be reset.
             rule50 = 0;
             break;
+            
         // Make an en passant move.
         case Move_type::en_passant:
             // Move the friendly pawn and remove the enemy pawn.
@@ -193,8 +180,27 @@ bool Game::make_move(const Move move)
             
             remove_piece(enemy_pawn, enemy_pawn_sq);
 
+            // A pawn was moved, so the 50-move rule variable should be reset.
             rule50 = 0;
             break;
+    }
+    
+    // Keep track of this hash's occurrence to be able to detect threefold
+    // repetition.
+    const auto current_game_hash = hash();
+
+    if (hash_count.find(current_game_hash) == hash_count.end())
+    {
+        hash_count[current_game_hash] = 1;
+    }
+    else
+    {
+        hash_count[current_game_hash]++;
+        // Check if threefold repetition has occurred.
+        if (hash_count[current_game_hash] >= 3)
+        {
+            ply_data.threefold_repetition = true;
+        }
     }
 
     history.push_back(ply_data);
@@ -203,6 +209,13 @@ bool Game::make_move(const Move move)
     // If the player who made the move is now in check, this is an illegal
     // move.
     if (king_in_check(reverse_color(turn)))
+    {
+        is_illegal_move = true;
+    }
+    
+    // If this is an illegal move, undo it and return false to indicate that
+    // it is one.
+    if (is_illegal_move)
     {
         undo();
         return false;
@@ -214,7 +227,13 @@ bool Game::make_move(const Move move)
 void Game::undo()
 {
     end_turn();
+    
 
+    // Treat this position as if it never happened for the purposes of
+    // threefold repetition.
+    hash_count[hash()]--;
+
+    // Restore and delete the saved ply data.
     const Ply_data last_ply = history.back();
     history.pop_back();
 
@@ -229,15 +248,18 @@ void Game::undo()
     const Move_type move_type = extract_move_type(move);
     const Piece moved_piece = piece_on(dest_sq);
 
+    // Handle each move type differently.
     switch (move_type)
     {
-        // Undo a normal move.
+        // Undo a normal move by moving the moved piece back and restoring
+        // the captured piece if it exists.
         case Move_type::normal:
             remove_piece(moved_piece, dest_sq);
             add_piece(moved_piece, origin_sq);
             add_piece(captured_piece, dest_sq);
             break;
-        // Undo a castling move.
+        // Undo a castling move by moving the rook and king to their original
+        // positions.
         case Move_type::castling:
             Piece rook_type;
             Square rook_origin_sq;
@@ -258,7 +280,9 @@ void Game::undo()
             add_piece(rook_type, rook_origin_sq);
             
             break;
-        // Undo a promotion move.
+        // Undo a promotion move by removing the promoted piece and restoring
+        // the pawn that was moved. The captured piece should also be
+        // restored.
         case Move_type::promotion:
             remove_piece(moved_piece, dest_sq);
             add_piece(captured_piece, dest_sq);
@@ -276,7 +300,8 @@ void Game::undo()
             
             add_piece(pawn_type, origin_sq);
             break;
-        // Undo an en passant move.
+        // Undo an en passant move by moving back the moved pawn and restoring
+        // the captured pawn.
         case Move_type::en_passant:
             remove_piece(moved_piece, dest_sq);
             add_piece(moved_piece, origin_sq);
@@ -294,9 +319,4 @@ void Game::undo()
             add_piece(enemy_pawn, enemy_pawn_sq);
             break;
     }
-
-    // Treat this position as if it never happened for the purposes of
-    // threefold repetition.
-    hash_count[hash()]--;
-    threefold_repetition = false;
 }

@@ -9,6 +9,8 @@
 std::vector<Move> Game::pseudo_legal_w_moves() const
 {
     std::vector<Move> all_moves;
+    
+    // Generate the pseudo-legal moves for each square.
     for (auto square_index = 0; square_index < 64; square_index++)
     {
         std::vector<Move> piece_moves;
@@ -50,6 +52,8 @@ std::vector<Move> Game::pseudo_legal_w_moves() const
 std::vector<Move> Game::pseudo_legal_b_moves() const
 {
     std::vector<Move> all_moves;
+    
+    // Generate the pseudo-legal moves for each square.
     for (auto square_index = 0; square_index < 64; square_index++)
     {
         std::vector<Move> piece_moves;

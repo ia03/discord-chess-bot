@@ -74,8 +74,8 @@ void Game::add_piece(const Piece piece, const Square square)
     }
     
     const Bitboard piece_position = square_to_bb(square);
-    Bitboard &piece_bitboard = get_piece_bitboard(piece);
-    Bitboard &color_bitboard = get_color_bitboard(piece_color(piece));
+    auto &piece_bitboard = get_piece_bitboard(piece);
+    auto &color_bitboard = get_color_bitboard(piece_color(piece));
 
     // Update bitboards.
     piece_bitboard |= piece_position;
@@ -128,7 +128,7 @@ bool Game::insufficient_material() const
         return false;
     }
     
-    // If a player has 2 bishops of different square colours, a checkmate is
+    // If a player has 2 bishops of different square colors, a checkmate is
     // possible.
     if (((w_bishop_bitboard & white_squares) != 0 &&
          (w_bishop_bitboard & black_squares) != 0) ||
@@ -179,7 +179,7 @@ Game_state Game::game_state(const std::vector<Move> &possible_moves)
     bool legal_moves_exist = false;
     
     // Check if any legal moves exist.
-    for (auto const &move : possible_moves)
+    for (auto const move : possible_moves)
     {
         if(make_move(move))
         {
@@ -214,13 +214,13 @@ Game_state Game::game_state(const std::vector<Move> &possible_moves)
     
     // If the same position has occurred three times in the past, this is a
     // draw.
-    if (threefold_repetition)
+    if (history.back().threefold_repetition)
     {
         return Game_state::threefold_repetition;
     }
     
     // If 50 moves (100 plies) have been played with no pawn movements or
-    // piece captures, it is a draw.
+    // piece captures, this is a draw.
     if (rule50 >= 100)
     {
         return Game_state::fifty_move;
@@ -246,14 +246,19 @@ bool Game::square_attacked(const Square square, const Color attacker)
 {
     bool attacker_is_opponent = false;
     
+    // If the attacker is not playing this turn, switch sides so that moves
+    // can be generated for them.
     if (turn != attacker)
     {
         attacker_is_opponent = true;
         end_turn();
     }
+    
     std::vector<Move> possible_moves = pseudo_legal_moves();
     
-    for (auto const &move : possible_moves)
+    // Go through each possible move for the attacker to check if the
+    // specified square is under attack.
+    for (auto const move : possible_moves)
     {
         if (extract_dest_sq(move) == square)
         {
@@ -265,6 +270,7 @@ bool Game::square_attacked(const Square square, const Color attacker)
         }
     }
     
+    // Switch the sides back.
     if (attacker_is_opponent)
     {
         end_turn();
@@ -301,10 +307,15 @@ std::string Game::fen() const
         for (auto position = row * 8; position < ((row + 1) * 8); position++)
         {
             const Piece piece = piece_on(static_cast<Square>(position));
+            // If a piece is on this square, append the FEN representation of
+            // this piece to the string.
             if (piece != Piece::none)
             {
                 fen_str += piece_fen[piece];
             }
+            // If there is no piece on this square, a "1" should be added
+            // instead, unless a number is already at the end of the string,
+            // then that number should be incremented by 1.
             else
             {
                 const char last_char = fen_str.back();
@@ -320,6 +331,7 @@ std::string Game::fen() const
                 }
             }
         }
+        // Add a slash to the end for each row.
         fen_str += "/";
     }
     // Remove the slash at the end.

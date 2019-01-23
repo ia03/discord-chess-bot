@@ -9,6 +9,7 @@ const int infinity = 9999999;
 Move Game::best_move(const int depth)
 {
     const std::vector<Move> possible_moves = pseudo_legal_moves();
+    
     Move best_move;
     
     int best_eval;
@@ -29,9 +30,9 @@ Move Game::best_move(const int depth)
     }
 
     // Go through all the moves and pick the one with the best evaluation.
-    for (const auto &move : possible_moves)
+    for (const auto move : possible_moves)
     {
-        // If the move is illegal, skip it.
+        // Make the move. If it is illegal, skip it.
         if (!make_move(move))
         {
             continue;
@@ -39,6 +40,8 @@ Move Game::best_move(const int depth)
         const int eval = minimax(depth, -infinity, infinity, !is_maximizing);
         undo();
         
+        // Update the best evaluation if the evaluation of this move is the
+        // new best.
         if (is_maximizing)
         {
             if (eval >= best_eval)
@@ -95,9 +98,10 @@ int Game::minimax(int depth, int alpha, int beta, bool is_maximizing)
     if (is_maximizing)
     {
         int best_eval = -infinity;
-        for (auto const &move : possible_moves)
+        // Go through every move to pick the one with the best evaluation.
+        for (auto const move : possible_moves)
         {
-            // If the move is illegal, skip it.
+            // Make the move. If it is illegal, skip it.
             if (!make_move(move))
             {
                 continue;
@@ -123,8 +127,10 @@ int Game::minimax(int depth, int alpha, int beta, bool is_maximizing)
     else
     {
         int best_eval = infinity;
-        for (auto const &move : possible_moves)
+        // Go through every move to pick the one with the best evaluation.
+        for (auto const move : possible_moves)
         {
+            // Make the move. If it is illegal, skip it.
             if (!make_move(move))
             {
                 continue;
