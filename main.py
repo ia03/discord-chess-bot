@@ -1,12 +1,9 @@
 import chessbot
 from discord.ext import commands
 import os
-import threading
 import discord
-import pickle
 import random
 import config
-import atexit
 
 
 chess_engine_depth = 2
@@ -359,7 +356,7 @@ async def changeprefix(ctx, new_prefix: str):
     prefix of the server.
     """
     # Make sure the user has the Manage Server permission.
-    if not ctx.message.author.server_permission.manage_server:
+    if not ctx.message.author.server_permissions.manage_server:
         await bot.say("You must have the \"Manage Server\" permission to "
                       "change the prefix of this server.")
         return
@@ -434,38 +431,12 @@ async def move(ctx, move_str: str):
                                             .end_game_message())
             del servers[server_id].games[game_key]
 
-    
-def save_data():
-    """Saves the bot data to a file."""
-    file = open(file_path, "wb")
-    pickle.dump(servers, file, protocol=pickle.HIGHEST_PROTOCOL)
-    file.close()
-    print("saved " + str(servers))
-    
-    
-def save_loop():
-    """Saves the bot data to a file every 15 seconds."""
-    threading.Timer(15.0, save_loop).start()
-    save_data()
 
     
 def main():
     """Initializes the bot and its data-saving mechanism."""
     # Initialize the magic moves library.
     chessbot.initmagicmoves()
-    
-    # If the bot data file exists, load it, deserialize the data, and use it.
-    if os.path.exists(file_path):
-        global servers
-        file = open(file_path, "rb")
-        servers = pickle.load(file)
-        file.close()
-        print(file_path + " successfully read from.")
-    else:
-        print(file_path + " not found. Using empty data values.")
-    
-    save_loop()
-    atexit.register(save_data)
     
     # Run the bot.
     bot.run(config.token)
