@@ -91,17 +91,20 @@ const std::array<int, 64> flip =
     0,   1,   2,   3,   4,   5,   6,   7
 };
 
-int Game::evaluate() const
+void Game::init_eval()
 {
-    int evaluation = 0;
+    evaluation = 0;
 
     // Add up the evaluation of all the pieces.
     for (auto square_index = 0; square_index < 64; square_index++)
     {
         evaluation += eval_square(static_cast<Square>(square_index));
     }
-    
-    return evaluation;
+}
+
+int Game::evaluate() const
+{
+      return evaluation;
 }
 
 int Game::eval_square(const Square square) const
