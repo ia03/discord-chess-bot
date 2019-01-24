@@ -87,7 +87,7 @@ Move Game::string_to_move(const std::string move_str) const
     }
 
     const auto dest_sq = coord_to_index[destination_str];
-    
+
     const Bitboard dest_bb = square_to_bb(dest_sq);
 
     auto promo_piece = Promotion_piece::none;

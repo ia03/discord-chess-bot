@@ -37,7 +37,7 @@ Move create_move(
     move = set_dest_sq(move, dest_sq);
     move = set_promo_piece(move, promo_piece);
     move = set_move_type(move, move_type);
-    
+
     return move;
 }
 
@@ -61,7 +61,7 @@ std::array<Move, 4> create_promo_moves(
 )
 {
     std::array<Move, 4> moves;
-    
+
     // Create the queen move.
     moves[0] = create_move(
             origin_sq,
@@ -69,7 +69,7 @@ std::array<Move, 4> create_promo_moves(
             Promotion_piece::queen,
             Move_type::promotion
     );
-    
+
     // Create the rook move.
     moves[1] = create_move(
             origin_sq,
@@ -77,7 +77,7 @@ std::array<Move, 4> create_promo_moves(
             Promotion_piece::rook,
             Move_type::promotion
     );
-    
+
     // Create the bishop move.
     moves[2] = create_move(
             origin_sq,
@@ -85,7 +85,7 @@ std::array<Move, 4> create_promo_moves(
             Promotion_piece::bishop,
             Move_type::promotion
     );
-    
+
     // Create the knight move.
     moves[3] = create_move(
             origin_sq,
@@ -93,7 +93,7 @@ std::array<Move, 4> create_promo_moves(
             Promotion_piece::knight,
             Move_type::promotion
     );
-    
+
     return moves;
 }
 
@@ -266,7 +266,7 @@ void castle_rook_squares(
     if (king_origin_sq == Square::E1)
     {
         rook_type = Piece::w_rook;
-                
+
         // Kingside
         if (king_dest_sq == Square::G1)
         {
@@ -284,7 +284,7 @@ void castle_rook_squares(
     else
     {
         rook_type = Piece::b_rook;
-        
+
         // Kingside
         if (king_dest_sq == Square::G8)
         {
@@ -357,7 +357,7 @@ std::vector<Move> gen_moves_from_bitboard(
 )
 {
     std::vector<Move> moves;
-    
+
     // Set the origin square.
     const auto template_move = set_origin_sq(Move::none, origin_sq);
 
@@ -373,7 +373,7 @@ std::vector<Move> gen_moves_from_bitboard(
         }
         bitboard >>= 1;
     }
-    
+
     return moves;
 }
 
@@ -382,7 +382,7 @@ std::vector<Move> gen_moves_from_bitboard(
 int count_bits_set(Bitboard bitboard)
 {
     int i;
-    
+
     // This uses Brian Kernighan's algorithm.
     // Clears the least significant set bit until all bits have been cleared.
     for (i = 0; bitboard != 0; i++)
@@ -397,14 +397,14 @@ int count_bits_set(Bitboard bitboard)
 int set_bit_pos(Bitboard bitboard)
 {
     int position = 0;
-    
+
     // Keep right shifting the bitboard by 1 bit until the first bit is set.
     while ((bitboard & 1) == 0)
     {
         bitboard >>= 1;
         position++;
     }
-    
+
     return position;
 }
 
@@ -473,7 +473,7 @@ Square find_dest_square(
     unsigned east_count = 0;
     unsigned south_count = 0;
     unsigned west_count = 0;
-    
+
     // Keep track of each directional move of the square, making sure it does
     // not exit the boundaries of the board. If it does not, then continue
     // moving it until all the requested moves have been made.
@@ -515,6 +515,6 @@ Square find_dest_square(
                 break;
         }
     }
-    
+
     return dest_sq;
 }

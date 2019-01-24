@@ -12,11 +12,11 @@ const int infinity = 9999999;
 Move Game::best_move(const int depth)
 {
     const std::vector<Move> possible_moves = pseudo_legal_moves();
-    
+
     Move best_move;
-    
+
     int best_eval;
-    
+
     bool is_maximizing;
 
     // White wants to maximize the evaluation. Black does not. Start out at
@@ -42,7 +42,7 @@ Move Game::best_move(const int depth)
         }
         const int eval = minimax(depth, -infinity, infinity, !is_maximizing);
         undo();
-        
+
         // Update the best evaluation if the evaluation of this move is the
         // new best.
         if (is_maximizing)
@@ -61,7 +61,7 @@ Move Game::best_move(const int depth)
                 best_eval = eval;
             }
         }
-        
+
     }
     return best_move;
 }
@@ -101,7 +101,7 @@ int Game::minimax(int depth, int alpha, int beta, bool is_maximizing)
     {
         return evaluate();
     }
-    
+
     if (is_maximizing)
     {
         int best_eval = -infinity;
@@ -115,9 +115,9 @@ int Game::minimax(int depth, int alpha, int beta, bool is_maximizing)
             }
             const int eval = minimax(depth - 1, alpha, beta, false);
             undo();
-            
+
             best_eval = std::max(best_eval, eval);
-            
+
             // Alpha-beta pruning - stops the search of this position when it
             // is certain that it is better than all the previously evaluated
             // sibling positions.
@@ -126,9 +126,9 @@ int Game::minimax(int depth, int alpha, int beta, bool is_maximizing)
             {
                 return best_eval;
             }
-            
+
         }
-        
+
         return best_eval;
     }
     else
@@ -144,9 +144,9 @@ int Game::minimax(int depth, int alpha, int beta, bool is_maximizing)
             }
             const int eval = minimax(depth - 1, alpha, beta, true);
             undo();
-            
+
             best_eval = std::min(best_eval, eval);
-            
+
             // Alpha-beta pruning - stops the search of this position when it
             // is certain that it is better than all the previously evaluated
             // sibling positions.
@@ -156,8 +156,8 @@ int Game::minimax(int depth, int alpha, int beta, bool is_maximizing)
                 return best_eval;
             }
         }
-        
+
         return best_eval;
     }
-    
+
 }

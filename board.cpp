@@ -40,7 +40,7 @@ Bitboard &Game::get_piece_bitboard(const Piece piece)
             return w_queen_bitboard;
         case Piece::w_king:
             return w_king_bitboard;
-        
+
         case Piece::b_pawn:
             return b_pawn_bitboard;
         case Piece::b_knight:
@@ -78,7 +78,7 @@ void Game::add_piece(const Piece piece, const Square square)
     {
         return;
     }
-    
+
     const Bitboard piece_position = square_to_bb(square);
     auto &piece_bitboard = get_piece_bitboard(piece);
     auto &color_bitboard = get_color_bitboard(piece_color(piece));
@@ -87,13 +87,13 @@ void Game::add_piece(const Piece piece, const Square square)
     piece_bitboard |= piece_position;
     color_bitboard |= piece_position;
     all_bitboard |= piece_position;
-    
+
     // Update the piece array.
     pieces_on_board[static_cast<unsigned>(square)] = piece;
-    
+
     // Update the position hash.
     position_hash ^= hash_square(square);
-    
+
     // Update the evaluation.
     evaluation += eval_square(square);
 }
@@ -108,19 +108,19 @@ void Game::remove_piece(const Piece piece, const Square square)
     }
     // Update the evaluation.
     evaluation -= eval_square(square);
-    
+
     // Update the position hash.
     position_hash ^= hash_square(square);
-    
+
     const Bitboard piece_position = square_to_bb(square);
     Bitboard &piece_bitboard = get_piece_bitboard(piece);
     Bitboard &color_bitboard = get_color_bitboard(piece_color(piece));
-    
+
     // Update bitboards.
     piece_bitboard &= ~piece_position;
     color_bitboard &= ~piece_position;
     all_bitboard &= ~piece_position;
-    
+
     // Update the piece array.
     pieces_on_board[static_cast<unsigned>(square)] = Piece::none;
 }
@@ -145,7 +145,7 @@ bool Game::insufficient_material() const
     {
         return false;
     }
-    
+
     // If a player has 2 bishops of different square colors, a checkmate is
     // possible.
     if (((w_bishop_bitboard & white_squares) != 0 &&
@@ -155,21 +155,21 @@ bool Game::insufficient_material() const
     {
         return false;
     }
-    
+
     // If a player has 2 knights, a checkmate is possible.
     if (count_bits_set(w_knight_bitboard) > 1 ||
         count_bits_set(b_knight_bitboard) > 1)
     {
         return false;
     }
-    
+
     // If a player has a knight and a bishop, a checkmate is possible.
     if ((w_knight_bitboard != 0 && w_bishop_bitboard != 0) ||
         (b_knight_bitboard != 0 && b_bishop_bitboard != 0))
     {
         return false;
     }
-    
+
     // If none of the above conditions are met, we can assume that a checkmate
     // would not be possible.
     return true;
@@ -203,7 +203,7 @@ bool Game::is_occupied(const Square square, const Color color) const
 Game_state Game::game_state(const std::vector<Move> &possible_moves)
 {
     bool legal_moves_exist = false;
-    
+
     // Check if any legal moves exist.
     for (auto const move : possible_moves)
     {
@@ -214,7 +214,7 @@ Game_state Game::game_state(const std::vector<Move> &possible_moves)
             break;
         }
     }
-    
+
     // No legal moves for the current player means the game has ended in
     // either a checkmate or stalemate.
     if (!legal_moves_exist)
@@ -237,28 +237,28 @@ Game_state Game::game_state(const std::vector<Move> &possible_moves)
             return Game_state::stalemate;
         }
     }
-    
+
     // If the same position has occurred three times in the past, this is a
     // draw.
     if (history.back().threefold_repetition)
     {
         return Game_state::threefold_repetition;
     }
-    
+
     // If 50 moves (100 plies) have been played with no pawn movements or
     // piece captures, this is a draw.
     if (rule50 >= 100)
     {
         return Game_state::fifty_move;
     }
-    
+
     // If there is insufficient material to perform a checkmate using any
     // possible sequence of legal moves, this is a draw.
     if (insufficient_material())
     {
         return Game_state::insufficient_material;
     }
-    
+
     // If none of the above criteria have been met, the game has not ended.
     return Game_state::in_progress;
 }
@@ -275,7 +275,7 @@ Game_state Game::game_state()
 bool Game::square_attacked(const Square square, const Color attacker)
 {
     bool attacker_is_opponent = false;
-    
+
     // If the attacker is not playing this turn, switch sides so that moves
     // can be generated for them.
     if (turn != attacker)
@@ -283,9 +283,9 @@ bool Game::square_attacked(const Square square, const Color attacker)
         attacker_is_opponent = true;
         end_turn();
     }
-    
+
     std::vector<Move> possible_moves = pseudo_legal_moves();
-    
+
     // Go through each possible move for the attacker to check if the
     // specified square is under attack.
     for (auto const move : possible_moves)
@@ -299,13 +299,13 @@ bool Game::square_attacked(const Square square, const Color attacker)
             return true;
         }
     }
-    
+
     // Switch the sides back.
     if (attacker_is_opponent)
     {
         end_turn();
     }
-    
+
     return false;
 }
 
@@ -323,7 +323,7 @@ bool Game::king_in_check(const Color color)
     {
         king_square = static_cast<Square>(set_bit_pos(b_king_bitboard));
     }
-    
+
     // Check if the square is under attack by the other player.
     return square_attacked(king_square, reverse_color(color));
 }
@@ -333,7 +333,7 @@ bool Game::king_in_check(const Color color)
 std::string Game::fen() const
 {
     std::string fen_str;
-    
+
     // Generate an FEN string for each row.
     for (auto row = 7; row >= 0; row--)
     {

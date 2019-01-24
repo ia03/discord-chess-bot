@@ -132,10 +132,10 @@ struct Ply_data
     // The move that ended this ply
     Move last_move;
     Piece captured_piece;
-    
+
     // After the move occurred
     bool threefold_repetition;
-    
+
     // Before the move occurred
     Castling_right castling_rights;
     Square en_passant_square;

@@ -9,7 +9,7 @@ Game::Game()
     // Initialize variables needed for hashing.
     init_zobrist();
     init_hash();
-    
+
     // Initialize the evaluation variable.
     init_eval();
 }
@@ -29,7 +29,7 @@ void Game::end_turn()
 }
 
 
-// Determines if white kingside castling has been invalidated. 
+// Determines if white kingside castling has been invalidated.
 bool Game::w_kingside_castling_invalidated() const
 {
     // Check if the bit for white kingside castling is set.

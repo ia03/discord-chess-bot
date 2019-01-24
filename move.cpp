@@ -51,7 +51,7 @@ void Game::update_castling_rights(
 bool Game::is_pseudo_legal(Move move) const
 {
     std::vector<Move> moves = pseudo_legal_moves();
-    
+
     // Check if the move was found in the list of generated pseudo-legal
     // moves.
     if (std::find(moves.begin(), moves.end(), move) != moves.end())
@@ -78,7 +78,7 @@ bool Game::make_move(const Move move)
 
     const auto moved_piece = piece_on(origin_sq);
     const auto captured_piece = piece_on(dest_sq);
-    
+
     bool is_illegal_move = false;
 
     // Data needs to be saved to undo moves later.
@@ -89,10 +89,10 @@ bool Game::make_move(const Move move)
     ply_data.en_passant_square = en_passant_square;
     ply_data.rule50 = rule50;
     ply_data.threefold_repetition = false;
-    
+
     // Update the castling rights.
     update_castling_rights(origin_sq, dest_sq);
-    
+
     // Update the 50-move and en passant variables.
     rule50++;
     en_passant_square = Square::none;
@@ -160,7 +160,7 @@ bool Game::make_move(const Move move)
                 is_illegal_move = true;
             }
             break;
-            
+
         // Make a promotion move.
         case Move_type::promotion:
             remove_piece(moved_piece, origin_sq);
@@ -170,7 +170,7 @@ bool Game::make_move(const Move move)
             // A pawn was moved, so the 50-move rule variable should be reset.
             rule50 = 0;
             break;
-            
+
         // Make an en passant move.
         case Move_type::en_passant:
             // Move the friendly pawn and remove the enemy pawn.
@@ -186,14 +186,14 @@ bool Game::make_move(const Move move)
                     dest_sq,
                     turn
             );
-            
+
             remove_piece(enemy_pawn, enemy_pawn_sq);
 
             // A pawn was moved, so the 50-move rule variable should be reset.
             rule50 = 0;
             break;
     }
-    
+
     // Keep track of this hash's occurrence to be able to detect threefold
     // repetition.
     const auto current_game_hash = hash();
@@ -221,7 +221,7 @@ bool Game::make_move(const Move move)
     {
         is_illegal_move = true;
     }
-    
+
     // If this is an illegal move, undo it and return false to indicate that
     // it is one.
     if (is_illegal_move)
@@ -238,7 +238,7 @@ bool Game::make_move(const Move move)
 void Game::undo()
 {
     end_turn();
-    
+
 
     // Treat this position as if it never happened for the purposes of
     // threefold repetition.
@@ -275,7 +275,7 @@ void Game::undo()
             Piece rook_type;
             Square rook_origin_sq;
             Square rook_dest_sq;
-            
+
             // Set the rook piece type and origin and destination squares.
             castle_rook_squares(
                     rook_type,
@@ -284,12 +284,12 @@ void Game::undo()
                     origin_sq,
                     dest_sq
             );
-            
+
             remove_piece(moved_piece, dest_sq);
             add_piece(moved_piece, origin_sq);
             remove_piece(rook_type, rook_dest_sq);
             add_piece(rook_type, rook_origin_sq);
-            
+
             break;
         // Undo a promotion move by removing the promoted piece and restoring
         // the pawn that was moved. The captured piece should also be
@@ -308,7 +308,7 @@ void Game::undo()
             {
                 pawn_type = Piece::b_pawn;
             }
-            
+
             add_piece(pawn_type, origin_sq);
             break;
         // Undo an en passant move by moving back the moved pawn and restoring
@@ -316,17 +316,17 @@ void Game::undo()
         case Move_type::en_passant:
             remove_piece(moved_piece, dest_sq);
             add_piece(moved_piece, origin_sq);
-            
+
             Piece enemy_pawn;
             Square enemy_pawn_sq;
-            
+
             find_enemy_pawn_ep(
                     enemy_pawn,
                     enemy_pawn_sq,
                     dest_sq,
                     turn
             );
-            
+
             add_piece(enemy_pawn, enemy_pawn_sq);
             break;
     }
