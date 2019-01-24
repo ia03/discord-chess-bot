@@ -112,3 +112,7 @@ chessbot_wrap.cxx
 
 # For sensitive data
 config.py
+
+# Scripts used to build the project
+debug
+release
