@@ -25,7 +25,9 @@ def prefix(bot, message):
         return servers[message.server.id].prefix
 
     
-bot = commands.Bot(command_prefix=prefix, description=description)
+bot = commands.Bot(command_prefix=prefix,
+                   description=description,
+                   case_insensitive=True)
 
 
 class InvalidMove(Exception):
@@ -374,6 +376,8 @@ async def move(ctx, move_str: str):
     An error is outputted if the user is not in a game, the move is
     invalid/illegal, or it is not the user’s turn.
     """
+    move_str = lower(move_str)
+    
     user_id = ctx.message.author.id
     user_mention = mention(user_id)
     
