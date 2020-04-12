@@ -11,18 +11,18 @@ file_path = "bot.data"
 mention_template = "<@{}>"
 description = "A bot that can manage chess games and play in them."
 
-servers = {}
+guilds = {}
 
 
 def prefix(bot, message):
-    """Returns the prefix of the server a message was sent in."""
-    # If no instance exists for this server for data to be stored, initialize
+    """Returns the prefix of the guild a message was sent in."""
+    # If no instance exists for this guild for data to be stored, initialize
     # one.
-    if message.server.id in servers:
-        return servers[message.server.id].prefix
+    if message.guild.id in guilds:
+        return guilds[message.guild.id].prefix
     else:
-        servers[message.server.id] = Server()
-        return servers[message.server.id].prefix
+        guilds[message.guild.id] = guild()
+        return guilds[message.guild.id].prefix
 
 
 bot = commands.Bot(command_prefix=prefix,
@@ -164,8 +164,8 @@ class Game():
             raise InvalidMove()
 
 
-class Server():
-    """Manages the data for a server.
+class guild():
+    """Manages the data for a guild.
 
     Member variables:
     prefix - the prefix for commands
@@ -176,7 +176,7 @@ class Server():
     IDs of users whom the user has requested to play with.
     """
     def __init__(self):
-        """Initializes a server data instance."""
+        """Initializes a guild data instance."""
         self.prefix = ","
         self.games = {}
         self.game_requests = {}
@@ -191,16 +191,16 @@ def mention(user_id):
     return mention_template.format(user_id)
 
 
-def find_game_key(server_id, user_id):
-    """Returns the key of the game a user is in on a specified server.
+def find_game_key(guild_id, user_id):
+    """Returns the key of the game a user is in on a specified guild.
 
     Returns None if the game was not found.
 
-    server_id - the ID of the server in which to look for the game
+    guild_id - the ID of the guild in which to look for the game
     user_id - the ID of the user for which to look for a game
     """
     # Check every game for the user.
-    for key, game in servers[server_id].games.items():
+    for key, game in guilds[guild_id].games.items():
         if game.white_id == user_id or game.black_id == user_id:
             return key
     return None
@@ -226,9 +226,9 @@ async def on_ready():
 
 
 @bot.event
-async def on_server_join(server):
-    """Initializes a server object when joining a new server."""
-    servers[server.id] = Server()
+async def on_guild_join(guild):
+    """Initializes a guild object when joining a new guild."""
+    guilds[guild.id] = guild()
 
 
 @bot.command(pass_context=True)
@@ -244,15 +244,15 @@ async def start(ctx, target_user: discord.Member = None):
     # If no target user is specified, assume this is a request to play with
     # the bot.
     if not target_user:
-        target_user = ctx.message.server.get_member(bot.user.id)
+        target_user = ctx.message.guild.get_member(bot.user.id)
 
     source_user_id = ctx.message.author.id
     target_user_id = target_user.id
 
-    server_id = ctx.message.server.id
-    server_data = servers[server_id]
-    games = server_data.games
-    game_requests = server_data.game_requests
+    guild_id = ctx.message.guild.id
+    guild_data = guilds[guild_id]
+    games = guild_data.games
+    game_requests = guild_data.game_requests
 
     source_user_mention = mention(source_user_id)
     target_user_mention = mention(target_user_id)
@@ -261,19 +261,19 @@ async def start(ctx, target_user: discord.Member = None):
 
     # Make sure the source user is not requesting to play with themselves.
     if source_user_id == target_user_id:
-        await bot.say(source_user_mention + ", you can't play with yourself.")
+        await ctx.send(source_user_mention + ", you can't play with yourself.")
         return
 
 
     # Make sure the source user is not already in a game.
-    if find_game_key(server_id, source_user_id) is not None:
-        await bot.say(source_user_mention + ", you are already in a game.")
+    if find_game_key(guild_id, source_user_id) is not None:
+        await ctx.send(source_user_mention + ", you are already in a game.")
         return
 
     # Make sure the target user is not already in a game.
-    if (find_game_key(server_id, target_user_id) is not None and
+    if (find_game_key(guild_id, target_user_id) is not None and
             not is_bot_game):
-        await bot.say(target_user_mention + " is already in a game.")
+        await ctx.send(target_user_mention + " is already in a game.")
         return
 
     # If the target user is not the bot, make sure the game request is mutual.
@@ -283,7 +283,7 @@ async def start(ctx, target_user: discord.Member = None):
         # request.
         if (target_user_id not in game_requests or
             source_user_id not in game_requests[target_user_id]):
-            await bot.say(target_user_mention + ", " + source_user_mention +
+            await ctx.send(target_user_mention + ", " + source_user_mention +
                           " has requested that you play with them.")
             if source_user_id not in game_requests:
                 game_requests[source_user_id] = []
@@ -297,23 +297,23 @@ async def start(ctx, target_user: discord.Member = None):
     game = Game(source_user_id, target_user_id)
 
     # State that the game has started and who is playing for which side.
-    await bot.say("A game has started between " + source_user_mention +
+    await ctx.send("A game has started between " + source_user_mention +
                   " and " + target_user_mention + ".")
-    await bot.say(mention(game.white_id) + " is playing as White.")
-    await bot.say(mention(game.black_id) + " is playing as Black.")
+    await ctx.send(mention(game.white_id) + " is playing as White.")
+    await ctx.send(mention(game.black_id) + " is playing as Black.")
 
     # If the bot is in the game and has to make a move first, do so.
     if game.white_id == bot.user.id:
         move_str = await game.make_best_move()
-        await bot.say(game.get_board_url())
-        await bot.say("The bot made move " + move_str + ".")
+        await ctx.send(game.get_board_url())
+        await ctx.send("The bot made move " + move_str + ".")
     # Otherwise, just output an image of the board.
     else:
-        await bot.say(game.get_board_url())
+        await ctx.send(game.get_board_url())
 
     game_key = frozenset((source_user_id, target_user_id))
 
-    servers[server_id].games[game_key] = game
+    guilds[guild_id].games[game_key] = game
 
 
 @bot.command(pass_context=True)
@@ -324,48 +324,48 @@ async def resign(ctx):
     """
     user_id = ctx.message.author.id
     user_mention = mention(user_id)
-    server_id = ctx.message.server.id
-    games = servers[server_id].games
+    guild_id = ctx.message.guild.id
+    games = guilds[guild_id].games
 
     user_in_game = False
 
     # Look for the game the user is in.
-    game_key = find_game_key(server_id, user_id)
+    game_key = find_game_key(guild_id, user_id)
 
     # Error out if the user is not in a game.
     if not game_key:
-        await bot.say(user_mention + ", you are not currently in a game.")
+        await ctx.send(user_mention + ", you are not currently in a game.")
         return
 
-    white_mention = mention(servers[server_id].games[game_key].white_id)
-    black_mention = mention(servers[server_id].games[game_key].black_id)
+    white_mention = mention(guilds[guild_id].games[game_key].white_id)
+    black_mention = mention(guilds[guild_id].games[game_key].black_id)
 
     # Announce that the game has ended and send an image of the chessboard.
 
-    await bot.say("The game between " + white_mention + " and " +
+    await ctx.send("The game between " + white_mention + " and " +
                   black_mention + " has ended due to resignation by " +
                   user_mention)
 
-    await bot.say("Final chessboard position. " +
-                  servers[server_id].games[game_key].get_board_url())
+    await ctx.send("Final chessboard position. " +
+                  guilds[guild_id].games[game_key].get_board_url())
 
     # Delete the game instance.
-    del servers[server_id].games[game_key]
+    del guilds[guild_id].games[game_key]
 
 
 @bot.command(pass_context=True)
 async def changeprefix(ctx, new_prefix: str):
-    """When executed by a server manager, this command changes the server
-    prefix of the server.
+    """When executed by a guild manager, this command changes the guild
+    prefix of the guild.
     """
-    # Make sure the user has the Manage Server permission.
-    if not ctx.message.author.server_permissions.manage_server:
-        await bot.say("You must have the \"Manage Server\" permission to "
-                      "change the prefix of this server.")
+    # Make sure the user has the Manage guild permission.
+    if not ctx.message.author.guild_permissions.manage_guild:
+        await ctx.send("You must have the \"Manage guild\" permission to "
+                      "change the prefix of this guild.")
         return
     # Change the prefix and acknowledge that change.
-    servers[ctx.message.server.id].prefix = new_prefix
-    await bot.say("The prefix has successfully been changed to " +
+    guilds[ctx.message.guild.id].prefix = new_prefix
+    await ctx.send("The prefix has successfully been changed to " +
                   new_prefix)
 
 
@@ -381,60 +381,60 @@ async def move(ctx, move_str: str):
     user_id = ctx.message.author.id
     user_mention = mention(user_id)
 
-    server_id = ctx.message.server.id
+    guild_id = ctx.message.guild.id
 
     user_in_game = False
 
     # Look for the game the user is in.
-    game_key = find_game_key(server_id, user_id)
+    game_key = find_game_key(guild_id, user_id)
 
     # Make sure the user is in a game.
     if not game_key:
-        await bot.say("You must be in a game to make a move, " + user_mention)
+        await ctx.send("You must be in a game to make a move, " + user_mention)
         return
 
     # Make sure it is the user's turn to play.
-    if not is_to_play(servers[server_id].games[game_key], user_id):
-        await bot.say("It is not your turn to play, " + user_mention)
+    if not is_to_play(guilds[guild_id].games[game_key], user_id):
+        await ctx.send("It is not your turn to play, " + user_mention)
         return
 
     # Make the move and make sure it is valid.
     try:
-        await servers[server_id].games[game_key].make_move(move_str)
+        await guilds[guild_id].games[game_key].make_move(move_str)
     except InvalidMove:
-        await bot.say("That move is invalid, " + user_mention)
+        await ctx.send("That move is invalid, " + user_mention)
         return
 
-    opponent_id = servers[server_id].games[game_key] \
+    opponent_id = guilds[guild_id].games[game_key] \
                                     .get_player_id_to_move()
 
     opponent_mention = mention(opponent_id)
 
 
-    await bot.say(opponent_mention + ", " + user_mention + " has made move " +
+    await ctx.send(opponent_mention + ", " + user_mention + " has made move " +
                   move_str)
-    await bot.say(servers[server_id].games[game_key].get_board_url())
+    await ctx.send(guilds[guild_id].games[game_key].get_board_url())
 
     # Check if the game has ended. Send a message and delete the game instance
     # if that is the case.
-    if servers[server_id].games[game_key].ended():
-        await bot.say(servers[server_id].games[game_key].end_game_message())
-        del servers[server_id].games[game_key]
+    if guilds[guild_id].games[game_key].ended():
+        await ctx.send(guilds[guild_id].games[game_key].end_game_message())
+        del guilds[guild_id].games[game_key]
         return
 
     # If the game has not ended and it is the bot's turn to play, make a move.
     if opponent_id == bot.user.id:
-        bot_move_str = await servers[server_id].games[game_key] \
+        bot_move_str = await guilds[guild_id].games[game_key] \
                                                .make_best_move()
-        await bot.say(servers[server_id].games[game_key].get_board_url())
-        await bot.say(user_mention + ", the bot has made move " +
+        await ctx.send(guilds[guild_id].games[game_key].get_board_url())
+        await ctx.send(user_mention + ", the bot has made move " +
                       bot_move_str)
 
         # If the game ends, inform the user and delete the game instance.
-        if servers[server_id].games[game_key].ended():
-            await bot.say(servers[server_id].games[game_key] \
+        if guilds[guild_id].games[game_key].ended():
+            await ctx.send(guilds[guild_id].games[game_key] \
                                             .end_game_message())
-            del servers[server_id].games[game_key]
+            del guilds[guild_id].games[game_key]
 
 
 
